@@ -7,6 +7,7 @@
 //   name: Otto von Bismarck
 //   model: Model 3
 //   recommended_pressure: 2.9      # bar; optional, below it minus 0.1 reads as low
+//   broken_tyres: [rear_right]     # sensors that no longer report; shown as such
 
 const STATE_LABELS = {
   online: "Vaken",
@@ -101,22 +102,9 @@ class TeslaStatusCard extends HTMLElement {
       .filter((id) => id.includes(prefix) || id.endsWith(`.${this._config.prefix}`))
       .map((id) => `${id}=${hass.states[id].state}@${hass.states[id].last_changed}`)
       .join("|");
-    // Relative times ("3 h sedan") also need a refresh now and then
-    const minute = Math.floor(Date.now() / 60000);
-    if (key === this._key && minute === this._minute) return;
+    if (key === this._key) return;
     this._key = key;
-    this._minute = minute;
     this._render();
-  }
-
-  _ago(iso) {
-    if (!iso) return "";
-    const min = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
-    if (min < 1) return "nyss";
-    if (min < 60) return `${min} min sedan`;
-    const h = Math.round(min / 60);
-    if (h < 48) return `${h} h sedan`;
-    return `${Math.round(h / 24)} d sedan`;
   }
 
   _fmt(n, decimals = 0) {
@@ -126,7 +114,15 @@ class TeslaStatusCard extends HTMLElement {
   }
 
   _tyre(pos, key) {
-    const s = this._st("sensor", `tpms_${key}`);
+    if ((this._config.broken_tyres || []).includes(key)) {
+      return {
+        low: false,
+        html: `<div class="tyre ${pos} broken" data-entity="${this._id("sensor", `tpms_${key}`)}">
+          <div class="pressure">–<span class="unit">bar</span></div>
+          <div class="tyre-sub">Givare ur funktion</div>
+        </div>`,
+      };
+    }
     const bar = this._num("sensor", `tpms_${key}`);
     const rec = this._config.recommended_pressure;
     const low = this._on(`tpms_soft_warning_${key}`) || (rec !== undefined && bar !== undefined && bar < rec - 0.1);
@@ -134,7 +130,7 @@ class TeslaStatusCard extends HTMLElement {
       low,
       html: `<div class="tyre ${pos} ${low ? "low" : ""}" data-entity="${this._id("sensor", `tpms_${key}`)}">
         <div class="pressure">${this._fmt(bar, 2)}<span class="unit">bar</span></div>
-        <div class="tyre-sub">${low ? "Lågt" : "OK"} · ${this._ago(s && s.last_changed)}</div>
+        <div class="tyre-sub">${low ? "Lågt" : "OK"}</div>
       </div>`,
     };
   }
@@ -187,7 +183,6 @@ class TeslaStatusCard extends HTMLElement {
     const odometer = this._num("sensor", "odometer");
     const inside = this._num("sensor", "temperature_inside");
     const outside = this._num("sensor", "temperature_outside");
-    const stateEntity = this._st("sensor", "state");
 
     this.shadowRoot.innerHTML = `
       <style>${STYLE}</style>
@@ -198,7 +193,7 @@ class TeslaStatusCard extends HTMLElement {
               <div class="sub">${c.model || "Tesla"} · ${c.name || ""}</div>
               <div class="title">${title}</div>
             </div>
-            <div class="pill ${state || ""}" data-entity="${this._id("sensor", "state")}" title="sedan ${this._ago(stateEntity && stateEntity.last_changed)}">
+            <div class="pill ${state || ""}" data-entity="${this._id("sensor", "state")}">
               <span class="dot"></span>${STATE_LABELS[state] || state || "Okänt"}
             </div>
           </div>
@@ -286,6 +281,7 @@ const STYLE = `
   .tyre-sub { font-size: 14px; font-weight: 600; color: #8fa0b5; }
   .tyre.low .pressure { color: #f0b061; }
   .tyre.low .tyre-sub { color: #e2a04f; }
+  .tyre.broken .pressure, .tyre.broken .tyre-sub { color: #5f6b7c; }
   .rec { text-align: center; color: #7f8ca0; font-size: 14px; margin: 6px 0 14px; }
   .battery-row { display: flex; justify-content: space-between; align-items: flex-end; }
   .soc { font-size: 64px; font-weight: 200; line-height: 1; }

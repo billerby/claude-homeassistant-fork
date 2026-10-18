@@ -40,7 +40,7 @@ mqtt:
         identifiers: [teslamate_car_1]
         name: Otto von Bismarck
         manufacturer: Tesla
-        model: Model Y
+        model: Model 3
       state_topic: "teslamate/cars/1/battery_level"
       unit_of_measurement: "%"
       device_class: battery

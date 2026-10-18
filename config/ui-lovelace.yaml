@@ -741,6 +741,9 @@ views:
       name: Otto von Bismarck
       model: Model 3
       recommended_pressure: 2.9
+      # Rear right TPMS sensor is broken and has not reported since August
+      broken_tyres:
+      - rear_right
     - type: entities
       title: Charging
       state_color: true
