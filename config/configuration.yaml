@@ -46,6 +46,8 @@ lovelace:
       type: module
     - url: /local/landroid-card.js
       type: module
+    - url: /hacsfiles/ha-floorplan/floorplan.js
+      type: module
   dashboards:
     lovelace:
       mode: yaml
@@ -71,6 +73,12 @@ lovelace:
       icon: mdi:radar
       show_in_sidebar: true
       filename: dashboards/feeder.yaml
+    lovelace-planlosning:
+      mode: yaml
+      title: Planlösning
+      icon: mdi:floor-plan
+      show_in_sidebar: true
+      filename: dashboards/planlosning.yaml
     
  
 template:

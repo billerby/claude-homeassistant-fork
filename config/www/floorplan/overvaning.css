@@ -1,0 +1,9 @@
+/* ha-floorplan styles for overvaning.svg; classes are set by the rules in dashboards/planlosning.yaml */
+.room {
+  transition: fill 0.4s ease;
+  cursor: pointer;
+}
+
+.room.media-on {
+  fill: #cfe3f7;
+}

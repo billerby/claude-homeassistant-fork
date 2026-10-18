@@ -1,0 +1,41 @@
+views:
+  - title: Övervåning
+    path: overvaning
+    icon: mdi:floor-plan
+    panel: true
+    cards:
+      - type: custom:floorplan-card
+        full_height: true
+        config:
+          image: /local/floorplan/overvaning.svg
+          stylesheet: /local/floorplan/overvaning.css
+          rules:
+            # Rummet markeras när något spelas där. class_set ersätter alla
+            # klasser, så "room" måste vara med i båda fallen.
+            - entity: media_player.kok
+              element: kok
+              tap_action:
+                action: more-info
+              state_action: &media_room
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'playing' ? 'room media-on' : 'room'}"
+            - entity: media_player.vardagsrum
+              element: vardagsrum
+              tap_action:
+                action: more-info
+              state_action: *media_room
+            - entity: media_player.chromecast
+              element: fritiofs_rum
+              tap_action:
+                action: more-info
+              state_action: *media_room
+
+            - entity: sensor.ngenic_sensor_vardagsrummet_temperature
+              element: vardagsrum_temp
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${Number(entity.state).toFixed(1)} °C"

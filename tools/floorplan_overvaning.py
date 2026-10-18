@@ -1,0 +1,45 @@
+"""Generate config/www/floorplan/overvaning.svg (upstairs plan for ha-floorplan).
+
+Room coordinates were measured on a photo of the construction drawing.
+usage: python tools/floorplan_overvaning.py config/www/floorplan/overvaning.svg
+"""
+import sys
+OX, OY = 100, 60  # offset so the plan starts near 0,0
+# id, label, x0, y0, x1, y1, kind
+ROOMS = [
+    ("vardagsrum", "Vardagsrum", 652, 80, 1145, 742, "room"),
+    ("altan", "Altan", 1145, 80, 1480, 742, "outdoor"),
+    ("entre", "Entré", 440, 560, 652, 742, "room"),
+    ("trappa", "Trappa", 285, 555, 440, 742, "outdoor"),
+    ("wc", "WC", 175, 745, 290, 930, "room"),
+    ("kapprum", "Kapprum", 290, 745, 610, 930, "room"),
+    ("hall", "Hall", 610, 745, 1482, 935, "room"),
+    ("bad", "Bad", 1482, 745, 1700, 935, "room"),
+    ("kok", "Kök", 130, 935, 605, 1325, "room"),
+    ("pianorum", "Pianorum", 605, 935, 872, 1325, "room"),
+    ("fritiofs_rum", "Fritiofs rum", 872, 935, 1112, 1325, "room"),
+    ("henriks_rum", "Henriks rum", 1112, 935, 1410, 1325, "room"),
+    ("master_bedroom", "Master bedroom", 1410, 935, 1728, 1325, "room"),
+]
+TEXT_SLOTS = {"vardagsrum"}
+W, H = 1660, 1290
+out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">',
+       '<style>',
+       '.room{fill:#f4f1ea;stroke:#3a3a3a;stroke-width:8}',
+       '.outdoor{fill:#e6efe1;stroke:#7a8a72;stroke-width:4;stroke-dasharray:14 10}',
+       '.label{font:600 30px sans-serif;fill:#3a3a3a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
+       '.outdoor-label{font:italic 26px sans-serif;fill:#6b7a63}',
+       '.value{font:500 26px sans-serif;fill:#5a5a5a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
+       '</style>']
+for rid, label, x0, y0, x1, y1, kind in ROOMS:
+    x, y, w, h = x0 - OX, y0 - OY, x1 - x0, y1 - y0
+    out.append(f'<rect id="{rid}" class="{kind}" x="{x}" y="{y}" width="{w}" height="{h}"/>')
+for rid, label, x0, y0, x1, y1, kind in ROOMS:
+    cls = "label outdoor-label" if kind == "outdoor" else "label"
+    out.append(f'<text id="{rid}_label" class="{cls}" x="{(x0+x1)/2-OX:.0f}" y="{(y0+y1)/2-OY:.0f}">{label}</text>')
+# placeholders that ha-floorplan fills with live values via floorplan.text_set
+for rid, label, x0, y0, x1, y1, kind in ROOMS:
+    if rid in TEXT_SLOTS:
+        out.append(f'<text id="{rid}_temp" class="value" x="{(x0+x1)/2-OX:.0f}" y="{(y0+y1)/2-OY+42:.0f}"></text>')
+out.append('</svg>')
+open(sys.argv[1], "w").write("\n".join(out) + "\n")
