@@ -8,6 +8,7 @@
 //   model: Model 3
 //   recommended_pressure: 2.9      # bar; optional, below it minus 0.1 reads as low
 //   broken_tyres: [rear_right]     # sensors that no longer report; shown as such
+//   image: /local/tesla-card/model3_top.webp   # top view, front pointing up
 
 const STATE_LABELS = {
   online: "Vaken",
@@ -18,44 +19,6 @@ const STATE_LABELS = {
   updating: "Uppdaterar",
   suspended: "Vilar",
 };
-
-const CAR_SVG = `
-<svg viewBox="0 0 200 400" class="car" aria-hidden="true">
-  <defs>
-    <linearGradient id="body" x1="0" x2="1">
-      <stop offset="0" stop-color="#9aa3ad"/>
-      <stop offset="0.25" stop-color="#e9edf1"/>
-      <stop offset="0.5" stop-color="#ffffff"/>
-      <stop offset="0.75" stop-color="#e9edf1"/>
-      <stop offset="1" stop-color="#9aa3ad"/>
-    </linearGradient>
-    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#2b3a4f"/>
-      <stop offset="0.5" stop-color="#16202e"/>
-      <stop offset="1" stop-color="#253246"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#4a7bd0" stop-opacity="0.35"/>
-      <stop offset="1" stop-color="#4a7bd0" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <ellipse cx="100" cy="200" rx="110" ry="200" fill="url(#glow)"/>
-  <rect class="wheel fl" x="14" y="72" width="16" height="52" rx="7"/>
-  <rect class="wheel fr" x="170" y="72" width="16" height="52" rx="7"/>
-  <rect class="wheel rl" x="14" y="276" width="16" height="52" rx="7"/>
-  <rect class="wheel rr" x="170" y="276" width="16" height="52" rx="7"/>
-  <path fill="url(#body)" d="M100,16 C142,16 164,28 169,62 L175,150 C178,205 178,262 175,318 C172,362 148,384 100,384 C52,384 28,362 25,318 C22,262 22,205 25,150 L31,62 C36,28 58,16 100,16 Z"/>
-  <ellipse cx="20" cy="132" rx="9" ry="6" fill="#cfd5db"/>
-  <ellipse cx="180" cy="132" rx="9" ry="6" fill="#cfd5db"/>
-  <path d="M52,40 C70,32 130,32 148,40" fill="none" stroke="#b9c1c9" stroke-width="1.5"/>
-  <path d="M40,30 C46,24 58,20 66,20" fill="none" stroke="#7d8ea3" stroke-width="3" stroke-linecap="round"/>
-  <path d="M160,30 C154,24 142,20 134,20" fill="none" stroke="#7d8ea3" stroke-width="3" stroke-linecap="round"/>
-  <path fill="url(#glass)" d="M100,104 C136,104 153,112 157,126 L159,298 C152,322 132,332 100,332 C68,332 48,322 41,298 L43,126 C47,112 64,104 100,104 Z"/>
-  <path d="M48,130 C70,118 130,118 152,130" fill="none" stroke="#3d4d63" stroke-width="2"/>
-  <path d="M46,296 C70,308 130,308 154,296" fill="none" stroke="#3d4d63" stroke-width="2"/>
-  <path d="M60,140 L60,290 M140,140 L140,290" stroke="#ffffff" stroke-opacity="0.06" stroke-width="10"/>
-  <path d="M42,372 C60,380 140,380 158,372" fill="none" stroke="#c0392b" stroke-width="4" stroke-linecap="round"/>
-</svg>`;
 
 class TeslaStatusCard extends HTMLElement {
   setConfig(config) {
@@ -200,7 +163,9 @@ class TeslaStatusCard extends HTMLElement {
           <div class="car-grid">
             ${tyres[0].html}
             <div class="car-wrap" data-entity="${this._id("binary_sensor", "locked")}">
-              ${CAR_SVG}
+              <div class="wheel fl"></div><div class="wheel fr"></div>
+              <div class="wheel rl"></div><div class="wheel rr"></div>
+              <img class="car" src="${c.image || "/local/tesla-card/model3_top.webp?v=1"}" alt="">
               <ha-icon class="lock" icon="${locked ? "mdi:lock" : "mdi:lock-open-variant"}"></ha-icon>
             </div>
             ${tyres[1].html}
@@ -263,14 +228,23 @@ const STYLE = `
   .pill.offline .dot { background: #e0533d; }
   .pill.updating .dot { background: #b48cf2; }
   .car-grid {
-    display: grid; grid-template-columns: 1fr minmax(120px, 170px) 1fr; grid-template-rows: auto auto;
+    display: grid; grid-template-columns: 1fr minmax(130px, 210px) 1fr; grid-template-rows: auto auto;
     align-items: center; margin-top: 14px;
   }
   .car-wrap { grid-column: 2; grid-row: 1 / span 2; position: relative; }
-  .car { width: 100%; display: block; }
-  .car .wheel { fill: #2a3240; }
-  .car .wheel.low { fill: #b8813a; filter: drop-shadow(0 0 6px rgba(240,170,80,0.7)); }
-  .lock { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); color: #c9d3df; --mdc-icon-size: 20px; }
+  .car-wrap::before {
+    content: ""; position: absolute; inset: -6% -30%;
+    background: radial-gradient(closest-side, rgba(74,123,208,0.28), rgba(74,123,208,0));
+  }
+  .car { position: relative; z-index: 1; width: 100%; display: block; filter: drop-shadow(0 12px 18px rgba(0,0,0,0.55)); }
+  /* Wheels sit under the body; only their outer edge shows. Axles at about 20 % and 80 % of the length. */
+  .wheel { position: absolute; z-index: 0; width: 10%; height: 14%; border-radius: 40%; background: #2a3240; }
+  .wheel.fl { left: 3%; top: 13%; }
+  .wheel.fr { right: 3%; top: 13%; }
+  .wheel.rl { left: 1%; top: 73%; }
+  .wheel.rr { right: 1%; top: 73%; }
+  .wheel.low { background: #c98a3a; box-shadow: 0 0 16px 5px rgba(240,170,80,0.5); }
+  .lock { position: absolute; z-index: 2; left: 50%; top: 62%; transform: translate(-50%, -50%); color: #c9d3df; --mdc-icon-size: 20px; }
   .tyre { text-align: center; padding: 30px 4px; }
   .tyre.fl { grid-column: 1; grid-row: 1; }
   .tyre.fr { grid-column: 3; grid-row: 1; }

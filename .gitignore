@@ -162,3 +162,7 @@ coverage.xml
 
 # Virtual Environment symlink (points to ../venv)
 # Note: Both venv/ and venv symlink are ignored above
+
+# Car picture for the Tesla card: a Tesla render, so it stays on the HA host
+# (/config/www/tesla-card/) and out of this public repo.
+config/www/tesla-card/*.webp

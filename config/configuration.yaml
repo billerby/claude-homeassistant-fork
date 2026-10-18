@@ -48,7 +48,7 @@ lovelace:
       type: module
     - url: /hacsfiles/ha-floorplan/floorplan.js
       type: module
-    - url: /local/tesla-card/tesla-status-card.js?v=2
+    - url: /local/tesla-card/tesla-status-card.js?v=3
       type: module
   dashboards:
     lovelace:
