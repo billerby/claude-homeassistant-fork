@@ -48,3 +48,7 @@
 .ap.ap-offline circle:not(.dot) {
   fill: #f4c7c3;
 }
+
+.thermometer {
+  cursor: pointer;
+}

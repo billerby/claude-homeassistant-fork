@@ -48,6 +48,8 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.ap circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}',
        '.ap circle.dot{fill:#3a3a3a;stroke:none}',
        '.ap path{fill:none;stroke:#3a3a3a;stroke-width:3;stroke-linecap:round}',
+       '.thermometer circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}',
+       '.thermometer rect,.thermometer circle.bulb{fill:#3a3a3a;stroke:none}',
        '.value{font:500 26px sans-serif;fill:#5a5a5a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '</style>']
 for rid, label, x0, y0, x1, y1, kind in ROOMS:
@@ -78,5 +80,13 @@ out.append(f'<g id="kaffemaskin" class="appliance">'
            '</g>')
 out.append(f'<text id="kaffemaskin_power" class="value small-value" x="{KX}" y="{KY + 42}"></text>')
 out.append(wifi_marker("ap_u6_lr", 898 - OX, 330 - OY))
+# outdoor temperature (Ngenic controller) outside the house, above the entrance
+TX, TY = 520 - OX, 470 - OY
+out.append(f'<g id="utetemp" class="thermometer">'
+           f'<circle cx="{TX}" cy="{TY}" r="24"/>'
+           f'<rect x="{TX - 3}" y="{TY - 14}" width="6" height="18" rx="3"/>'
+           f'<circle class="bulb" cx="{TX}" cy="{TY + 8}" r="6"/>'
+           '</g>')
+out.append(f'<text id="utetemp_value" class="value" x="{TX}" y="{TY + 44}"></text>')
 out.append('</svg>')
 open(sys.argv[1], "w").write("\n".join(out) + "\n")

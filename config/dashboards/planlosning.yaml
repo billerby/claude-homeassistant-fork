@@ -7,8 +7,8 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg?v=5
-          stylesheet: /local/floorplan/overvaning.css?v=5
+          image: /local/floorplan/overvaning.svg?v=6
+          stylesheet: /local/floorplan/overvaning.css?v=6
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla
             # klasser, så "room" måste vara med i båda fallen.
@@ -104,6 +104,19 @@ views:
                 service: floorplan.text_set
                 service_data:
                   text: "${Number(entity.state).toFixed(1)} °C"
+
+            # Utomhustemperaturen från Ngenic, utanför huset ovanför entrén
+            - entity: sensor.ngenic_controller_temperature
+              element: utetemp
+              tap_action:
+                action: more-info
+            - entity: sensor.ngenic_controller_temperature
+              element: utetemp_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${isNaN(Number(entity.state)) ? 'ute ?' : 'Ute ' + Number(entity.state).toFixed(1) + ' °C'}"
 
   - title: Källare
     path: kallare
