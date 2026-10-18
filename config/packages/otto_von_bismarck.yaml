@@ -234,7 +234,8 @@ mqtt:
       unique_id: ovb_update_version
       device: *ovb_device
       state_topic: "teslamate/cars/1/software_update"
-      value_template: "{{ value_json.latest_version }}"
+      # Keep the last value when a payload is not JSON or lacks the field
+      value_template: "{{ value_json.latest_version if value_json is defined and value_json.latest_version is defined else this.state }}"
       icon: mdi:cellphone-arrow-down
 
   binary_sensor:

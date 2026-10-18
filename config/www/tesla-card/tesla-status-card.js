@@ -8,7 +8,19 @@
 //   model: Model 3
 //   recommended_pressure: 2.9      # bar; optional, below it minus 0.1 reads as low
 //   broken_tyres: [rear_right]     # sensors that no longer report; shown as such
-//   image: /local/tesla-card/model3_top.webp   # top view, front pointing up
+//   image: /local/tesla-card/model3_top.webp?v=2   # top view, front pointing up
+
+// Every entity the card reads, as [domain, key]; changes to anything else are ignored
+const ENTITIES = [
+  ...["state", "geofence", "battery", "range", "charge_limit", "charging_state", "charger_power", "time_to_full_charge",
+    "update_version", "odometer", "temperature_inside", "temperature_outside"].map((k) => ["sensor", k]),
+  ...["front_left", "front_right", "rear_left", "rear_right"].flatMap((t) => [["sensor", `tpms_${t}`], ["binary_sensor", `tpms_soft_warning_${t}`]]),
+  ...["locked", "sentry_mode", "doors_open", "windows_open", "trunk_open", "frunk_open", "climate_on", "update_available",
+    "plugged_in"].map((k) => ["binary_sensor", k]),
+];
+
+const esc = (v) =>
+  String(v).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
 
 const STATE_LABELS = {
   online: "Vaken",
@@ -24,7 +36,7 @@ class TeslaStatusCard extends HTMLElement {
   setConfig(config) {
     if (!config.prefix) throw new Error("prefix krävs, t.ex. otto_von_bismarck");
     this._config = config;
-    this._key = undefined;
+    this._seen = undefined;
   }
 
   static getStubConfig() {
@@ -43,9 +55,10 @@ class TeslaStatusCard extends HTMLElement {
     return this._hass.states[this._id(domain, key)];
   }
 
+  // undefined when HA has no real value, so "unknown" never ends up on screen
   _val(domain, key) {
     const s = this._st(domain, key);
-    return s ? s.state : undefined;
+    return s && !["unknown", "unavailable", ""].includes(s.state) ? s.state : undefined;
   }
 
   _num(domain, key) {
@@ -57,16 +70,18 @@ class TeslaStatusCard extends HTMLElement {
     return this._val("binary_sensor", key) === "on";
   }
 
+  // true / false, or undefined when the sensor has no value
+  _bool(key) {
+    const v = this._val("binary_sensor", key);
+    return v === undefined ? undefined : v === "on";
+  }
+
   set hass(hass) {
     this._hass = hass;
-    // Only re-render when one of our entities changed
-    const prefix = `.${this._config.prefix}_`;
-    const key = Object.keys(hass.states)
-      .filter((id) => id.includes(prefix))
-      .map((id) => `${id}=${hass.states[id].state}@${hass.states[id].last_changed}`)
-      .join("|");
-    if (key === this._key) return;
-    this._key = key;
+    // HA hands over a new state object only when that entity changed
+    const seen = ENTITIES.map(([d, k]) => hass.states[this._id(d, k)]);
+    if (this._seen && seen.every((st, i) => st === this._seen[i])) return;
+    this._seen = seen;
     this._render();
   }
 
@@ -99,7 +114,14 @@ class TeslaStatusCard extends HTMLElement {
   }
 
   _chip(icon, text, kind, entity) {
-    return `<div class="chip ${kind}" data-entity="${entity}"><ha-icon icon="${icon}"></ha-icon>${text}</div>`;
+    return `<div class="chip ${kind}" data-entity="${entity}"><ha-icon icon="${icon}"></ha-icon>${esc(text)}</div>`;
+  }
+
+  // Chip for a binary sensor: [icon, text, kind] for on and off, grey "?" text when unknown
+  _flag(key, on, off, unknown) {
+    const v = this._bool(key);
+    const [icon, text, kind] = v === undefined ? [off[0], unknown, "unknown"] : v ? on : off;
+    return this._chip(icon, text, kind, this._id("binary_sensor", key));
   }
 
   _chargeText() {
@@ -107,10 +129,13 @@ class TeslaStatusCard extends HTMLElement {
     if (state === "Charging") {
       const kw = this._num("sensor", "charger_power");
       const h = this._num("sensor", "time_to_full_charge");
-      const left = h ? ` · ${Math.floor(h)} h ${Math.round((h % 1) * 60)} min kvar` : "";
+      const min = h ? Math.round(h * 60) : 0;
+      const left = min ? ` · ${Math.floor(min / 60)} h ${min % 60} min kvar` : "";
       return `Laddar ${this._fmt(kw, 1)} kW${left}`;
     }
-    if (!this._on("plugged_in")) return "Inte inkopplad";
+    const plugged = this._bool("plugged_in");
+    if (plugged === undefined) return "Laddkabel okänd";
+    if (!plugged) return "Inte inkopplad";
     return { Complete: "Inkopplad · laddning klar", Stopped: "Inkopplad · laddning pausad", NoPower: "Inkopplad · ingen ström" }[
       state
     ] || "Inkopplad";
@@ -122,26 +147,27 @@ class TeslaStatusCard extends HTMLElement {
     const c = this._config;
     const state = this._val("sensor", "state");
     const geofence = this._val("sensor", "geofence");
-    const title =
-      state === "driving" ? "På väg" : geofence && geofence !== "unknown" && geofence !== "nil" ? geofence : "Parkerad";
+    const title = state === "driving" ? "På väg" : geofence && geofence !== "nil" ? geofence : "Parkerad";
     const battery = this._num("sensor", "battery");
     const limit = this._num("sensor", "charge_limit");
     const range = this._num("sensor", "range");
     const tyres = [this._tyre("fl", "front_left"), this._tyre("fr", "front_right"), this._tyre("rl", "rear_left"), this._tyre("rr", "rear_right")];
-    const locked = this._on("locked");
-    const update = this._on("update_available");
+    const locked = this._bool("locked");
+    const lockIcon = locked === undefined ? "mdi:lock-question" : locked ? "mdi:lock" : "mdi:lock-open-variant";
 
     const chips = [
-      this._chip(locked ? "mdi:lock" : "mdi:lock-open-variant", locked ? "Låst" : "Olåst", locked ? "ok" : "warn", this._id("binary_sensor", "locked")),
-      this._chip("mdi:cctv", this._on("sentry_mode") ? "Vaktläge på" : "Vaktläge av", this._on("sentry_mode") ? "ok" : "off", this._id("binary_sensor", "sentry_mode")),
-      this._chip("mdi:car-door", this._on("doors_open") ? "Dörr öppen" : "Dörrar stängda", this._on("doors_open") ? "warn" : "ok", this._id("binary_sensor", "doors_open")),
-      this._chip("mdi:car-windshield-outline", this._on("windows_open") ? "Fönster öppet" : "Fönster stängda", this._on("windows_open") ? "warn" : "ok", this._id("binary_sensor", "windows_open")),
+      this._flag("locked", [lockIcon, "Låst", "ok"], [lockIcon, "Olåst", "warn"], "Lås okänt"),
+      this._flag("sentry_mode", ["mdi:cctv", "Vaktläge på", "ok"], ["mdi:cctv", "Vaktläge av", "off"], "Vaktläge okänt"),
+      this._flag("doors_open", ["mdi:car-door", "Dörr öppen", "warn"], ["mdi:car-door", "Dörrar stängda", "ok"], "Dörrar okänt"),
+      this._flag("windows_open", ["mdi:car-windshield-outline", "Fönster öppet", "warn"], ["mdi:car-windshield-outline", "Fönster stängda", "ok"], "Fönster okänt"),
     ];
     if (this._on("trunk_open")) chips.push(this._chip("mdi:car-back", "Bagagelucka öppen", "warn", this._id("binary_sensor", "trunk_open")));
     if (this._on("frunk_open")) chips.push(this._chip("mdi:car-select", "Frunk öppen", "warn", this._id("binary_sensor", "frunk_open")));
-    chips.push(this._chip("mdi:fan", this._on("climate_on") ? "Klimat på" : "Klimat av", this._on("climate_on") ? "ok" : "off", this._id("binary_sensor", "climate_on")));
-    if (update)
-      chips.push(this._chip("mdi:update", `Uppdatering ${this._val("sensor", "update_version") || ""}`, "update", this._id("binary_sensor", "update_available")));
+    chips.push(this._flag("climate_on", ["mdi:fan", "Klimat på", "ok"], ["mdi:fan", "Klimat av", "off"], "Klimat okänt"));
+    if (this._on("update_available")) {
+      const version = this._val("sensor", "update_version");
+      chips.push(this._chip("mdi:update", version ? `Uppdatering ${version}` : "Uppdatering", "update", this._id("binary_sensor", "update_available")));
+    }
 
     const odometer = this._num("sensor", "odometer");
     const inside = this._num("sensor", "temperature_inside");
@@ -153,11 +179,11 @@ class TeslaStatusCard extends HTMLElement {
         <div class="wrap">
           <div class="head">
             <div>
-              <div class="sub">${c.model || "Tesla"} · ${c.name || ""}</div>
-              <div class="title">${title}</div>
+              <div class="sub">${esc(c.model || "Tesla")} · ${esc(c.name || "")}</div>
+              <div class="title">${esc(title)}</div>
             </div>
-            <div class="pill ${state || ""}" data-entity="${this._id("sensor", "state")}">
-              <span class="dot"></span>${STATE_LABELS[state] || state || "Okänt"}
+            <div class="pill ${STATE_LABELS[state] ? state : ""}" data-entity="${this._id("sensor", "state")}">
+              <span class="dot"></span>${esc(STATE_LABELS[state] || state || "Okänt")}
             </div>
           </div>
           <div class="car-grid">
@@ -165,8 +191,8 @@ class TeslaStatusCard extends HTMLElement {
             <div class="car-wrap" data-entity="${this._id("binary_sensor", "locked")}">
               <div class="wheel fl"></div><div class="wheel fr"></div>
               <div class="wheel rl"></div><div class="wheel rr"></div>
-              <img class="car" src="${c.image || "/local/tesla-card/model3_top.webp?v=1"}" alt="">
-              <ha-icon class="lock" icon="${locked ? "mdi:lock" : "mdi:lock-open-variant"}"></ha-icon>
+              ${c.image ? `<img class="car" src="${esc(c.image)}" alt="">` : ""}
+              <ha-icon class="lock" icon="${lockIcon}"></ha-icon>
             </div>
             ${tyres[1].html}
             ${tyres[2].html}
@@ -278,6 +304,7 @@ const STYLE = `
   }
   .chip.ok { color: #6fdcc4; border-color: rgba(95,214,192,0.35); background: rgba(95,214,192,0.07); }
   .chip.warn { color: #f0b061; border-color: rgba(240,176,97,0.45); background: rgba(240,176,97,0.08); }
+  .chip.unknown { color: #6f7b8c; border-style: dashed; }
   .chip.update { color: #c5a3ff; border-color: rgba(180,140,242,0.45); background: rgba(180,140,242,0.1); }
   .foot { margin-top: 14px; color: #8f9cae; font-size: 15px; }
   @media (max-width: 420px) {
