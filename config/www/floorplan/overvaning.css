@@ -52,3 +52,11 @@
 .thermometer {
   cursor: pointer;
 }
+
+.device {
+  cursor: pointer;
+}
+
+.device.device-down circle:not(.dot) {
+  fill: #f4c7c3;
+}

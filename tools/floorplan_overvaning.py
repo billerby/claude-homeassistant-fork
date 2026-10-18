@@ -33,6 +33,16 @@ def wifi_marker(mid, cx, cy):
             f'<text id="{mid}_clients" class="value small-value" x="{cx}" y="{cy + 40}"></text>')
 
 
+def switch_marker(mid, cx, cy):
+    """Network switch: a box with a row of ports in a circle, client count below."""
+    ports = "".join(f'<circle class="dot" cx="{cx + dx}" cy="{cy + 2}" r="1.8"/>' for dx in (-8, -3, 2, 7))
+    return (f'<g id="{mid}" class="device">'
+            f'<circle cx="{cx}" cy="{cy}" r="24"/>'
+            f'<rect x="{cx - 13}" y="{cy - 6}" width="26" height="14" rx="2"/>{ports}'
+            '</g>'
+            f'<text id="{mid}_clients" class="value small-value" x="{cx}" y="{cy + 40}"></text>')
+
+
 out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">',
        '<style>',
        '.room{fill:#f4f1ea;stroke:#3a3a3a;stroke-width:8}',
@@ -50,6 +60,9 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.ap path{fill:none;stroke:#3a3a3a;stroke-width:3;stroke-linecap:round}',
        '.thermometer circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}',
        '.thermometer rect,.thermometer circle.bulb{fill:#3a3a3a;stroke:none}',
+       '.device circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}',
+       '.device rect{fill:none;stroke:#3a3a3a;stroke-width:3}',
+       '.device circle.dot{fill:#3a3a3a;stroke:none}',
        '.value{font:500 26px sans-serif;fill:#5a5a5a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '</style>']
 for rid, label, x0, y0, x1, y1, kind in ROOMS:
@@ -80,6 +93,8 @@ out.append(f'<g id="kaffemaskin" class="appliance">'
            '</g>')
 out.append(f'<text id="kaffemaskin_power" class="value small-value" x="{KX}" y="{KY + 42}"></text>')
 out.append(wifi_marker("ap_u6_lr", 898 - OX, 330 - OY))
+# USW-Lite-8-PoE in the living room against the hall wall, with the piano room behind it
+out.append(switch_marker("usw_lite_8_poe", 760 - OX, 680 - OY))
 # outdoor temperature (Ngenic controller) outside the house, left of the entrance
 TX, TY = 310 - OX, 260 - OY
 out.append(f'<g id="utetemp" class="thermometer">'

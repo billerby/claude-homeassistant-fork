@@ -7,8 +7,8 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg?v=7
-          stylesheet: /local/floorplan/overvaning.css?v=6
+          image: /local/floorplan/overvaning.svg?v=8
+          stylesheet: /local/floorplan/overvaning.css?v=7
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla
             # klasser, så "room" måste vara med i båda fallen.
@@ -96,6 +96,26 @@ views:
                 action: more-info
             - entity: sensor.u6_lr_clients
               element: ap_u6_lr_clients
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${entity.state} klienter"
+
+            # Switchen USW-Lite-8-PoE mot hallen: röd om den inte är ansluten, antal klienter under
+            - entity: sensor.usw_lite_8_poe_state
+              element: usw_lite_8_poe
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'connected' ? 'device' : 'device device-down'}"
+            - entity: sensor.usw_lite_8_poe_clients_2
+              element: usw_lite_8_poe
+              tap_action:
+                action: more-info
+            - entity: sensor.usw_lite_8_poe_clients_2
+              element: usw_lite_8_poe_clients
               state_action:
                 action: call-service
                 service: floorplan.text_set
