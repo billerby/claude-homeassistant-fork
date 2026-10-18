@@ -151,7 +151,7 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/kallare.svg?v=6
+          image: /local/floorplan/kallare.svg?v=7
           stylesheet: /local/floorplan/kallare.css?v=5
           rules:
             # Rummet blir gult när någon av dess lampor är tänd. class_set
@@ -292,6 +292,26 @@ views:
                 service: floorplan.text_set
                 service_data:
                   text: "${Math.round(Number(entity.state))} L idag"
+
+            # Switchen USW Lite 8 PoE i pingisrummet: röd om den inte är ansluten, antal klienter under
+            - entity: sensor.usw_lite_8_poe_state_2
+              element: usw_lite_8_poe_pingis
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'connected' ? 'device' : 'device device-down'}"
+            - entity: sensor.usw_lite_8_poe_clients
+              element: usw_lite_8_poe_pingis
+              tap_action:
+                action: more-info
+            - entity: sensor.usw_lite_8_poe_clients
+              element: usw_lite_8_poe_pingis_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${entity.state} klienter"
 
             - entity: sensor.ngenic_sensor_kallarrum_temperature
               element: familjerum_temp

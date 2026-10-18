@@ -58,6 +58,11 @@ def pi_glyph(cx, cy):
     return f'<text class="glyph" x="{cx}" y="{cy + 1}">π</text>'
 
 
+def switch_glyph(cx, cy):
+    ports = "".join(f'<circle class="dot" cx="{cx + dx}" cy="{cy + 2}" r="1.8"/>' for dx in (-8, -3, 2, 7))
+    return f'<rect x="{cx - 13}" y="{cy - 6}" width="26" height="14" rx="2"/>{ports}'
+
+
 def drop_glyph(cx, cy):
     return f'<path class="fill" d="M{cx},{cy - 13} C{cx + 4},{cy - 5} {cx + 10},{cy} {cx + 10},{cy + 4} a10,10 0 0 1 -20,0 C{cx - 10},{cy} {cx - 4},{cy - 5} {cx},{cy - 13} z"/>'
 
@@ -107,5 +112,7 @@ out.append(device_marker("udm", 560 - OX, 482 - OY, router_glyph(560 - OX, 482 -
 out.append(device_marker("raspberry_pi", 655 - OX, 482 - OY, pi_glyph(655 - OX, 482 - OY)))
 # water meter in the boiler room, in the corner towards the sauna
 out.append(device_marker("vattenmatare", 140 - OX, 712 - OY, drop_glyph(140 - OX, 712 - OY)))
+# USW Lite 8 PoE in the ping-pong room, against the wall of the inner corner
+out.append(device_marker("usw_lite_8_poe_pingis", 859 - OX, 372 - OY, switch_glyph(859 - OX, 372 - OY)))
 out.append('</svg>')
 open(sys.argv[1], "w").write("\n".join(out) + "\n")
