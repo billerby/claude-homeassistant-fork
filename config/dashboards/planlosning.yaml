@@ -117,3 +117,11 @@ views:
             - entity: binary_sensor.lumi_lumi_sensor_motion_aq2_iaszone
               element: familjerum_motion
               state_action: *motion
+
+            - entity: sensor.ngenic_sensor_kallarrum_temperature
+              element: familjerum_temp
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${Number(entity.state).toFixed(1)} °C"
