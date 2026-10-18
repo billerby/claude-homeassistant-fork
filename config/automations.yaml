@@ -121,19 +121,16 @@
 - id: '1680511723594'
   alias: Släck i bastun efter en timme
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - automation.bastu_belysning
-  condition:
-  - condition: state
-    entity_id: automation.bastu_belysning
-    state: 'on'
+  triggers:
+  - trigger: state
+    entity_id: switch.bastu_och_tvattstall_channel_1
+    to: 'on'
     for:
       hours: 1
       minutes: 0
       seconds: 0
-  action:
+  conditions: []
+  actions:
   - action: switch.turn_off
     target:
       entity_id: switch.bastu_och_tvattstall_channel_1
