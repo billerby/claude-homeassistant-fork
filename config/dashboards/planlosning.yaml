@@ -7,8 +7,8 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg?v=2
-          stylesheet: /local/floorplan/overvaning.css?v=2
+          image: /local/floorplan/overvaning.svg?v=3
+          stylesheet: /local/floorplan/overvaning.css?v=3
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla
             # klasser, så "room" måste vara med i båda fallen.
@@ -41,6 +41,18 @@ views:
                 service: floorplan.class_set
                 service_data:
                   class: "${entity.state === 'on' ? 'outdoor light-on' : 'outdoor'}"
+
+            # C120 utanför vardagsrummet vid entrén, riktad mot marken (råttor)
+            - entity: binary_sensor.parkering_c120_cell_motion_detection
+              element: camera_c120
+              tap_action:
+                action: more-info
+                entity_id: camera.c120_mainstream
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'on' ? 'camera camera-motion' : 'camera'}"
 
             - entity: sensor.ngenic_sensor_vardagsrummet_temperature
               element: vardagsrum_temp

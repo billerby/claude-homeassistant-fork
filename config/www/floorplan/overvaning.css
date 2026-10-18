@@ -16,3 +16,11 @@
 .outdoor.light-on {
   fill: #fbe7a6;
 }
+
+.camera {
+  cursor: pointer;
+}
+
+.camera.camera-motion circle {
+  fill: #e0533d;
+}

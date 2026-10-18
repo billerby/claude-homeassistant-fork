@@ -4,6 +4,8 @@
 .outdoor{fill:#e6efe1;stroke:#7a8a72;stroke-width:4;stroke-dasharray:14 10}
 .label{font:600 30px sans-serif;fill:#3a3a3a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 .outdoor-label{font:italic 26px sans-serif;fill:#6b7a63}
+.camera circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}
+.camera rect,.camera polygon{fill:#3a3a3a}
 .value{font:500 26px sans-serif;fill:#5a5a5a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 </style>
 <rect id="vardagsrum" class="room" x="552" y="20" width="493" height="662"/>
@@ -33,4 +35,5 @@
 <text id="henriks_rum_label" class="label" x="1161" y="1070">Henriks rum</text>
 <text id="master_bedroom_label" class="label" x="1469" y="1070">Master bedroom</text>
 <text id="vardagsrum_temp" class="value" x="798" y="393"></text>
+<g id="camera_c120" class="camera"><circle cx="518" cy="440" r="24"/><rect x="506" y="432" width="17" height="16" rx="2"/><polygon points="523,436 531,431 531,449 523,444"/></g>
 </svg>

@@ -29,6 +29,8 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.outdoor{fill:#e6efe1;stroke:#7a8a72;stroke-width:4;stroke-dasharray:14 10}',
        '.label{font:600 30px sans-serif;fill:#3a3a3a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '.outdoor-label{font:italic 26px sans-serif;fill:#6b7a63}',
+       '.camera circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}',
+       '.camera rect,.camera polygon{fill:#3a3a3a}',
        '.value{font:500 26px sans-serif;fill:#5a5a5a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '</style>']
 for rid, label, x0, y0, x1, y1, kind in ROOMS:
@@ -41,5 +43,14 @@ for rid, label, x0, y0, x1, y1, kind in ROOMS:
 for rid, label, x0, y0, x1, y1, kind in ROOMS:
     if rid in TEXT_SLOTS:
         out.append(f'<text id="{rid}_temp" class="value" x="{(x0+x1)/2-OX:.0f}" y="{(y0+y1)/2-OY+42:.0f}"></text>')
+# camera markers outside the walls: id, x, y (drawing coordinates)
+CAMERAS = [("camera_c120", 618, 500)]  # C120 on the outside of the living-room wall by the entrance, aimed at the ground
+for cid, cx, cy in CAMERAS:
+    x, y = cx - OX, cy - OY
+    out.append(f'<g id="{cid}" class="camera">'
+               f'<circle cx="{x}" cy="{y}" r="24"/>'
+               f'<rect x="{x - 12}" y="{y - 8}" width="17" height="16" rx="2"/>'
+               f'<polygon points="{x + 5},{y - 4} {x + 13},{y - 9} {x + 13},{y + 9} {x + 5},{y + 4}"/>'
+               '</g>')
 out.append('</svg>')
 open(sys.argv[1], "w").write("\n".join(out) + "\n")
