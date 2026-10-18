@@ -37,3 +37,11 @@
 .device.water-alarm circle:not(.dot) {
   fill: #e0533d;
 }
+
+.device.battery-charging circle:not(.dot) {
+  fill: #2f9e8a;
+}
+
+.device.battery-discharging circle:not(.dot) {
+  fill: #7a6128;
+}

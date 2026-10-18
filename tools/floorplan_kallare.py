@@ -63,6 +63,12 @@ def switch_glyph(cx, cy):
     return f'<rect x="{cx - 13}" y="{cy - 6}" width="26" height="14" rx="2"/>{ports}'
 
 
+def battery_glyph(cx, cy):
+    return (f'<rect x="{cx - 12}" y="{cy - 7}" width="21" height="14" rx="2"/>'
+            f'<rect class="solid" x="{cx + 9}" y="{cy - 3}" width="3" height="6" rx="1"/>'
+            f'<rect class="solid" x="{cx - 9}" y="{cy - 4}" width="15" height="8" rx="1"/>')
+
+
 def drop_glyph(cx, cy):
     return f'<path class="fill" d="M{cx},{cy - 13} C{cx + 4},{cy - 5} {cx + 10},{cy} {cx + 10},{cy + 4} a10,10 0 0 1 -20,0 C{cx - 10},{cy} {cx - 4},{cy - 5} {cx},{cy - 13} z"/>'
 
@@ -82,6 +88,7 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.device circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
        '.device rect{fill:none;stroke:#c9d3df;stroke-width:3}',
        '.device circle.dot{fill:#c9d3df;stroke:none}',
+       '.device rect.solid{fill:#c9d3df;stroke:none}',
        '.device .glyph{font:700 26px serif;fill:#c9d3df;text-anchor:middle;dominant-baseline:middle}',
        '.device path.fill{fill:#5aa0ff}',
        '.value{font:500 22px sans-serif;fill:#9aa7b8;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
@@ -116,5 +123,7 @@ out.append(device_marker("vattenmatare", 140 - OX, 712 - OY, drop_glyph(140 - OX
 out.append(device_marker("usw_lite_8_poe_pingis", 859 - OX, 372 - OY, switch_glyph(859 - OX, 372 - OY)))
 # US 8 60W in Tova's room, against the wall towards the stairs
 out.append(device_marker("us_8_60w", 1170 - OX, 584 - OY, switch_glyph(1170 - OX, 584 - OY)))
+# home battery on the electrical room wall towards Brasrum
+out.append(device_marker("hembatteri", 600 - OX, 790 - OY, battery_glyph(600 - OX, 790 - OY)))
 out.append('</svg>')
 open(sys.argv[1], "w").write("\n".join(out) + "\n")
