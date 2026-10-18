@@ -1,0 +1,342 @@
+views:
+  - title: Övervåning
+    path: overvaning
+    icon: mdi:floor-plan
+    panel: true
+    cards:
+      - type: custom:floorplan-card
+        full_height: true
+        config:
+          image: /local/floorplan/overvaning.svg?v=8
+          stylesheet: /local/floorplan/overvaning.css?v=7
+          rules:
+            # Rummet markeras när något spelas där. class_set ersätter alla
+            # klasser, så "room" måste vara med i båda fallen.
+            - entity: media_player.kok
+              element: kok
+              tap_action:
+                action: more-info
+              state_action: &media_room
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'playing' ? 'room media-on' : 'room'}"
+            - entity: media_player.vardagsrum
+              element: vardagsrum
+              tap_action:
+                action: more-info
+              state_action: *media_room
+            - entity: media_player.chromecast
+              element: fritiofs_rum
+              tap_action:
+                action: more-info
+              state_action: *media_room
+
+            - entity: switch.shellyplug_s_80646f83db50
+              element: pizzerian
+              tap_action:
+                action: more-info
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'on' ? 'outdoor light-on' : 'outdoor'}"
+
+            # C120 utanför vardagsrummet vid entrén, riktad mot marken (råttor).
+            # Röd vid rörelse; ett klick öppnar livebilden. ha-floorplan öppnar
+            # alltid regelns egen entitet, så klicket ligger i en egen regel.
+            - entity: binary_sensor.parkering_c120_cell_motion_detection
+              element: camera_c120
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'on' ? 'camera camera-motion' : 'camera'}"
+            - entity: camera.c120_mainstream
+              element: camera_c120
+              tap_action:
+                action: more-info
+
+            # Kaffemaskinen (Silvia) på bänken mot pianorummet: grå = av,
+            # grön = på, orange = värmer (elementet drar över 100 W)
+            - entities:
+                - switch.shellyplugg_till_lampan
+                - sensor.shellyplugg_till_lampan_power
+              element: kaffemaskin
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${hass.states['switch.shellyplugg_till_lampan'].state !== 'on' ? 'appliance' : Number(hass.states['sensor.shellyplugg_till_lampan_power'].state) > 100 ? 'appliance appliance-heating' : 'appliance appliance-on'}"
+            - entity: switch.shellyplugg_till_lampan
+              element: kaffemaskin
+              tap_action:
+                action: more-info
+            - entities:
+                - switch.shellyplugg_till_lampan
+                - sensor.shellyplugg_till_lampan_power
+              element: kaffemaskin_power
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${hass.states['switch.shellyplugg_till_lampan'].state !== 'on' ? 'Av' : Math.round(Number(hass.states['sensor.shellyplugg_till_lampan_power'].state)) + ' W'}"
+
+            # UniFi-accesspunkten i taket: röd om den inte är ansluten, antal klienter under
+            - entity: sensor.u6_lr_state
+              element: ap_u6_lr
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'connected' ? 'ap' : 'ap ap-offline'}"
+            - entity: sensor.u6_lr_clients
+              element: ap_u6_lr
+              tap_action:
+                action: more-info
+            - entity: sensor.u6_lr_clients
+              element: ap_u6_lr_clients
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${entity.state} klienter"
+
+            # Switchen USW-Lite-8-PoE mot hallen: röd om den inte är ansluten, antal klienter under
+            - entity: sensor.usw_lite_8_poe_state
+              element: usw_lite_8_poe
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'connected' ? 'device' : 'device device-down'}"
+            - entity: sensor.usw_lite_8_poe_clients_2
+              element: usw_lite_8_poe
+              tap_action:
+                action: more-info
+            - entity: sensor.usw_lite_8_poe_clients_2
+              element: usw_lite_8_poe_clients
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${entity.state} klienter"
+
+            - entity: sensor.ngenic_sensor_vardagsrummet_temperature
+              element: vardagsrum_temp
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${Number(entity.state).toFixed(1)} °C"
+
+            # Utomhustemperaturen från Ngenic, utanför huset till vänster om entrén
+            - entity: sensor.ngenic_controller_temperature
+              element: utetemp
+              tap_action:
+                action: more-info
+            - entity: sensor.ngenic_controller_temperature
+              element: utetemp_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${isNaN(Number(entity.state)) ? 'ute ?' : 'Ute ' + Number(entity.state).toFixed(1) + ' °C'}"
+
+  - title: Källare
+    path: kallare
+    icon: mdi:stairs-down
+    panel: true
+    cards:
+      - type: custom:floorplan-card
+        full_height: true
+        config:
+          image: /local/floorplan/kallare.svg?v=8
+          stylesheet: /local/floorplan/kallare.css?v=5
+          rules:
+            # Rummet blir gult när någon av dess lampor är tänd. class_set
+            # ersätter alla klasser, så "room" måste vara med i båda fallen.
+            # ha-floorplans uttryckstolk klarar inte ?. eller pilfunktioner.
+            - entities:
+                - light.badrum_dimmer
+                - switch.bastu_och_tvattstall_channel_2
+              element: badrum_kallare
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${hass.states['light.badrum_dimmer'].state === 'on' || hass.states['switch.bastu_och_tvattstall_channel_2'].state === 'on' ? 'room light-on' : 'room'}"
+            - entity: light.badrum_dimmer
+              element: badrum_kallare
+              tap_action:
+                action: more-info
+            - entity: switch.bastu_och_tvattstall_channel_1
+              element: bastun
+              tap_action:
+                action: more-info
+              state_action: &light_room
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'on' ? 'room light-on' : 'room'}"
+            - entity: light.tvattstugan_dimmer
+              element: tvattstuga
+              tap_action:
+                action: more-info
+              state_action: *light_room
+            - entities:
+                - light.brasrum_liten
+                - light.shellydimmer2_84cca8acddf4
+              element: familjerum
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${hass.states['light.brasrum_liten'].state === 'on' || hass.states['light.shellydimmer2_84cca8acddf4'].state === 'on' ? 'room light-on' : 'room'}"
+            - entity: light.shellydimmer2_84cca8acddf4
+              element: familjerum
+              tap_action:
+                action: more-info
+
+            # Rörelse ritas som en röd streckad ram ovanpå rummet
+            - entity: binary_sensor.lumi_lumi_sensor_motion_aq2_iaszone_2
+              element: badrum_kallare_motion
+              state_action: &motion
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'on' ? 'motion motion-on' : 'motion'}"
+            - entity: binary_sensor.lumi_lumi_sensor_motion_aq2_occupancy_3
+              element: tvattstuga_motion
+              state_action: *motion
+            - entity: binary_sensor.lumi_lumi_sensor_motion_aq2_iaszone
+              element: familjerum_motion
+              state_action: *motion
+
+            # UniFi-accesspunkten i taket: röd om den inte är ansluten, antal klienter under
+            - entity: sensor.u6_lite_state
+              element: ap_u6_lite
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'connected' ? 'ap' : 'ap ap-offline'}"
+            - entity: sensor.u6_lite_clients
+              element: ap_u6_lite
+              tap_action:
+                action: more-info
+            - entity: sensor.u6_lite_clients
+              element: ap_u6_lite_clients
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${entity.state} klienter"
+
+            # Dream Machine: röd om den inte är ansluten, svarstid mot internet under
+            - entity: sensor.dream_machine_special_edition_state
+              element: udm
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'connected' ? 'device' : 'device device-down'}"
+            - entity: sensor.dream_machine_special_edition_cloudflare_wan_latency
+              element: udm
+              tap_action:
+                action: more-info
+            - entity: sensor.dream_machine_special_edition_cloudflare_wan_latency
+              element: udm_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${isNaN(Number(entity.state)) ? 'internet?' : Math.round(Number(entity.state)) + ' ms'}"
+            # Raspberry Pi (reverse proxy): röd när porten på Dream Machine saknar länk
+            - entity: sensor.dream_machine_special_edition_raspberry_pi_reverse_proxy_link_speed
+              element: raspberry_pi
+              tap_action:
+                action: more-info
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${Number(entity.state) > 0 ? 'device' : 'device device-down'}"
+            - entity: sensor.dream_machine_special_edition_raspberry_pi_reverse_proxy_link_speed
+              element: raspberry_pi_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${Number(entity.state) > 0 ? entity.state + ' Mbit/s' : 'ingen länk'}"
+
+            # Vattenmätaren i pannrummet: röd vid läcka/rörbrott, orange vid högt uttag
+            - entities:
+                - binary_sensor.mainwater_status_leak
+                - binary_sensor.mainwater_status_burst
+                - binary_sensor.high_water_usage
+              element: vattenmatare
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${hass.states['binary_sensor.mainwater_status_leak'].state === 'on' || hass.states['binary_sensor.mainwater_status_burst'].state === 'on' ? 'device water-alarm' : hass.states['binary_sensor.high_water_usage'].state === 'on' ? 'device water-high' : 'device'}"
+            - entity: sensor.water_usage_today_liters
+              element: vattenmatare
+              tap_action:
+                action: more-info
+            - entity: sensor.water_usage_today_liters
+              element: vattenmatare_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${Math.round(Number(entity.state))} L idag"
+
+            # Switchen USW Lite 8 PoE i pingisrummet: röd om den inte är ansluten, antal klienter under
+            - entity: sensor.usw_lite_8_poe_state_2
+              element: usw_lite_8_poe_pingis
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'connected' ? 'device' : 'device device-down'}"
+            - entity: sensor.usw_lite_8_poe_clients
+              element: usw_lite_8_poe_pingis
+              tap_action:
+                action: more-info
+            - entity: sensor.usw_lite_8_poe_clients
+              element: usw_lite_8_poe_pingis_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${entity.state} klienter"
+
+            # Switchen US 8 60W i Tovas rum
+            - entity: sensor.us_8_60w_state
+              element: us_8_60w
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'connected' ? 'device' : 'device device-down'}"
+            - entity: sensor.us_8_60w_clients
+              element: us_8_60w
+              tap_action:
+                action: more-info
+            - entity: sensor.us_8_60w_clients
+              element: us_8_60w_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${entity.state} klienter"
+
+            - entity: sensor.ngenic_sensor_kallarrum_temperature
+              element: familjerum_temp
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${Number(entity.state).toFixed(1)} °C"
