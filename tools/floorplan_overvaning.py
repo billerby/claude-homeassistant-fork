@@ -23,6 +23,16 @@ ROOMS = [
 ]
 TEXT_SLOTS = {"vardagsrum"}
 W, H = 1660, 1290
+def wifi_marker(mid, cx, cy):
+    """Ceiling-mounted access point: wifi glyph in a circle."""
+    return (f'<g id="{mid}" class="ap">'
+            f'<circle cx="{cx}" cy="{cy}" r="24"/>'
+            f'<path d="M{cx - 13},{cy - 3} a18,18 0 0 1 26,0 M{cx - 8},{cy + 2} a11,11 0 0 1 16,0"/>'
+            f'<circle class="dot" cx="{cx}" cy="{cy + 8}" r="3"/>'
+            '</g>'
+            f'<text id="{mid}_clients" class="value small-value" x="{cx}" y="{cy + 40}"></text>')
+
+
 out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">',
        '<style>',
        '.room{fill:#f4f1ea;stroke:#3a3a3a;stroke-width:8}',
@@ -35,6 +45,9 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.appliance path{fill:#3a3a3a}',
        '.appliance path.handle{fill:none;stroke:#3a3a3a;stroke-width:3}',
        '.small-value{font-size:20px}',
+       '.ap circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}',
+       '.ap circle.dot{fill:#3a3a3a;stroke:none}',
+       '.ap path{fill:none;stroke:#3a3a3a;stroke-width:3;stroke-linecap:round}',
        '.value{font:500 26px sans-serif;fill:#5a5a5a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '</style>']
 for rid, label, x0, y0, x1, y1, kind in ROOMS:
@@ -64,5 +77,6 @@ out.append(f'<g id="kaffemaskin" class="appliance">'
            f'<path class="handle" d="M{KX + 6},{KY - 4} a5,5 0 0 1 0,9"/>'
            '</g>')
 out.append(f'<text id="kaffemaskin_power" class="value small-value" x="{KX}" y="{KY + 42}"></text>')
+out.append(wifi_marker("ap_u6_lr", 898 - OX, 330 - OY))
 out.append('</svg>')
 open(sys.argv[1], "w").write("\n".join(out) + "\n")

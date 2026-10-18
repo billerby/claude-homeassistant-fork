@@ -40,3 +40,11 @@
 .appliance.appliance-heating circle {
   fill: #f6b26b;
 }
+
+.ap {
+  cursor: pointer;
+}
+
+.ap.ap-offline circle:not(.dot) {
+  fill: #f4c7c3;
+}

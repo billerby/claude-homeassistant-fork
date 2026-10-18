@@ -32,6 +32,16 @@ def centre(rid, pts):
     return (min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2
 
 
+def wifi_marker(mid, cx, cy):
+    """Ceiling-mounted access point: wifi glyph in a circle."""
+    return (f'<g id="{mid}" class="ap">'
+            f'<circle cx="{cx}" cy="{cy}" r="24"/>'
+            f'<path d="M{cx - 13},{cy - 3} a18,18 0 0 1 26,0 M{cx - 8},{cy + 2} a11,11 0 0 1 16,0"/>'
+            f'<circle class="dot" cx="{cx}" cy="{cy + 8}" r="3"/>'
+            '</g>'
+            f'<text id="{mid}_clients" class="value small-value" x="{cx}" y="{cy + 40}"></text>')
+
+
 out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">',
        '<style>',
        '.room{fill:#f4f1ea;stroke:#3a3a3a;stroke-width:6}',
@@ -40,6 +50,10 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.outdoor-label{font:italic 22px sans-serif;fill:#6b7a63}',
        '.small{font-size:17px}',
        '.motion{fill:none;stroke:none;pointer-events:none}',
+       '.ap circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}',
+       '.ap circle.dot{fill:#3a3a3a;stroke:none}',
+       '.ap path{fill:none;stroke:#3a3a3a;stroke-width:3;stroke-linecap:round}',
+       '.small-value{font-size:20px}',
        '.value{font:500 22px sans-serif;fill:#5a5a5a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '</style>']
 for rid, label, pts, kind in ROOMS:
@@ -62,5 +76,6 @@ for rid, label, pts, kind in ROOMS:
     # placeholder that ha-floorplan fills with live values via floorplan.text_set
     if kind == "room":
         out.append(f'<text id="{rid}_temp" class="value" x="{x - OX:.0f}" y="{y - OY + 34:.0f}"></text>')
+out.append(wifi_marker("ap_u6_lite", 815 - OX, 680 - OY))
 out.append('</svg>')
 open(sys.argv[1], "w").write("\n".join(out) + "\n")
