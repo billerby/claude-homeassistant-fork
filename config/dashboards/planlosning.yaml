@@ -7,8 +7,8 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg
-          stylesheet: /local/floorplan/overvaning.css
+          image: /local/floorplan/overvaning.svg?v=2
+          stylesheet: /local/floorplan/overvaning.css?v=2
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla
             # klasser, så "room" måste vara med i båda fallen.
@@ -32,6 +32,16 @@ views:
                 action: more-info
               state_action: *media_room
 
+            - entity: switch.shellyplug_s_80646f83db50
+              element: pizzerian
+              tap_action:
+                action: more-info
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'on' ? 'outdoor light-on' : 'outdoor'}"
+
             - entity: sensor.ngenic_sensor_vardagsrummet_temperature
               element: vardagsrum_temp
               state_action:
@@ -39,3 +49,71 @@ views:
                 service: floorplan.text_set
                 service_data:
                   text: "${Number(entity.state).toFixed(1)} °C"
+
+  - title: Källare
+    path: kallare
+    icon: mdi:stairs-down
+    panel: true
+    cards:
+      - type: custom:floorplan-card
+        full_height: true
+        config:
+          image: /local/floorplan/kallare.svg?v=2
+          stylesheet: /local/floorplan/kallare.css?v=2
+          rules:
+            # Rummet blir gult när någon av dess lampor är tänd. class_set
+            # ersätter alla klasser, så "room" måste vara med i båda fallen.
+            # ha-floorplans uttryckstolk klarar inte ?. eller pilfunktioner.
+            - entities:
+                - light.badrum_dimmer
+                - switch.bastu_och_tvattstall_channel_2
+              element: badrum_kallare
+              tap_action:
+                action: more-info
+                entity_id: light.badrum_dimmer
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${hass.states['light.badrum_dimmer'].state === 'on' || hass.states['switch.bastu_och_tvattstall_channel_2'].state === 'on' ? 'room light-on' : 'room'}"
+            - entity: switch.bastu_och_tvattstall_channel_1
+              element: bastun
+              tap_action:
+                action: more-info
+              state_action: &light_room
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'on' ? 'room light-on' : 'room'}"
+            - entity: light.tvattstugan_dimmer
+              element: tvattstuga
+              tap_action:
+                action: more-info
+              state_action: *light_room
+            - entities:
+                - light.brasrum_liten
+                - light.shellydimmer2_84cca8acddf4
+              element: familjerum
+              tap_action:
+                action: more-info
+                entity_id: light.shellydimmer2_84cca8acddf4
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${hass.states['light.brasrum_liten'].state === 'on' || hass.states['light.shellydimmer2_84cca8acddf4'].state === 'on' ? 'room light-on' : 'room'}"
+
+            # Rörelse ritas som en röd streckad ram ovanpå rummet
+            - entity: binary_sensor.lumi_lumi_sensor_motion_aq2_iaszone_2
+              element: badrum_kallare_motion
+              state_action: &motion
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'on' ? 'motion motion-on' : 'motion'}"
+            - entity: binary_sensor.lumi_lumi_sensor_motion_aq2_occupancy_3
+              element: tvattstuga_motion
+              state_action: *motion
+            - entity: binary_sensor.lumi_lumi_sensor_motion_aq2_iaszone
+              element: familjerum_motion
+              state_action: *motion

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 960" width="1240" height="960">
+<style>
+.room{fill:#f4f1ea;stroke:#3a3a3a;stroke-width:6}
+.outdoor{fill:#e6efe1;stroke:#7a8a72;stroke-width:3;stroke-dasharray:12 8}
+.label{font:600 24px sans-serif;fill:#3a3a3a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.outdoor-label{font:italic 22px sans-serif;fill:#6b7a63}
+.small{font-size:17px}
+.motion{fill:none;stroke:none;pointer-events:none}
+.value{font:500 22px sans-serif;fill:#5a5a5a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+</style>
+<polygon id="pingisrummet" class="room" points="370,10 740,10 740,335 1035,335 1035,545 470,545 470,340 370,340"/>
+<polygon id="pentry" class="room" points="370,340 470,340 470,412 370,412"/>
+<polygon id="toalett_pingisrum" class="room" points="370,412 470,412 470,545 370,545"/>
+<polygon id="trappa" class="outdoor" points="1035,340 1215,340 1215,545 1035,545"/>
+<polygon id="bastun" class="room" points="20,545 177,545 177,677 20,677"/>
+<polygon id="badrum_kallare" class="room" points="177,545 415,545 415,677 177,677"/>
+<polygon id="matkallare" class="room" points="415,545 570,545 570,677 415,677"/>
+<polygon id="korridor" class="room" points="415,677 570,677 570,752 415,752"/>
+<polygon id="pannrum" class="room" points="20,677 227,677 227,945 20,945"/>
+<polygon id="tvattstuga" class="room" points="227,677 415,677 415,945 227,945"/>
+<polygon id="elrum" class="room" points="415,752 570,752 570,945 415,945"/>
+<polygon id="familjerum" class="room" points="570,545 940,545 940,945 570,945"/>
+<polygon id="tovas_rum" class="room" points="940,545 1165,545 1165,945 940,945"/>
+<polygon id="pingisrummet_motion" class="motion" points="370,10 740,10 740,335 1035,335 1035,545 470,545 470,340 370,340"/>
+<polygon id="pentry_motion" class="motion" points="370,340 470,340 470,412 370,412"/>
+<polygon id="toalett_pingisrum_motion" class="motion" points="370,412 470,412 470,545 370,545"/>
+<polygon id="bastun_motion" class="motion" points="20,545 177,545 177,677 20,677"/>
+<polygon id="badrum_kallare_motion" class="motion" points="177,545 415,545 415,677 177,677"/>
+<polygon id="matkallare_motion" class="motion" points="415,545 570,545 570,677 415,677"/>
+<polygon id="korridor_motion" class="motion" points="415,677 570,677 570,752 415,752"/>
+<polygon id="pannrum_motion" class="motion" points="20,677 227,677 227,945 20,945"/>
+<polygon id="tvattstuga_motion" class="motion" points="227,677 415,677 415,945 227,945"/>
+<polygon id="elrum_motion" class="motion" points="415,752 570,752 570,945 415,945"/>
+<polygon id="familjerum_motion" class="motion" points="570,545 940,545 940,945 570,945"/>
+<polygon id="tovas_rum_motion" class="motion" points="940,545 1165,545 1165,945 940,945"/>
+<text id="pingisrummet_label" class="label" x="555" y="190">Pingis / bio</text>
+<text id="pingisrummet_temp" class="value" x="555" y="224"></text>
+<text id="pentry_label" class="label small" x="420" y="376">Pentry</text>
+<text id="pentry_temp" class="value" x="420" y="410"></text>
+<text id="toalett_pingisrum_label" class="label small" x="420" y="478">WC</text>
+<text id="toalett_pingisrum_temp" class="value" x="420" y="512"></text>
+<text id="trappa_label" class="label outdoor-label" x="1125" y="442">Trappa</text>
+<text id="bastun_label" class="label" x="98" y="611">Bastu</text>
+<text id="bastun_temp" class="value" x="98" y="645"></text>
+<text id="badrum_kallare_label" class="label" x="296" y="611">Badrum</text>
+<text id="badrum_kallare_temp" class="value" x="296" y="645"></text>
+<text id="matkallare_label" class="label" x="492" y="611">Matkällare</text>
+<text id="matkallare_temp" class="value" x="492" y="645"></text>
+<text id="pannrum_label" class="label" x="124" y="811">Pannrum</text>
+<text id="pannrum_temp" class="value" x="124" y="845"></text>
+<text id="tvattstuga_label" class="label" x="321" y="811">Tvättstuga</text>
+<text id="tvattstuga_temp" class="value" x="321" y="845"></text>
+<text id="elrum_label" class="label" x="492" y="848">Elrum</text>
+<text id="elrum_temp" class="value" x="492" y="882"></text>
+<text id="familjerum_label" class="label" x="755" y="745">Brasrum</text>
+<text id="familjerum_temp" class="value" x="755" y="779"></text>
+<text id="tovas_rum_label" class="label" x="1052" y="745">Tovas rum</text>
+<text id="tovas_rum_temp" class="value" x="1052" y="779"></text>
+</svg>

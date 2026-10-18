@@ -7,3 +7,12 @@
 .room.media-on {
   fill: #cfe3f7;
 }
+
+.outdoor {
+  transition: fill 0.4s ease;
+  cursor: pointer;
+}
+
+.outdoor.light-on {
+  fill: #fbe7a6;
+}

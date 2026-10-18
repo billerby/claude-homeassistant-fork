@@ -1,0 +1,15 @@
+/* ha-floorplan styles for kallare.svg; classes are set by the rules in dashboards/planlosning.yaml */
+.room {
+  transition: fill 0.4s ease;
+  cursor: pointer;
+}
+
+.room.light-on {
+  fill: #fbe7a6;
+}
+
+.motion.motion-on {
+  stroke: #e0533d;
+  stroke-width: 8;
+  stroke-dasharray: 18 10;
+}

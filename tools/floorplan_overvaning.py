@@ -8,7 +8,7 @@ OX, OY = 100, 60  # offset so the plan starts near 0,0
 # id, label, x0, y0, x1, y1, kind
 ROOMS = [
     ("vardagsrum", "Vardagsrum", 652, 80, 1145, 742, "room"),
-    ("altan", "Altan", 1145, 80, 1480, 742, "outdoor"),
+    ("pizzerian", "Altan / Pizzeria", 1145, 80, 1480, 742, "outdoor"),
     ("entre", "Entré", 440, 560, 652, 742, "room"),
     ("trappa", "Trappa", 285, 555, 440, 742, "outdoor"),
     ("wc", "WC", 175, 745, 290, 930, "room"),
