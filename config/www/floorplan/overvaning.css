@@ -5,7 +5,7 @@
 }
 
 .room.media-on {
-  fill: #cfe3f7;
+  fill: #2f5d8f;
 }
 
 .outdoor {
@@ -14,7 +14,7 @@
 }
 
 .outdoor.light-on {
-  fill: #fbe7a6;
+  fill: #7a6128;
 }
 
 .camera {
@@ -34,11 +34,11 @@
 }
 
 .appliance.appliance-on circle {
-  fill: #c8e6c9;
+  fill: #2f9e8a;
 }
 
 .appliance.appliance-heating circle {
-  fill: #f6b26b;
+  fill: #c98a3a;
 }
 
 .ap {
@@ -46,7 +46,7 @@
 }
 
 .ap.ap-offline circle:not(.dot) {
-  fill: #f4c7c3;
+  fill: #7a2e2a;
 }
 
 .thermometer {
@@ -58,5 +58,5 @@
 }
 
 .device.device-down circle:not(.dot) {
-  fill: #f4c7c3;
+  fill: #7a2e2a;
 }

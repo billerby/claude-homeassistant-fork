@@ -1,24 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1660 1290" width="1660" height="1290">
 <style>
-.room{fill:#f4f1ea;stroke:#3a3a3a;stroke-width:8}
-.outdoor{fill:#e6efe1;stroke:#7a8a72;stroke-width:4;stroke-dasharray:14 10}
-.label{font:600 30px sans-serif;fill:#3a3a3a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
-.outdoor-label{font:italic 26px sans-serif;fill:#6b7a63}
-.camera circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}
-.camera rect,.camera polygon{fill:#3a3a3a}
-.appliance circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}
-.appliance path{fill:#3a3a3a}
-.appliance path.handle{fill:none;stroke:#3a3a3a;stroke-width:3}
+.room{fill:#1d2b44;stroke:#50627e;stroke-width:8}
+.outdoor{fill:#182a2a;stroke:#4f6f62;stroke-width:4;stroke-dasharray:14 10}
+.label{font:600 30px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.outdoor-label{font:italic 26px sans-serif;fill:#7fa392}
+.camera circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
+.camera rect,.camera polygon{fill:#c9d3df}
+.appliance circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
+.appliance path{fill:#c9d3df}
+.appliance path.handle{fill:none;stroke:#c9d3df;stroke-width:3}
 .small-value{font-size:20px}
-.ap circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}
-.ap circle.dot{fill:#3a3a3a;stroke:none}
-.ap path{fill:none;stroke:#3a3a3a;stroke-width:3;stroke-linecap:round}
-.thermometer circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}
-.thermometer rect,.thermometer circle.bulb{fill:#3a3a3a;stroke:none}
-.device circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}
-.device rect{fill:none;stroke:#3a3a3a;stroke-width:3}
-.device circle.dot{fill:#3a3a3a;stroke:none}
-.value{font:500 26px sans-serif;fill:#5a5a5a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.ap circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
+.ap circle.dot{fill:#c9d3df;stroke:none}
+.ap path{fill:none;stroke:#c9d3df;stroke-width:3;stroke-linecap:round}
+.thermometer circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
+.thermometer rect,.thermometer circle.bulb{fill:#c9d3df;stroke:none}
+.device circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
+.device rect{fill:none;stroke:#c9d3df;stroke-width:3}
+.device circle.dot{fill:#c9d3df;stroke:none}
+.value{font:500 26px sans-serif;fill:#9aa7b8;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 </style>
 <rect id="vardagsrum" class="room" x="552" y="20" width="493" height="662"/>
 <rect id="pizzerian" class="outdoor" x="1045" y="20" width="335" height="662"/>

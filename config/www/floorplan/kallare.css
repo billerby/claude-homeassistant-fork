@@ -5,7 +5,7 @@
 }
 
 .room.light-on {
-  fill: #fbe7a6;
+  fill: #7a6128;
 }
 
 .motion.motion-on {
@@ -19,7 +19,7 @@
 }
 
 .ap.ap-offline circle:not(.dot) {
-  fill: #f4c7c3;
+  fill: #7a2e2a;
 }
 
 .device {
@@ -27,11 +27,11 @@
 }
 
 .device.device-down circle:not(.dot) {
-  fill: #f4c7c3;
+  fill: #7a2e2a;
 }
 
 .device.water-high circle:not(.dot) {
-  fill: #f6b26b;
+  fill: #c98a3a;
 }
 
 .device.water-alarm circle:not(.dot) {
