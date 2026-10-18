@@ -38,6 +38,11 @@ bridge_insecure false
 # Import every teslamate topic, remote -> local (we never publish back).
 topic teslamate/# in 0
 
+# MQTT 5 so the bridge subscribes with retain-as-published: with 3.1.1 live
+# messages arrive without the retain flag, the local copy freezes at the last
+# bridge connect, and every MQTT reload in HA rolls the car back to it.
+bridge_protocol_version mqttv50
+
 cleansession true
 start_type automatic
 try_private false
