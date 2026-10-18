@@ -63,28 +63,50 @@ def switch_glyph(cx, cy):
     return f'<rect x="{cx - 13}" y="{cy - 6}" width="26" height="14" rx="2"/>{ports}'
 
 
+def battery_glyph(cx, cy):
+    return (f'<rect x="{cx - 12}" y="{cy - 7}" width="21" height="14" rx="2"/>'
+            f'<rect class="solid" x="{cx + 9}" y="{cy - 3}" width="3" height="6" rx="1"/>'
+            f'<rect class="solid" x="{cx - 9}" y="{cy - 4}" width="15" height="8" rx="1"/>')
+
+
 def drop_glyph(cx, cy):
     return f'<path class="fill" d="M{cx},{cy - 13} C{cx + 4},{cy - 5} {cx + 10},{cy} {cx + 10},{cy + 4} a10,10 0 0 1 -20,0 C{cx - 10},{cy} {cx - 4},{cy - 5} {cx},{cy - 13} z"/>'
 
 
+def speaker_marker(mid, cx, cy, soundbar=False):
+    """Sonos speaker on a wall: a speaker (or soundbar) glyph in a circle."""
+    if soundbar:
+        glyph = (f'<rect x="{cx - 14}" y="{cy - 5}" width="28" height="10" rx="4"/>'
+                 + "".join(f'<circle class="dot" cx="{cx + dx}" cy="{cy}" r="1.8"/>' for dx in (-7, 0, 7)))
+    else:
+        glyph = (f'<rect x="{cx - 8}" y="{cy - 12}" width="16" height="24" rx="3"/>'
+                 f'<circle class="cone" cx="{cx}" cy="{cy + 3}" r="5"/>'
+                 f'<circle class="dot" cx="{cx}" cy="{cy - 6}" r="1.8"/>')
+    return f'<g id="{mid}" class="speaker"><circle cx="{cx}" cy="{cy}" r="24"/>{glyph}</g>'
+
+
 out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">',
        '<style>',
-       '.room{fill:#f4f1ea;stroke:#3a3a3a;stroke-width:6}',
-       '.outdoor{fill:#e6efe1;stroke:#7a8a72;stroke-width:3;stroke-dasharray:12 8}',
-       '.label{font:600 24px sans-serif;fill:#3a3a3a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
-       '.outdoor-label{font:italic 22px sans-serif;fill:#6b7a63}',
+       '.room{fill:#1d2b44;stroke:#50627e;stroke-width:6}',
+       '.outdoor{fill:#182a2a;stroke:#4f6f62;stroke-width:3;stroke-dasharray:12 8}',
+       '.label{font:600 24px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
+       '.outdoor-label{font:italic 22px sans-serif;fill:#7fa392}',
        '.small{font-size:17px}',
        '.motion{fill:none;stroke:none;pointer-events:none}',
-       '.ap circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}',
-       '.ap circle.dot{fill:#3a3a3a;stroke:none}',
-       '.ap path{fill:none;stroke:#3a3a3a;stroke-width:3;stroke-linecap:round}',
+       '.ap circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
+       '.ap circle.dot{fill:#c9d3df;stroke:none}',
+       '.ap path{fill:none;stroke:#c9d3df;stroke-width:3;stroke-linecap:round}',
        '.small-value{font-size:20px}',
-       '.device circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}',
-       '.device rect{fill:none;stroke:#3a3a3a;stroke-width:3}',
-       '.device circle.dot{fill:#3a3a3a;stroke:none}',
-       '.device .glyph{font:700 26px serif;fill:#3a3a3a;text-anchor:middle;dominant-baseline:middle}',
-       '.device path.fill{fill:#3a7bd5}',
-       '.value{font:500 22px sans-serif;fill:#5a5a5a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
+       '.device circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
+       '.device rect{fill:none;stroke:#c9d3df;stroke-width:3}',
+       '.device circle.dot{fill:#c9d3df;stroke:none}',
+       '.device rect.solid{fill:#c9d3df;stroke:none}',
+       '.device .glyph{font:700 26px serif;fill:#c9d3df;text-anchor:middle;dominant-baseline:middle}',
+       '.device path.fill{fill:#5aa0ff}',
+       '.speaker circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
+       '.speaker rect,.speaker circle.cone{fill:none;stroke:#c9d3df;stroke-width:2.5}',
+       '.speaker circle.dot{fill:#c9d3df;stroke:none}',
+       '.value{font:500 22px sans-serif;fill:#9aa7b8;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '</style>']
 for rid, label, pts, kind in ROOMS:
     d = " ".join(f"{x - OX},{y - OY}" for x, y in pts)
@@ -116,5 +138,10 @@ out.append(device_marker("vattenmatare", 140 - OX, 712 - OY, drop_glyph(140 - OX
 out.append(device_marker("usw_lite_8_poe_pingis", 859 - OX, 372 - OY, switch_glyph(859 - OX, 372 - OY)))
 # US 8 60W in Tova's room, against the wall towards the stairs
 out.append(device_marker("us_8_60w", 1170 - OX, 584 - OY, switch_glyph(1170 - OX, 584 - OY)))
+# home battery on the electrical room wall towards Brasrum
+out.append(device_marker("hembatteri", 600 - OX, 790 - OY, battery_glyph(600 - OX, 790 - OY)))
+# Sonos: Brasrum on the outer wall, laundry room on the wall to the boiler room
+out.append(speaker_marker("sonos_brasrum", 815 - OX, 905 - OY))
+out.append(speaker_marker("sonos_tvattstuga", 322 - OX, 718 - OY))
 out.append('</svg>')
 open(sys.argv[1], "w").write("\n".join(out) + "\n")
