@@ -7,8 +7,8 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg?v=3
-          stylesheet: /local/floorplan/overvaning.css?v=3
+          image: /local/floorplan/overvaning.svg?v=4
+          stylesheet: /local/floorplan/overvaning.css?v=4
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla
             # klasser, så "room" måste vara med i båda fallen.
@@ -53,6 +53,30 @@ views:
                 service: floorplan.class_set
                 service_data:
                   class: "${entity.state === 'on' ? 'camera camera-motion' : 'camera'}"
+
+            # Kaffemaskinen (Silvia) på bänken mot pianorummet: grå = av,
+            # grön = på, orange = värmer (elementet drar över 100 W)
+            - entities:
+                - switch.shellyplugg_till_lampan
+                - sensor.shellyplugg_till_lampan_power
+              element: kaffemaskin
+              tap_action:
+                action: more-info
+                entity_id: switch.shellyplugg_till_lampan
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${hass.states['switch.shellyplugg_till_lampan'].state !== 'on' ? 'appliance' : Number(hass.states['sensor.shellyplugg_till_lampan_power'].state) > 100 ? 'appliance appliance-heating' : 'appliance appliance-on'}"
+            - entities:
+                - switch.shellyplugg_till_lampan
+                - sensor.shellyplugg_till_lampan_power
+              element: kaffemaskin_power
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${hass.states['switch.shellyplugg_till_lampan'].state !== 'on' ? 'Av' : Math.round(Number(hass.states['sensor.shellyplugg_till_lampan_power'].state)) + ' W'}"
 
             - entity: sensor.ngenic_sensor_vardagsrummet_temperature
               element: vardagsrum_temp

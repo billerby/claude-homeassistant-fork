@@ -24,3 +24,19 @@
 .camera.camera-motion circle {
   fill: #e0533d;
 }
+
+.appliance {
+  cursor: pointer;
+}
+
+.appliance circle {
+  transition: fill 0.4s ease;
+}
+
+.appliance.appliance-on circle {
+  fill: #c8e6c9;
+}
+
+.appliance.appliance-heating circle {
+  fill: #f6b26b;
+}
