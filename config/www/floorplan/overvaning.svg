@@ -44,10 +44,10 @@
 <text id="henriks_rum_label" class="label" x="1161" y="1070">Henriks rum</text>
 <text id="master_bedroom_label" class="label" x="1469" y="1070">Master bedroom</text>
 <text id="vardagsrum_temp" class="value" x="798" y="393"></text>
-<g id="camera_c120" class="camera"><circle cx="518" cy="440" r="24"/><rect x="506" y="432" width="17" height="16" rx="2"/><polygon points="523,436 531,431 531,449 523,444"/></g>
+<g id="camera_c120" class="camera"><circle cx="518" cy="150" r="24"/><rect x="506" y="142" width="17" height="16" rx="2"/><polygon points="523,146 531,141 531,159 523,154"/></g>
 <g id="kaffemaskin" class="appliance"><circle cx="468" cy="1050" r="24"/><path d="M457,1043 h17 v9 a8,8 0 0 1 -8,8 h-1 a8,8 0 0 1 -8,-8 z"/><path class="handle" d="M474,1046 a5,5 0 0 1 0,9"/></g>
 <text id="kaffemaskin_power" class="value small-value" x="468" y="1092"></text>
 <g id="ap_u6_lr" class="ap"><circle cx="798" cy="270" r="24"/><path d="M785,267 a18,18 0 0 1 26,0 M790,272 a11,11 0 0 1 16,0"/><circle class="dot" cx="798" cy="278" r="3"/></g><text id="ap_u6_lr_clients" class="value small-value" x="798" y="310"></text>
-<g id="utetemp" class="thermometer"><circle cx="420" cy="410" r="24"/><rect x="417" y="396" width="6" height="18" rx="3"/><circle class="bulb" cx="420" cy="418" r="6"/></g>
-<text id="utetemp_value" class="value" x="420" y="454"></text>
+<g id="utetemp" class="thermometer"><circle cx="210" cy="200" r="24"/><rect x="207" y="186" width="6" height="18" rx="3"/><circle class="bulb" cx="210" cy="208" r="6"/></g>
+<text id="utetemp_value" class="value" x="210" y="244"></text>
 </svg>

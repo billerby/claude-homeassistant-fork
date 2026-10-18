@@ -63,7 +63,7 @@ for rid, label, x0, y0, x1, y1, kind in ROOMS:
     if rid in TEXT_SLOTS:
         out.append(f'<text id="{rid}_temp" class="value" x="{(x0+x1)/2-OX:.0f}" y="{(y0+y1)/2-OY+42:.0f}"></text>')
 # camera markers outside the walls: id, x, y (drawing coordinates)
-CAMERAS = [("camera_c120", 618, 500)]  # C120 on the outside of the living-room wall by the entrance, aimed at the ground
+CAMERAS = [("camera_c120", 618, 210)]  # C120 on the outside of the living-room wall on the entrance side, aimed at the ground
 for cid, cx, cy in CAMERAS:
     x, y = cx - OX, cy - OY
     out.append(f'<g id="{cid}" class="camera">'
@@ -80,8 +80,8 @@ out.append(f'<g id="kaffemaskin" class="appliance">'
            '</g>')
 out.append(f'<text id="kaffemaskin_power" class="value small-value" x="{KX}" y="{KY + 42}"></text>')
 out.append(wifi_marker("ap_u6_lr", 898 - OX, 330 - OY))
-# outdoor temperature (Ngenic controller) outside the house, above the entrance
-TX, TY = 520 - OX, 470 - OY
+# outdoor temperature (Ngenic controller) outside the house, left of the entrance
+TX, TY = 310 - OX, 260 - OY
 out.append(f'<g id="utetemp" class="thermometer">'
            f'<circle cx="{TX}" cy="{TY}" r="24"/>'
            f'<rect x="{TX - 3}" y="{TY - 14}" width="6" height="18" rx="3"/>'

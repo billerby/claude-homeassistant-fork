@@ -7,7 +7,7 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg?v=6
+          image: /local/floorplan/overvaning.svg?v=7
           stylesheet: /local/floorplan/overvaning.css?v=6
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla
@@ -105,7 +105,7 @@ views:
                 service_data:
                   text: "${Number(entity.state).toFixed(1)} °C"
 
-            # Utomhustemperaturen från Ngenic, utanför huset ovanför entrén
+            # Utomhustemperaturen från Ngenic, utanför huset till vänster om entrén
             - entity: sensor.ngenic_controller_temperature
               element: utetemp
               tap_action:
