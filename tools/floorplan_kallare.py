@@ -114,5 +114,7 @@ out.append(device_marker("raspberry_pi", 655 - OX, 482 - OY, pi_glyph(655 - OX, 
 out.append(device_marker("vattenmatare", 140 - OX, 712 - OY, drop_glyph(140 - OX, 712 - OY)))
 # USW Lite 8 PoE in the ping-pong room, against the wall of the inner corner
 out.append(device_marker("usw_lite_8_poe_pingis", 859 - OX, 372 - OY, switch_glyph(859 - OX, 372 - OY)))
+# US 8 60W in Tova's room, against the wall towards the stairs
+out.append(device_marker("us_8_60w", 1170 - OX, 584 - OY, switch_glyph(1170 - OX, 584 - OY)))
 out.append('</svg>')
 open(sys.argv[1], "w").write("\n".join(out) + "\n")

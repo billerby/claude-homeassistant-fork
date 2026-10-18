@@ -151,7 +151,7 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/kallare.svg?v=7
+          image: /local/floorplan/kallare.svg?v=8
           stylesheet: /local/floorplan/kallare.css?v=5
           rules:
             # Rummet blir gult när någon av dess lampor är tänd. class_set
@@ -307,6 +307,26 @@ views:
                 action: more-info
             - entity: sensor.usw_lite_8_poe_clients
               element: usw_lite_8_poe_pingis_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${entity.state} klienter"
+
+            # Switchen US 8 60W i Tovas rum
+            - entity: sensor.us_8_60w_state
+              element: us_8_60w
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'connected' ? 'device' : 'device device-down'}"
+            - entity: sensor.us_8_60w_clients
+              element: us_8_60w
+              tap_action:
+                action: more-info
+            - entity: sensor.us_8_60w_clients
+              element: us_8_60w_value
               state_action:
                 action: call-service
                 service: floorplan.text_set
