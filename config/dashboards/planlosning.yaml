@@ -42,17 +42,20 @@ views:
                 service_data:
                   class: "${entity.state === 'on' ? 'outdoor light-on' : 'outdoor'}"
 
-            # C120 utanför vardagsrummet vid entrén, riktad mot marken (råttor)
+            # C120 utanför vardagsrummet vid entrén, riktad mot marken (råttor).
+            # Röd vid rörelse; ett klick öppnar livebilden. ha-floorplan öppnar
+            # alltid regelns egen entitet, så klicket ligger i en egen regel.
             - entity: binary_sensor.parkering_c120_cell_motion_detection
               element: camera_c120
-              tap_action:
-                action: more-info
-                entity_id: camera.c120_mainstream
               state_action:
                 action: call-service
                 service: floorplan.class_set
                 service_data:
                   class: "${entity.state === 'on' ? 'camera camera-motion' : 'camera'}"
+            - entity: camera.c120_mainstream
+              element: camera_c120
+              tap_action:
+                action: more-info
 
             # Kaffemaskinen (Silvia) på bänken mot pianorummet: grå = av,
             # grön = på, orange = värmer (elementet drar över 100 W)
@@ -60,14 +63,15 @@ views:
                 - switch.shellyplugg_till_lampan
                 - sensor.shellyplugg_till_lampan_power
               element: kaffemaskin
-              tap_action:
-                action: more-info
-                entity_id: switch.shellyplugg_till_lampan
               state_action:
                 action: call-service
                 service: floorplan.class_set
                 service_data:
                   class: "${hass.states['switch.shellyplugg_till_lampan'].state !== 'on' ? 'appliance' : Number(hass.states['sensor.shellyplugg_till_lampan_power'].state) > 100 ? 'appliance appliance-heating' : 'appliance appliance-on'}"
+            - entity: switch.shellyplugg_till_lampan
+              element: kaffemaskin
+              tap_action:
+                action: more-info
             - entities:
                 - switch.shellyplugg_till_lampan
                 - sensor.shellyplugg_till_lampan_power
@@ -81,14 +85,15 @@ views:
             # UniFi-accesspunkten i taket: röd om den inte är ansluten, antal klienter under
             - entity: sensor.u6_lr_state
               element: ap_u6_lr
-              tap_action:
-                action: more-info
-                entity_id: sensor.u6_lr_clients
               state_action:
                 action: call-service
                 service: floorplan.class_set
                 service_data:
                   class: "${entity.state === 'connected' ? 'ap' : 'ap ap-offline'}"
+            - entity: sensor.u6_lr_clients
+              element: ap_u6_lr
+              tap_action:
+                action: more-info
             - entity: sensor.u6_lr_clients
               element: ap_u6_lr_clients
               state_action:
@@ -136,14 +141,15 @@ views:
                 - light.badrum_dimmer
                 - switch.bastu_och_tvattstall_channel_2
               element: badrum_kallare
-              tap_action:
-                action: more-info
-                entity_id: light.badrum_dimmer
               state_action:
                 action: call-service
                 service: floorplan.class_set
                 service_data:
                   class: "${hass.states['light.badrum_dimmer'].state === 'on' || hass.states['switch.bastu_och_tvattstall_channel_2'].state === 'on' ? 'room light-on' : 'room'}"
+            - entity: light.badrum_dimmer
+              element: badrum_kallare
+              tap_action:
+                action: more-info
             - entity: switch.bastu_och_tvattstall_channel_1
               element: bastun
               tap_action:
@@ -162,14 +168,15 @@ views:
                 - light.brasrum_liten
                 - light.shellydimmer2_84cca8acddf4
               element: familjerum
-              tap_action:
-                action: more-info
-                entity_id: light.shellydimmer2_84cca8acddf4
               state_action:
                 action: call-service
                 service: floorplan.class_set
                 service_data:
                   class: "${hass.states['light.brasrum_liten'].state === 'on' || hass.states['light.shellydimmer2_84cca8acddf4'].state === 'on' ? 'room light-on' : 'room'}"
+            - entity: light.shellydimmer2_84cca8acddf4
+              element: familjerum
+              tap_action:
+                action: more-info
 
             # Rörelse ritas som en röd streckad ram ovanpå rummet
             - entity: binary_sensor.lumi_lumi_sensor_motion_aq2_iaszone_2
@@ -189,14 +196,15 @@ views:
             # UniFi-accesspunkten i taket: röd om den inte är ansluten, antal klienter under
             - entity: sensor.u6_lite_state
               element: ap_u6_lite
-              tap_action:
-                action: more-info
-                entity_id: sensor.u6_lite_clients
               state_action:
                 action: call-service
                 service: floorplan.class_set
                 service_data:
                   class: "${entity.state === 'connected' ? 'ap' : 'ap ap-offline'}"
+            - entity: sensor.u6_lite_clients
+              element: ap_u6_lite
+              tap_action:
+                action: more-info
             - entity: sensor.u6_lite_clients
               element: ap_u6_lite_clients
               state_action:
@@ -208,14 +216,15 @@ views:
             # Dream Machine: röd om den inte är ansluten, svarstid mot internet under
             - entity: sensor.dream_machine_special_edition_state
               element: udm
-              tap_action:
-                action: more-info
-                entity_id: sensor.dream_machine_special_edition_cloudflare_wan_latency
               state_action:
                 action: call-service
                 service: floorplan.class_set
                 service_data:
                   class: "${entity.state === 'connected' ? 'device' : 'device device-down'}"
+            - entity: sensor.dream_machine_special_edition_cloudflare_wan_latency
+              element: udm
+              tap_action:
+                action: more-info
             - entity: sensor.dream_machine_special_edition_cloudflare_wan_latency
               element: udm_value
               state_action:
@@ -247,14 +256,15 @@ views:
                 - binary_sensor.mainwater_status_burst
                 - binary_sensor.high_water_usage
               element: vattenmatare
-              tap_action:
-                action: more-info
-                entity_id: sensor.water_usage_today_liters
               state_action:
                 action: call-service
                 service: floorplan.class_set
                 service_data:
                   class: "${hass.states['binary_sensor.mainwater_status_leak'].state === 'on' || hass.states['binary_sensor.mainwater_status_burst'].state === 'on' ? 'device water-alarm' : hass.states['binary_sensor.high_water_usage'].state === 'on' ? 'device water-high' : 'device'}"
+            - entity: sensor.water_usage_today_liters
+              element: vattenmatare
+              tap_action:
+                action: more-info
             - entity: sensor.water_usage_today_liters
               element: vattenmatare_value
               state_action:
