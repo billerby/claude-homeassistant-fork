@@ -744,6 +744,8 @@ views:
       # Rear right TPMS sensor is broken and has not reported since August
       broken_tyres:
       - rear_right
+      # Stretched to Model 3 proportions; bump ?v= when the file changes
+      image: /local/tesla-card/model3_top.webp?v=2
     - type: entities
       title: Charging
       state_color: true
