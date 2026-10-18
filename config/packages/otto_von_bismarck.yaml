@@ -227,10 +227,14 @@ mqtt:
       state_topic: "teslamate/cars/1/version"
       icon: mdi:cellphone-information
 
+    # Latest version Tesla offers, equal to Software Version when up to date.
+    # Not the update_version topic: TeslaMate keeps the last pending version
+    # there after it is installed (it still said 2026.32.7 on 2026.38.3.1).
     - name: "Update Version"
       unique_id: ovb_update_version
       device: *ovb_device
-      state_topic: "teslamate/cars/1/update_version"
+      state_topic: "teslamate/cars/1/software_update"
+      value_template: "{{ value_json.latest_version }}"
       icon: mdi:cellphone-arrow-down
 
   binary_sensor:
