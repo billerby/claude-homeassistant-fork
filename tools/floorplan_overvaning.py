@@ -43,6 +43,18 @@ def switch_marker(mid, cx, cy):
             f'<text id="{mid}_clients" class="value small-value" x="{cx}" y="{cy + 40}"></text>')
 
 
+def speaker_marker(mid, cx, cy, soundbar=False):
+    """Sonos speaker on a wall: a speaker (or soundbar) glyph in a circle."""
+    if soundbar:
+        glyph = (f'<rect x="{cx - 14}" y="{cy - 5}" width="28" height="10" rx="4"/>'
+                 + "".join(f'<circle class="dot" cx="{cx + dx}" cy="{cy}" r="1.8"/>' for dx in (-7, 0, 7)))
+    else:
+        glyph = (f'<rect x="{cx - 8}" y="{cy - 12}" width="16" height="24" rx="3"/>'
+                 f'<circle class="cone" cx="{cx}" cy="{cy + 3}" r="5"/>'
+                 f'<circle class="dot" cx="{cx}" cy="{cy - 6}" r="1.8"/>')
+    return f'<g id="{mid}" class="speaker"><circle cx="{cx}" cy="{cy}" r="24"/>{glyph}</g>'
+
+
 out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">',
        '<style>',
        '.room{fill:#1d2b44;stroke:#50627e;stroke-width:8}',
@@ -63,6 +75,9 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.device circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
        '.device rect{fill:none;stroke:#c9d3df;stroke-width:3}',
        '.device circle.dot{fill:#c9d3df;stroke:none}',
+       '.speaker circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
+       '.speaker rect,.speaker circle.cone{fill:none;stroke:#c9d3df;stroke-width:2.5}',
+       '.speaker circle.dot{fill:#c9d3df;stroke:none}',
        '.value{font:500 26px sans-serif;fill:#9aa7b8;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '</style>']
 for rid, label, x0, y0, x1, y1, kind in ROOMS:
@@ -103,5 +118,8 @@ out.append(f'<g id="utetemp" class="thermometer">'
            f'<circle class="bulb" cx="{TX}" cy="{TY + 8}" r="6"/>'
            '</g>')
 out.append(f'<text id="utetemp_value" class="value" x="{TX}" y="{TY + 44}"></text>')
+# Sonos: soundbar under the TV against the hall, kitchen speaker on the wall to the coat room
+out.append(speaker_marker("sonos_vardagsrum", 960 - OX, 705 - OY, soundbar=True))
+out.append(speaker_marker("sonos_kok", 440 - OX, 972 - OY))
 out.append('</svg>')
 open(sys.argv[1], "w").write("\n".join(out) + "\n")

@@ -18,6 +18,9 @@
 .device circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
 .device rect{fill:none;stroke:#c9d3df;stroke-width:3}
 .device circle.dot{fill:#c9d3df;stroke:none}
+.speaker circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
+.speaker rect,.speaker circle.cone{fill:none;stroke:#c9d3df;stroke-width:2.5}
+.speaker circle.dot{fill:#c9d3df;stroke:none}
 .value{font:500 26px sans-serif;fill:#9aa7b8;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 </style>
 <rect id="vardagsrum" class="room" x="552" y="20" width="493" height="662"/>
@@ -54,4 +57,6 @@
 <g id="usw_lite_8_poe" class="device"><circle cx="660" cy="620" r="24"/><rect x="647" y="614" width="26" height="14" rx="2"/><circle class="dot" cx="652" cy="622" r="1.8"/><circle class="dot" cx="657" cy="622" r="1.8"/><circle class="dot" cx="662" cy="622" r="1.8"/><circle class="dot" cx="667" cy="622" r="1.8"/></g><text id="usw_lite_8_poe_clients" class="value small-value" x="660" y="660"></text>
 <g id="utetemp" class="thermometer"><circle cx="210" cy="200" r="24"/><rect x="207" y="186" width="6" height="18" rx="3"/><circle class="bulb" cx="210" cy="208" r="6"/></g>
 <text id="utetemp_value" class="value" x="210" y="244"></text>
+<g id="sonos_vardagsrum" class="speaker"><circle cx="860" cy="645" r="24"/><rect x="846" y="640" width="28" height="10" rx="4"/><circle class="dot" cx="853" cy="645" r="1.8"/><circle class="dot" cx="860" cy="645" r="1.8"/><circle class="dot" cx="867" cy="645" r="1.8"/></g>
+<g id="sonos_kok" class="speaker"><circle cx="340" cy="912" r="24"/><rect x="332" y="900" width="16" height="24" rx="3"/><circle class="cone" cx="340" cy="915" r="5"/><circle class="dot" cx="340" cy="906" r="1.8"/></g>
 </svg>

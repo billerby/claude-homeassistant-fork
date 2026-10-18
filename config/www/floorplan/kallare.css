@@ -45,3 +45,15 @@
 .device.battery-discharging circle:not(.dot) {
   fill: #7a6128;
 }
+
+.speaker {
+  cursor: pointer;
+}
+
+.speaker circle:not(.dot):not(.cone) {
+  transition: fill 0.4s ease;
+}
+
+.speaker.speaker-playing circle:not(.dot):not(.cone) {
+  fill: #2f5d8f;
+}
