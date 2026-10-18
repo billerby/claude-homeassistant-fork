@@ -21,3 +21,19 @@
 .ap.ap-offline circle:not(.dot) {
   fill: #f4c7c3;
 }
+
+.device {
+  cursor: pointer;
+}
+
+.device.device-down circle:not(.dot) {
+  fill: #f4c7c3;
+}
+
+.device.water-high circle:not(.dot) {
+  fill: #f6b26b;
+}
+
+.device.water-alarm circle:not(.dot) {
+  fill: #e0533d;
+}

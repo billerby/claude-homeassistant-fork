@@ -113,8 +113,8 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/kallare.svg?v=3
-          stylesheet: /local/floorplan/kallare.css?v=3
+          image: /local/floorplan/kallare.svg?v=6
+          stylesheet: /local/floorplan/kallare.css?v=5
           rules:
             # Rummet blir gult när någon av dess lampor är tänd. class_set
             # ersätter alla klasser, så "room" måste vara med i båda fallen.
@@ -191,6 +191,64 @@ views:
                 service: floorplan.text_set
                 service_data:
                   text: "${entity.state} klienter"
+
+            # Dream Machine: röd om den inte är ansluten, svarstid mot internet under
+            - entity: sensor.dream_machine_special_edition_state
+              element: udm
+              tap_action:
+                action: more-info
+                entity_id: sensor.dream_machine_special_edition_cloudflare_wan_latency
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'connected' ? 'device' : 'device device-down'}"
+            - entity: sensor.dream_machine_special_edition_cloudflare_wan_latency
+              element: udm_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${isNaN(Number(entity.state)) ? 'internet?' : Math.round(Number(entity.state)) + ' ms'}"
+            # Raspberry Pi (reverse proxy): röd när porten på Dream Machine saknar länk
+            - entity: sensor.dream_machine_special_edition_raspberry_pi_reverse_proxy_link_speed
+              element: raspberry_pi
+              tap_action:
+                action: more-info
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${Number(entity.state) > 0 ? 'device' : 'device device-down'}"
+            - entity: sensor.dream_machine_special_edition_raspberry_pi_reverse_proxy_link_speed
+              element: raspberry_pi_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${Number(entity.state) > 0 ? entity.state + ' Mbit/s' : 'ingen länk'}"
+
+            # Vattenmätaren i pannrummet: röd vid läcka/rörbrott, orange vid högt uttag
+            - entities:
+                - binary_sensor.mainwater_status_leak
+                - binary_sensor.mainwater_status_burst
+                - binary_sensor.high_water_usage
+              element: vattenmatare
+              tap_action:
+                action: more-info
+                entity_id: sensor.water_usage_today_liters
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${hass.states['binary_sensor.mainwater_status_leak'].state === 'on' || hass.states['binary_sensor.mainwater_status_burst'].state === 'on' ? 'device water-alarm' : hass.states['binary_sensor.high_water_usage'].state === 'on' ? 'device water-high' : 'device'}"
+            - entity: sensor.water_usage_today_liters
+              element: vattenmatare_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${Math.round(Number(entity.state))} L idag"
 
             - entity: sensor.ngenic_sensor_kallarrum_temperature
               element: familjerum_temp

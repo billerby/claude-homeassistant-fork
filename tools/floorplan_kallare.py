@@ -42,6 +42,26 @@ def wifi_marker(mid, cx, cy):
             f'<text id="{mid}_clients" class="value small-value" x="{cx}" y="{cy + 40}"></text>')
 
 
+def device_marker(mid, cx, cy, glyph):
+    """Network device on the floor: a glyph in a circle with a value line below."""
+    return (f'<g id="{mid}" class="device">'
+            f'<circle cx="{cx}" cy="{cy}" r="22"/>{glyph}</g>'
+            f'<text id="{mid}_value" class="value small-value" x="{cx}" y="{cy + 38}"></text>')
+
+
+def router_glyph(cx, cy):
+    return (f'<rect x="{cx - 12}" y="{cy - 7}" width="24" height="14" rx="2"/>'
+            f'<circle class="dot" cx="{cx - 6}" cy="{cy}" r="2"/><circle class="dot" cx="{cx}" cy="{cy}" r="2"/>')
+
+
+def pi_glyph(cx, cy):
+    return f'<text class="glyph" x="{cx}" y="{cy + 1}">π</text>'
+
+
+def drop_glyph(cx, cy):
+    return f'<path class="fill" d="M{cx},{cy - 13} C{cx + 4},{cy - 5} {cx + 10},{cy} {cx + 10},{cy + 4} a10,10 0 0 1 -20,0 C{cx - 10},{cy} {cx - 4},{cy - 5} {cx},{cy - 13} z"/>'
+
+
 out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">',
        '<style>',
        '.room{fill:#f4f1ea;stroke:#3a3a3a;stroke-width:6}',
@@ -54,6 +74,11 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.ap circle.dot{fill:#3a3a3a;stroke:none}',
        '.ap path{fill:none;stroke:#3a3a3a;stroke-width:3;stroke-linecap:round}',
        '.small-value{font-size:20px}',
+       '.device circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}',
+       '.device rect{fill:none;stroke:#3a3a3a;stroke-width:3}',
+       '.device circle.dot{fill:#3a3a3a;stroke:none}',
+       '.device .glyph{font:700 26px serif;fill:#3a3a3a;text-anchor:middle;dominant-baseline:middle}',
+       '.device path.fill{fill:#3a7bd5}',
        '.value{font:500 22px sans-serif;fill:#5a5a5a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '</style>']
 for rid, label, pts, kind in ROOMS:
@@ -77,5 +102,10 @@ for rid, label, pts, kind in ROOMS:
     if kind == "room":
         out.append(f'<text id="{rid}_temp" class="value" x="{x - OX:.0f}" y="{y - OY + 34:.0f}"></text>')
 out.append(wifi_marker("ap_u6_lite", 815 - OX, 680 - OY))
+# Dream Machine and the Raspberry Pi stand together in Pingis / bio, outside the WC towards the food cellar
+out.append(device_marker("udm", 560 - OX, 482 - OY, router_glyph(560 - OX, 482 - OY)))
+out.append(device_marker("raspberry_pi", 655 - OX, 482 - OY, pi_glyph(655 - OX, 482 - OY)))
+# water meter in the boiler room, in the corner towards the sauna
+out.append(device_marker("vattenmatare", 140 - OX, 712 - OY, drop_glyph(140 - OX, 712 - OY)))
 out.append('</svg>')
 open(sys.argv[1], "w").write("\n".join(out) + "\n")

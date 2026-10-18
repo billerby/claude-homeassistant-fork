@@ -10,6 +10,11 @@
 .ap circle.dot{fill:#3a3a3a;stroke:none}
 .ap path{fill:none;stroke:#3a3a3a;stroke-width:3;stroke-linecap:round}
 .small-value{font-size:20px}
+.device circle{fill:#ffffff;stroke:#3a3a3a;stroke-width:4}
+.device rect{fill:none;stroke:#3a3a3a;stroke-width:3}
+.device circle.dot{fill:#3a3a3a;stroke:none}
+.device .glyph{font:700 26px serif;fill:#3a3a3a;text-anchor:middle;dominant-baseline:middle}
+.device path.fill{fill:#3a7bd5}
 .value{font:500 22px sans-serif;fill:#5a5a5a;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 </style>
 <polygon id="pingisrummet" class="room" points="370,10 740,10 740,335 1035,335 1035,545 470,545 470,340 370,340"/>
@@ -61,4 +66,7 @@
 <text id="tovas_rum_label" class="label" x="1052" y="745">Tovas rum</text>
 <text id="tovas_rum_temp" class="value" x="1052" y="779"></text>
 <g id="ap_u6_lite" class="ap"><circle cx="755" cy="680" r="24"/><path d="M742,677 a18,18 0 0 1 26,0 M747,682 a11,11 0 0 1 16,0"/><circle class="dot" cx="755" cy="688" r="3"/></g><text id="ap_u6_lite_clients" class="value small-value" x="755" y="720"></text>
+<g id="udm" class="device"><circle cx="500" cy="482" r="22"/><rect x="488" y="475" width="24" height="14" rx="2"/><circle class="dot" cx="494" cy="482" r="2"/><circle class="dot" cx="500" cy="482" r="2"/></g><text id="udm_value" class="value small-value" x="500" y="520"></text>
+<g id="raspberry_pi" class="device"><circle cx="595" cy="482" r="22"/><text class="glyph" x="595" y="483">π</text></g><text id="raspberry_pi_value" class="value small-value" x="595" y="520"></text>
+<g id="vattenmatare" class="device"><circle cx="80" cy="712" r="22"/><path class="fill" d="M80,699 C84,707 90,712 90,716 a10,10 0 0 1 -20,0 C70,712 76,707 80,699 z"/></g><text id="vattenmatare_value" class="value small-value" x="80" y="750"></text>
 </svg>
