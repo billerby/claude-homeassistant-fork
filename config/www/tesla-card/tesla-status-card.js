@@ -61,7 +61,7 @@ class TeslaStatusCard extends HTMLElement {
   setConfig(config) {
     if (!config.prefix) throw new Error("prefix krävs, t.ex. otto_von_bismarck");
     this._config = config;
-    this._key = "";
+    this._key = undefined;
   }
 
   static getStubConfig() {
@@ -97,9 +97,9 @@ class TeslaStatusCard extends HTMLElement {
   set hass(hass) {
     this._hass = hass;
     // Only re-render when one of our entities changed
-    const prefix = `_${this._config.prefix}_`;
+    const prefix = `.${this._config.prefix}_`;
     const key = Object.keys(hass.states)
-      .filter((id) => id.includes(prefix) || id.endsWith(`.${this._config.prefix}`))
+      .filter((id) => id.includes(prefix))
       .map((id) => `${id}=${hass.states[id].state}@${hass.states[id].last_changed}`)
       .join("|");
     if (key === this._key) return;
