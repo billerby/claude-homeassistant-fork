@@ -48,6 +48,8 @@ lovelace:
       type: module
     - url: /hacsfiles/ha-floorplan/floorplan.js
       type: module
+    - url: /local/tesla-card/tesla-status-card.js?v=1
+      type: module
   dashboards:
     lovelace:
       mode: yaml

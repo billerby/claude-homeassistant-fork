@@ -736,46 +736,11 @@ views:
   cards:
   - type: vertical-stack
     cards:
-    - type: horizontal-stack
-      cards:
-      - type: gauge
-        entity: sensor.otto_von_bismarck_battery
-        name: Battery
-        needle: true
-        min: 0
-        max: 100
-        severity:
-          green: 50
-          yellow: 30
-          red: 20
-      - type: gauge
-        entity: sensor.otto_von_bismarck_range
-        name: Range
-        needle: true
-        min: 0
-        max: 500
-        unit: km
-        severity:
-          green: 200
-          yellow: 100
-          red: 50
-      - type: gauge
-        entity: sensor.otto_von_bismarck_charger_power
-        name: Charging Power
-        needle: true
-        min: 0
-        max: 11
-        unit: kW
-    - type: glance
-      state_color: true
-      columns: 3
-      entities:
-      - entity: binary_sensor.otto_von_bismarck_online
-        name: Online
-      - entity: binary_sensor.otto_von_bismarck_charging
-        name: Charging
-      - entity: binary_sensor.otto_von_bismarck_plugged_in
-        name: Plugged In
+    - type: custom:tesla-status-card
+      prefix: otto_von_bismarck
+      name: Otto von Bismarck
+      model: Model 3
+      recommended_pressure: 2.9
     - type: entities
       title: Charging
       state_color: true
@@ -819,66 +784,6 @@ views:
       - entity: sensor.otto_von_bismarck_charger_power
       hours_to_show: 24
       refresh_interval: 60
-    - type: horizontal-stack
-      cards:
-      - type: gauge
-        entity: sensor.otto_von_bismarck_temperature_inside
-        name: Inside
-        unit: °C
-        needle: true
-        min: -10
-        max: 40
-      - type: gauge
-        entity: sensor.otto_von_bismarck_temperature_outside
-        name: Outside
-        unit: °C
-        needle: true
-        min: -20
-        max: 40
-    - type: glance
-      title: Tire Pressures (bar)
-      columns: 4
-      entities:
-      - entity: sensor.otto_von_bismarck_tpms_front_left
-        name: Front L
-      - entity: sensor.otto_von_bismarck_tpms_front_right
-        name: Front R
-      - entity: sensor.otto_von_bismarck_tpms_rear_left
-        name: Rear L
-      - entity: sensor.otto_von_bismarck_tpms_rear_right
-        name: Rear R
-    - type: glance
-      title: Tire Warnings
-      state_color: true
-      columns: 4
-      entities:
-      - entity: binary_sensor.otto_von_bismarck_tpms_soft_warning_front_left
-        name: Front L
-      - entity: binary_sensor.otto_von_bismarck_tpms_soft_warning_front_right
-        name: Front R
-      - entity: binary_sensor.otto_von_bismarck_tpms_soft_warning_rear_left
-        name: Rear L
-      - entity: binary_sensor.otto_von_bismarck_tpms_soft_warning_rear_right
-        name: Rear R
-    - type: entities
-      title: Vehicle
-      state_color: true
-      entities:
-      - entity: sensor.otto_von_bismarck_odometer
-        name: Odometer
-        icon: mdi:counter
-      - entity: sensor.otto_von_bismarck_range
-        name: Estimated Range
-        icon: mdi:map-marker-distance
-      - entity: binary_sensor.otto_von_bismarck_online
-        name: Online
-        secondary_info: last-changed
-      - entity: binary_sensor.otto_von_bismarck_update_available
-        name: Software Update
-        icon: mdi:cellphone-arrow-down
-      - entity: device_tracker.otto_von_bismarck_location_tracker
-        name: Location
-        icon: mdi:crosshairs-gps
     - type: map
       title: Location
       entities:

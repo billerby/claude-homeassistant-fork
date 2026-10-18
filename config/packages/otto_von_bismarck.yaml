@@ -205,6 +205,34 @@ mqtt:
       state_class: measurement
       icon: mdi:car-tire-alert
 
+    # --- Added 2026-10-18: status for the car card on the Bilen view --------
+    # TeslaMate's own state: online / asleep / offline / driving / charging /
+    # updating / suspended. Plain text, like Charging State.
+    - name: "State"
+      unique_id: ovb_state
+      device: *ovb_device
+      state_topic: "teslamate/cars/1/state"
+      icon: mdi:car-info
+
+    # Name of the TeslaMate geofence the car is in; empty when it is in none.
+    - name: "Geofence"
+      unique_id: ovb_geofence
+      device: *ovb_device
+      state_topic: "teslamate/cars/1/geofence"
+      icon: mdi:map-marker-radius
+
+    - name: "Software Version"
+      unique_id: ovb_software_version
+      device: *ovb_device
+      state_topic: "teslamate/cars/1/version"
+      icon: mdi:cellphone-information
+
+    - name: "Update Version"
+      unique_id: ovb_update_version
+      device: *ovb_device
+      state_topic: "teslamate/cars/1/update_version"
+      icon: mdi:cellphone-arrow-down
+
   binary_sensor:
     - name: "Charging"
       unique_id: ovb_charging
@@ -281,6 +309,67 @@ mqtt:
       payload_off: "false"
       device_class: problem
       icon: mdi:car-tire-alert
+
+    # --- Added 2026-10-18: status for the car card on the Bilen view --------
+    # No device_class on Locked: the lock class means on = UNLOCKED, which
+    # reads backwards next to the other flags. Here on = locked.
+    - name: "Locked"
+      unique_id: ovb_locked
+      device: *ovb_device
+      state_topic: "teslamate/cars/1/locked"
+      payload_on: "true"
+      payload_off: "false"
+      icon: mdi:car-key
+
+    - name: "Sentry Mode"
+      unique_id: ovb_sentry_mode
+      device: *ovb_device
+      state_topic: "teslamate/cars/1/sentry_mode"
+      payload_on: "true"
+      payload_off: "false"
+      icon: mdi:cctv
+
+    - name: "Doors Open"
+      unique_id: ovb_doors_open
+      device: *ovb_device
+      state_topic: "teslamate/cars/1/doors_open"
+      payload_on: "true"
+      payload_off: "false"
+      device_class: door
+
+    - name: "Windows Open"
+      unique_id: ovb_windows_open
+      device: *ovb_device
+      state_topic: "teslamate/cars/1/windows_open"
+      payload_on: "true"
+      payload_off: "false"
+      device_class: window
+
+    - name: "Trunk Open"
+      unique_id: ovb_trunk_open
+      device: *ovb_device
+      state_topic: "teslamate/cars/1/trunk_open"
+      payload_on: "true"
+      payload_off: "false"
+      device_class: opening
+      icon: mdi:car-back
+
+    - name: "Frunk Open"
+      unique_id: ovb_frunk_open
+      device: *ovb_device
+      state_topic: "teslamate/cars/1/frunk_open"
+      payload_on: "true"
+      payload_off: "false"
+      device_class: opening
+      icon: mdi:car-select
+
+    - name: "Climate On"
+      unique_id: ovb_climate_on
+      device: *ovb_device
+      state_topic: "teslamate/cars/1/is_climate_on"
+      payload_on: "true"
+      payload_off: "false"
+      icon: mdi:fan
 
   device_tracker:
     - name: "Location Tracker"
