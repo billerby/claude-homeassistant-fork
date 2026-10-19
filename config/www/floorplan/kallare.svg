@@ -34,7 +34,7 @@
 <polygon id="elrum" class="room" points="415,752 570,752 570,945 415,945"/>
 <polygon id="familjerum" class="room" points="570,545 940,545 940,945 570,945"/>
 <polygon id="tovas_rum" class="room" points="940,545 1165,545 1165,945 940,945"/>
-<line class="door" x1="470" y1="341" x2="470" y2="410"/>
+<line class="door" x1="470" y1="344" x2="470" y2="408"/>
 <line class="door" x1="470" y1="435" x2="470" y2="471"/>
 <line class="door" x1="1035" y1="468" x2="1035" y2="510"/>
 <line class="door" x1="787" y1="545" x2="839" y2="545"/>

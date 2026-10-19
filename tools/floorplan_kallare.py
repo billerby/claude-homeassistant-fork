@@ -22,7 +22,7 @@ ROOMS = [
 ]
 # doors as openings in the walls: (x0, y0, x1, y1) along the wall, marked by Erik on a screenshot
 DOORS = [
-    (530, 341, 530, 410),     # pantry
+    (530, 344, 530, 408),     # pantry: open to the ping-pong room, between the walls above and below
     (530, 435, 530, 471),     # WC
     (1095, 468, 1095, 510),   # ping-pong room out to the stairs
     (847, 545, 899, 545),     # ping-pong room to the fireplace room
