@@ -44,7 +44,15 @@ DOORS = [
 ]
 GARAGE_PORT = (-186, -108, -186, 86)  # the garage door, on the short side
 TEXT_SLOTS = {"vardagsrum"}
+LABEL_AT = {"kapprum_hall": (560, 860)}  # moved off the stairs
 W, H = 2008, 1525
+
+def stairs(x0, y0, x1, y1, step=22):
+    """Stairs between the floors: an outline with a line per step across the run (along x)."""
+    lines = "".join(f'<line x1="{x}" y1="{y0 - OY}" x2="{x}" y2="{y1 - OY}"/>' for x in range(x0 - OX + step, x1 - OX, step))
+    return (f'<g id="trappa_inne" class="stairs">'
+            f'<rect x="{x0 - OX}" y="{y0 - OY}" width="{x1 - x0}" height="{y1 - y0}"/>{lines}</g>')
+
 def wifi_marker(mid, cx, cy):
     """Ceiling-mounted access point: wifi glyph in a circle."""
     return (f'<g id="{mid}" class="ap">'
@@ -81,6 +89,9 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '<style>',
        '.room{fill:#1d2b44;stroke:#50627e;stroke-width:8}',
        '.outdoor{fill:#182a2a;stroke:#4f6f62;stroke-width:4;stroke-dasharray:14 10}',
+       '.stairs rect{fill:#24344f;stroke:#7f8ea3;stroke-width:3}',
+       '.stairs line{stroke:#7f8ea3;stroke-width:2}',
+       '.stairs{pointer-events:none}',
        '.door{stroke:#1d2b44;stroke-width:16;pointer-events:none}',
        '.port{stroke:#c9d3df;stroke-width:4;stroke-dasharray:12 8;pointer-events:none}',
        '.label{font:600 30px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
@@ -128,12 +139,15 @@ for aid, label, pts, (lx, ly), kind in AREAS:
     out.append(f'<text id="{aid}_label" class="label outdoor-label" x="{lx - OX}" y="{ly - OY}">{label}</text>')
 for x0, y0, x1, y1 in DOORS:
     out.append(f'<line class="door" x1="{x0 - OX}" y1="{y0 - OY}" x2="{x1 - OX}" y2="{y1 - OY}"/>')
+# the stairs to the basement, read off the construction drawing (upstairs hall, along the living-room wall)
+out.append(stairs(865, 752, 1142, 847))
 x0, y0, x1, y1 = GARAGE_PORT
 out.append(f'<line class="door" x1="{x0 - OX}" y1="{y0 - OY}" x2="{x1 - OX}" y2="{y1 - OY}"/>'
            f'<line class="port" x1="{x0 - OX}" y1="{y0 - OY}" x2="{x1 - OX}" y2="{y1 - OY}"/>')
 for rid, label, x0, y0, x1, y1, kind in ROOMS:
     cls = "label outdoor-label" if kind == "outdoor" else "label"
-    out.append(f'<text id="{rid}_label" class="{cls}" x="{(x0+x1)/2-OX:.0f}" y="{(y0+y1)/2-OY:.0f}">{label}</text>')
+    lx, ly = LABEL_AT.get(rid, ((x0 + x1) / 2, (y0 + y1) / 2))
+    out.append(f'<text id="{rid}_label" class="{cls}" x="{lx-OX:.0f}" y="{ly-OY:.0f}">{label}</text>')
 # placeholders that ha-floorplan fills with live values via floorplan.text_set
 for rid, label, x0, y0, x1, y1, kind in ROOMS:
     if rid in TEXT_SLOTS:

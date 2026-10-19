@@ -2,6 +2,9 @@
 <style>
 .room{fill:#1d2b44;stroke:#50627e;stroke-width:6}
 .outdoor{fill:#182a2a;stroke:#4f6f62;stroke-width:3;stroke-dasharray:12 8}
+.stairs rect{fill:#24344f;stroke:#7f8ea3;stroke-width:3}
+.stairs line{stroke:#7f8ea3;stroke-width:2}
+.stairs{pointer-events:none}
 .door{stroke:#1d2b44;stroke-width:12;pointer-events:none}
 .label{font:600 24px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 .outdoor-label{font:italic 22px sans-serif;fill:#7fa392}
@@ -46,6 +49,7 @@
 <line class="door" x1="491" y1="752" x2="534" y2="752"/>
 <line class="door" x1="227" y1="867" x2="227" y2="908"/>
 <line class="door" x1="940" y1="689" x2="940" y2="726"/>
+<g id="trappa_inne" class="stairs"><rect x="573" y="549" width="138" height="65"/><line x1="595" y1="549" x2="595" y2="614"/><line x1="617" y1="549" x2="617" y2="614"/><line x1="639" y1="549" x2="639" y2="614"/><line x1="661" y1="549" x2="661" y2="614"/><line x1="683" y1="549" x2="683" y2="614"/><line x1="705" y1="549" x2="705" y2="614"/></g>
 <polygon id="pingisrummet_motion" class="motion" points="370,10 740,10 740,335 1035,335 1035,545 470,545 470,340 370,340"/>
 <polygon id="pentry_motion" class="motion" points="370,340 470,340 470,412 370,412"/>
 <polygon id="toalett_pingisrum_motion" class="motion" points="370,412 470,412 470,545 370,545"/>

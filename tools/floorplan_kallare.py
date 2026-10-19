@@ -39,6 +39,13 @@ LABEL_AT = {"pingisrummet": (615, 190), "tvattstuga": (381, 811)}  # label posit
 W, H = 1240, 960
 
 
+
+def stairs(x0, y0, x1, y1, step=22):
+    """Stairs between the floors: an outline with a line per step across the run (along x)."""
+    lines = "".join(f'<line x1="{x}" y1="{y0 - OY}" x2="{x}" y2="{y1 - OY}"/>' for x in range(x0 - OX + step, x1 - OX, step))
+    return (f'<g id="trappa_inne" class="stairs">'
+            f'<rect x="{x0 - OX}" y="{y0 - OY}" width="{x1 - x0}" height="{y1 - y0}"/>{lines}</g>')
+
 def centre(rid, pts):
     if rid in LABEL_AT:
         return LABEL_AT[rid]
@@ -103,6 +110,9 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '<style>',
        '.room{fill:#1d2b44;stroke:#50627e;stroke-width:6}',
        '.outdoor{fill:#182a2a;stroke:#4f6f62;stroke-width:3;stroke-dasharray:12 8}',
+       '.stairs rect{fill:#24344f;stroke:#7f8ea3;stroke-width:3}',
+       '.stairs line{stroke:#7f8ea3;stroke-width:2}',
+       '.stairs{pointer-events:none}',
        '.door{stroke:#1d2b44;stroke-width:12;pointer-events:none}',
        '.label{font:600 24px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '.outdoor-label{font:italic 22px sans-serif;fill:#7fa392}',
@@ -128,6 +138,8 @@ for rid, label, pts, kind in ROOMS:
     out.append(f'<polygon id="{rid}" class="{kind}" points="{d}"/>')
 for x0, y0, x1, y1 in DOORS:
     out.append(f'<line class="door" x1="{x0 - OX}" y1="{y0 - OY}" x2="{x1 - OX}" y2="{y1 - OY}"/>')
+# the stairs to the upper floor, read off the construction drawing (fireplace room, in the corner by the food cellar)
+out.append(stairs(633, 549, 771, 614))
 for rid, label, pts, kind in ROOMS:
     if kind == "room":
         d = " ".join(f"{x - OX},{y - OY}" for x, y in pts)
