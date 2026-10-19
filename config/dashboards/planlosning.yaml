@@ -7,8 +7,8 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg?v=14
-          stylesheet: /local/floorplan/overvaning.css?v=11
+          image: /local/floorplan/overvaning.svg?v=15
+          stylesheet: /local/floorplan/overvaning.css?v=12
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla
             # klasser, så "room" måste vara med i båda fallen.
@@ -164,6 +164,14 @@ views:
                 service: floorplan.class_set
                 service_data:
                   class: "${entity.state === 'on' ? 'bolt' : 'bolt bolt-off'}"
+            # en bil som laddar flyttas (i stilmallen) till platsen vid laddboxen
+            - entity: binary_sensor.otto_von_bismarck_charging
+              element: car_tesla_slot
+              state_action: &car_slot
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'on' ? 'slot slot-charging' : 'slot'}"
             - entity: device_tracker.jean_luc_location
               element: car_jean_luc
               state_action: *car
@@ -177,6 +185,9 @@ views:
             - entity: binary_sensor.jean_luc_charging
               element: car_jean_luc_bolt
               state_action: *car_bolt
+            - entity: binary_sensor.jean_luc_charging
+              element: car_jean_luc_slot
+              state_action: *car_slot
 
             # Easee-laddboxen utanför WC: grön när den laddar, blå med bil inkopplad, röd vid fel
             - entity: sensor.easee_home_91929_status

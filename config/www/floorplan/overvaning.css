@@ -93,3 +93,16 @@
 .car .bolt.bolt-off {
   display: none;
 }
+
+/* a charging car moves to the spot by the charger, centred at (350, 820) in the SVG */
+.slot {
+  transition: transform 1s ease;
+}
+
+#car_tesla_slot.slot-charging {
+  transform: translate(150px, 375px);
+}
+
+#car_jean_luc_slot.slot-charging {
+  transform: translate(150px, 230px);
+}

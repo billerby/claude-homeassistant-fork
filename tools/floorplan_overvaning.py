@@ -24,7 +24,7 @@ ROOMS = [
 ]
 # non-rectangular areas: id, label, outline as (x, y) points, label position, kind
 AREAS = [
-    ("parkering", "Parkering", [(-235, 178), (600, 178), (600, 538), (245, 538), (245, 729), (-235, 729)], (5, 640), "outdoor"),
+    ("parkering", "Parkering", [(-235, 178), (600, 178), (600, 538), (245, 538), (245, 729), (-235, 729)], (420, 480), "outdoor"),
 ]
 TEXT_SLOTS = {"vardagsrum"}
 W, H = 2008, 1525
@@ -142,7 +142,7 @@ out.append(speaker_marker("sonos_kok", 440 - OX, 972 - OY))
 def car_marker(mid, name, cx, cy):
     """Car seen from above in a parking spot, nose to the right; name, charge and a bolt while charging."""
     x0, y0, w, h = cx - 55, cy - 135, 110, 270  # drawn nose up, then turned a quarter clockwise
-    return (f'<g id="{mid}" class="car">'
+    return (f'<g id="{mid}_slot" class="slot"><g id="{mid}" class="car">'
             f'<g transform="rotate(90 {cx} {cy})">'
             f'<rect class="body" x="{x0}" y="{y0}" width="{w}" height="{h}" rx="32"/>'
             f'<path class="glass" d="M{x0 + 12},{y0 + 92} Q{cx},{y0 + 70} {x0 + w - 12},{y0 + 92} L{x0 + w - 20},{y0 + 120} Q{cx},{y0 + 108} {x0 + 20},{y0 + 120} z"/>'
@@ -151,10 +151,11 @@ def car_marker(mid, name, cx, cy):
             f'<text class="car-name" x="{cx - 36}" y="{cy - 24}">{name}</text>'
             f'<text id="{mid}_value" class="car-value" x="{cx - 36}" y="{cy + 2}"></text>'
             f'<path id="{mid}_bolt" class="bolt" d="M{cx - 33},{cy + 16} L{cx - 44},{cy + 32} h8 l-3,12 L{cx - 28},{cy + 27} h-8 z"/>'
-            '</g>')
+            '</g></g>')
 
 
-# the cars on the parking, shown only while they are at home
+# the cars on the parking, shown only while they are at home; a charging car is moved by
+# the stylesheet to the spot by the charger, centred at (90, 640)
 out.append(car_marker("car_tesla", "Otto", -60 - OX, 265 - OY))
 out.append(car_marker("car_jean_luc", "Jean-Luc", -60 - OX, 410 - OY))
 # Easee charger on the outside of the WC wall, towards the parking
