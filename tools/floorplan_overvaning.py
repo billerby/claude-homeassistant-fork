@@ -198,14 +198,15 @@ out.append(speaker_marker("sonos_vardagsrum", 960 - OX, 705 - OY, soundbar=True)
 out.append(speaker_marker("sonos_kok", 440 - OX, 972 - OY))
 
 
-def car_marker(mid, name, cx, cy, turned=True, image=None, style=None):
+def car_marker(mid, name, cx, cy, nose="right", image=None, style=None):
     """Car seen from above: name, charge and a bolt while charging.
 
-    The car is drawn nose up; turned puts the nose to the right. image is a top view with the
-    nose up (the Tesla card's picture); without it the car is drawn.
+    The car is drawn nose up and turned so the nose points right or left. image is a top view with
+    the nose up (the Tesla card's picture); without it the car is drawn.
     """
     x0, y0, w, h = cx - 55, cy - 135, 110, 270
-    tx = cx - 36  # the texts sit over the roof
+    side = 1 if nose == "right" else -1
+    tx = cx - 36 * side  # the texts sit over the roof, towards the rear
     if image:
         iw = h * 357 / 720  # the picture is 357x720 including the mirrors
         body = f'<image href="{image}" x="{cx - iw / 2:.1f}" y="{y0}" width="{iw:.1f}" height="{h}"/>'
@@ -213,7 +214,7 @@ def car_marker(mid, name, cx, cy, turned=True, image=None, style=None):
         # white Renault 5 E-Tech, 3.92 x 1.77 m against the Tesla's 4.72 m: black roof with the red trim
         w, h = 100, 224
         x0, y0 = cx - w // 2, cy - h // 2
-        tx = cx - 20 if turned else cx
+        tx = cx - 20 * side
         body = (f'<rect x="{x0 - 7}" y="{y0 + 72}" width="{w + 14}" height="12" rx="5" class="r5-mirror"/>'
                 f'<rect class="r5-body" x="{x0}" y="{y0}" width="{w}" height="{h}" rx="24"/>'
                 f'<rect class="r5-light" x="{x0 + 8}" y="{y0 + 5}" width="20" height="6" rx="3"/>'
@@ -225,11 +226,8 @@ def car_marker(mid, name, cx, cy, turned=True, image=None, style=None):
         body = (f'<rect class="body" x="{x0}" y="{y0}" width="{w}" height="{h}" rx="32"/>'
                 f'<path class="glass" d="M{x0 + 12},{y0 + 92} Q{cx},{y0 + 70} {x0 + w - 12},{y0 + 92} L{x0 + w - 20},{y0 + 120} Q{cx},{y0 + 108} {x0 + 20},{y0 + 120} z"/>'
                 f'<path class="glass" d="M{x0 + 18},{y0 + 222} Q{cx},{y0 + 214} {x0 + w - 18},{y0 + 222} L{x0 + w - 14},{y0 + 244} Q{cx},{y0 + 252} {x0 + 14},{y0 + 244} z"/>')
-    if turned:
-        body = f'<g transform="rotate(90 {cx} {cy})">{body}</g>'
-        ty = cy - 24
-    else:
-        tx, ty = cx, cy - 6
+    body = f'<g transform="rotate({90 * side} {cx} {cy})">{body}</g>'
+    ty = cy - 24
     return (f'<g id="{mid}" class="car">{body}'
             f'<text class="car-name" x="{tx}" y="{ty}">{name}</text>'
             f'<text id="{mid}_value" class="car-value" x="{tx}" y="{ty + 26}"></text>'
@@ -240,19 +238,21 @@ def car_marker(mid, name, cx, cy, turned=True, image=None, style=None):
 def car_slot(mid, name, rest, charging, **kw):
     """A car in its usual spot (nose to the house), and backed in by the charger while plugged in.
 
+    Backed in means the nose points away from the house, the rear towards the steps.
+
     The stylesheet shows one of the two poses from the slot's class; the charging pose has the ids
     with _c appended.
     """
     return (f'<g id="{mid}_slot" class="slot">'
             f'<g class="pose-rest">{car_marker(mid, name, rest[0] - OX, rest[1] - OY, **kw)}</g>'
-            f'<g class="pose-charging">{car_marker(mid + "_c", name, charging[0] - OX, charging[1] - OY, turned=False, **kw)}</g>'
+            f'<g class="pose-charging">{car_marker(mid + "_c", name, charging[0] - OX, charging[1] - OY, nose="left", **kw)}</g>'
             '</g>')
 
 
 # the cars on the parking, shown only while they are at home; a plugged-in car stands backed in
-# by the charger, its rear towards the WC wall
-out.append(car_slot("car_tesla", "Otto", (-60, 265), (140, 590), image="/local/tesla-card/model3_top.webp?v=2"))
-out.append(car_slot("car_jean_luc", "Jean-Luc", (-60, 410), (140, 613), style="r5"))
+# by the charger, its rear towards the steps
+out.append(car_slot("car_tesla", "Otto", (-60, 265), (100, 640), image="/local/tesla-card/model3_top.webp?v=2"))
+out.append(car_slot("car_jean_luc", "Jean-Luc", (-60, 410), (118, 640), style="r5"))
 # Easee charger on the outside of the WC wall, towards the parking
 EX, EY = 140 - OX, 800 - OY
 out.append(f'<g id="laddbox" class="device">'
