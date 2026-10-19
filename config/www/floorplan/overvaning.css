@@ -72,3 +72,15 @@
 .speaker.speaker-playing circle:not(.dot):not(.cone) {
   fill: #2f5d8f;
 }
+
+.device circle {
+  transition: fill 0.4s ease;
+}
+
+.device.charger-connected circle {
+  fill: #2f5d8f;
+}
+
+.device.charger-charging circle {
+  fill: #2f9e8a;
+}

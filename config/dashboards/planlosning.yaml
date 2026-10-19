@@ -7,8 +7,8 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg?v=11
-          stylesheet: /local/floorplan/overvaning.css?v=9
+          image: /local/floorplan/overvaning.svg?v=12
+          stylesheet: /local/floorplan/overvaning.css?v=10
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla
             # klasser, så "room" måste vara med i båda fallen.
@@ -137,6 +137,24 @@ views:
               tap_action:
                 action: more-info
               state_action: *speaker
+
+            # Easee-laddboxen utanför WC: grön när den laddar, blå med bil inkopplad, röd vid fel
+            - entity: sensor.easee_home_91929_status
+              element: laddbox
+              tap_action:
+                action: more-info
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'charging' ? 'device charger-charging' : entity.state === 'error' || entity.state === 'unavailable' ? 'device device-down' : entity.state === 'disconnected' || entity.state === 'unknown' ? 'device' : 'device charger-connected'}"
+            - entity: sensor.easee_home_91929_status
+              element: laddbox_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${entity.state === 'charging' ? 'Laddar' : entity.state === 'disconnected' ? '' : entity.state === 'awaiting_start' ? 'Väntar' : entity.state === 'ready_to_charge' ? 'Redo' : entity.state === 'completed' ? 'Klar' : entity.state === 'error' ? 'Fel' : entity.state}"
 
             - entity: sensor.ngenic_sensor_vardagsrummet_temperature
               element: vardagsrum_temp

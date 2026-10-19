@@ -4,9 +4,11 @@ Room coordinates were measured on a photo of the construction drawing.
 usage: python tools/floorplan_overvaning.py config/www/floorplan/overvaning.svg
 """
 import sys
-OX, OY = 100, 60  # offset so the plan starts near 0,0
+OX, OY = -260, -180  # offset so the plan (garage included) starts near 0,0
 # id, label, x0, y0, x1, y1, kind
 ROOMS = [
+    # detached garage up to the left, placed from the basement drawing
+    ("garage", "Garage", -186, -165, 394, 159, "building"),
     ("vardagsrum", "Vardagsrum", 652, 80, 1145, 742, "room"),
     ("pizzerian", "Altan / Pizzeria", 1145, 80, 1480, 742, "outdoor"),
     ("entre", "Entré", 440, 560, 652, 742, "room"),
@@ -20,8 +22,12 @@ ROOMS = [
     ("henriks_rum", "Henriks rum", 1112, 935, 1410, 1325, "room"),
     ("master_bedroom", "Master bedroom", 1410, 935, 1728, 1325, "room"),
 ]
+# non-rectangular areas: id, label, outline as (x, y) points, label position, kind
+AREAS = [
+    ("parkering", "Parkering", [(-235, 178), (600, 178), (600, 538), (245, 538), (245, 729), (-235, 729)], (100, 400), "outdoor"),
+]
 TEXT_SLOTS = {"vardagsrum"}
-W, H = 1660, 1290
+W, H = 2008, 1525
 def wifi_marker(mid, cx, cy):
     """Ceiling-mounted access point: wifi glyph in a circle."""
     return (f'<g id="{mid}" class="ap">'
@@ -59,6 +65,7 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.room{fill:#1d2b44;stroke:#50627e;stroke-width:8}',
        '.outdoor{fill:#182a2a;stroke:#4f6f62;stroke-width:4;stroke-dasharray:14 10}',
        '.label{font:600 30px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
+       '.building{fill:#1a2333;stroke:#50627e;stroke-width:8}',
        '.outdoor-label{font:italic 26px sans-serif;fill:#7fa392}',
        '.camera circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
        '.camera rect,.camera polygon{fill:#c9d3df}',
@@ -74,6 +81,7 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.device circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
        '.device rect{fill:none;stroke:#c9d3df;stroke-width:3}',
        '.device circle.dot{fill:#c9d3df;stroke:none}',
+       '.device path.bolt{fill:#c9d3df}',
        '.speaker circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
        '.speaker rect,.speaker circle.cone{fill:none;stroke:#c9d3df;stroke-width:2.5}',
        '.speaker circle.dot{fill:#c9d3df;stroke:none}',
@@ -82,6 +90,10 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
 for rid, label, x0, y0, x1, y1, kind in ROOMS:
     x, y, w, h = x0 - OX, y0 - OY, x1 - x0, y1 - y0
     out.append(f'<rect id="{rid}" class="{kind}" x="{x}" y="{y}" width="{w}" height="{h}"/>')
+for aid, label, pts, (lx, ly), kind in AREAS:
+    d = " ".join(f"{x - OX},{y - OY}" for x, y in pts)
+    out.append(f'<polygon id="{aid}" class="{kind}" points="{d}"/>')
+    out.append(f'<text id="{aid}_label" class="label outdoor-label" x="{lx - OX}" y="{ly - OY}">{label}</text>')
 for rid, label, x0, y0, x1, y1, kind in ROOMS:
     cls = "label outdoor-label" if kind == "outdoor" else "label"
     out.append(f'<text id="{rid}_label" class="{cls}" x="{(x0+x1)/2-OX:.0f}" y="{(y0+y1)/2-OY:.0f}">{label}</text>')
@@ -120,5 +132,12 @@ out.append(f'<text id="utetemp_value" class="value" x="{TX}" y="{TY + 44}"></tex
 # Sonos: soundbar under the TV against the hall, kitchen speaker on the wall to the coat room
 out.append(speaker_marker("sonos_vardagsrum", 960 - OX, 705 - OY, soundbar=True))
 out.append(speaker_marker("sonos_kok", 440 - OX, 972 - OY))
+# Easee charger on the outside of the WC wall, towards the parking
+EX, EY = 140 - OX, 800 - OY
+out.append(f'<g id="laddbox" class="device">'
+           f'<circle cx="{EX}" cy="{EY}" r="24"/>'
+           f'<path class="bolt" d="M{EX + 3},{EY - 14} L{EX - 8},{EY + 2} h8 l-3,12 L{EX + 8},{EY - 3} h-8 z"/>'
+           '</g>')
+out.append(f'<text id="laddbox_value" class="value small-value" x="{EX}" y="{EY - 40}"></text>')
 out.append('</svg>')
 open(sys.argv[1], "w").write("\n".join(out) + "\n")
