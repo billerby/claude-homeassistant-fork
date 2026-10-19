@@ -77,6 +77,10 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.ap circle.dot{fill:#c9d3df;stroke:none}',
        '.ap path{fill:none;stroke:#c9d3df;stroke-width:3;stroke-linecap:round}',
        '.thermometer circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
+       '.motion{fill:none;stroke:none;pointer-events:none}',
+       '.sensor circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
+       '.sensor circle.dot{fill:#c9d3df;stroke:none}',
+       '.sensor path{fill:none;stroke:#c9d3df;stroke-width:3;stroke-linecap:round}',
        '.thermometer rect,.thermometer circle.bulb{fill:#c9d3df;stroke:none}',
        '.device circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
        '.device rect{fill:none;stroke:#c9d3df;stroke-width:3}',
@@ -128,6 +132,16 @@ out.append(f'<g id="kaffemaskin" class="appliance">'
            '</g>')
 out.append(f'<text id="kaffemaskin_power" class="value small-value" x="{KX}" y="{KY + 42}"></text>')
 out.append(wifi_marker("ap_u6_lr", 898 - OX, 330 - OY))
+# presence sensor (Aqara FP2) in the garage, mid-wall towards the living room and the path behind the house;
+# the frame over the garage lights up together with it
+GX0, GY0, GX1, GY1 = next((x0, y0, x1, y1) for rid, _, x0, y0, x1, y1, _ in ROOMS if rid == "garage")
+out.append(f'<rect id="garage_motion" class="motion" x="{GX0 - OX}" y="{GY0 - OY}" width="{GX1 - GX0}" height="{GY1 - GY0}"/>')
+SX, SY = GX1 - 26 - OX, (GY0 + GY1) // 2 - OY
+out.append(f'<g id="garage_sensor" class="sensor">'
+           f'<circle cx="{SX}" cy="{SY}" r="22"/>'
+           f'<circle class="dot" cx="{SX + 7}" cy="{SY}" r="3.5"/>'
+           f'<path d="M{SX - 1},{SY - 8} a10,10 0 0 0 0,16 M{SX - 7},{SY - 13} a16,16 0 0 0 0,26"/>'
+           '</g>')
 # USW-Lite-8-PoE in the living room against the hall wall, with the piano room behind it
 out.append(switch_marker("usw_lite_8_poe", 760 - OX, 680 - OY))
 # outdoor temperature (Ngenic controller) outside the house, left of the entrance
