@@ -7,7 +7,7 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg?v=18
+          image: /local/floorplan/overvaning.svg?v=20
           stylesheet: /local/floorplan/overvaning.css?v=13
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla
@@ -254,7 +254,7 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/kallare.svg?v=13
+          image: /local/floorplan/kallare.svg?v=16
           stylesheet: /local/floorplan/kallare.css?v=8
           rules:
             # Rummet blir gult när någon av dess lampor är tänd. class_set

@@ -2,6 +2,11 @@
 <style>
 .room{fill:#1d2b44;stroke:#50627e;stroke-width:8}
 .outdoor{fill:#182a2a;stroke:#4f6f62;stroke-width:4;stroke-dasharray:14 10}
+.stairs rect{fill:#24344f;stroke:#7f8ea3;stroke-width:3}
+.stairs line{stroke:#7f8ea3;stroke-width:2}
+.stairs{pointer-events:none}
+.door{stroke:#1d2b44;stroke-width:16;pointer-events:none}
+.port{stroke:#c9d3df;stroke-width:4;stroke-dasharray:12 8;pointer-events:none}
 .label{font:600 30px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 .building{fill:#1a2333;stroke:#50627e;stroke-width:8}
 .outdoor-label{font:italic 26px sans-serif;fill:#7fa392}
@@ -53,13 +58,28 @@
 <rect id="master_bedroom" class="room" x="1670" y="1115" width="318" height="390"/>
 <polygon id="parkering" class="outdoor" points="25,358 860,358 860,718 505,718 505,909 25,909"/>
 <text id="parkering_label" class="label outdoor-label" x="680" y="660">Parkering</text>
+<line class="door" x1="516" y1="339" x2="639" y2="339"/>
+<line class="door" x1="700" y1="785" x2="700" y2="856"/>
+<line class="door" x1="783" y1="924" x2="850" y2="924"/>
+<line class="door" x1="959" y1="924" x2="1107" y2="924"/>
+<line class="door" x1="1438" y1="924" x2="1490" y2="924"/>
+<line class="door" x1="550" y1="1042" x2="550" y2="1083"/>
+<line class="door" x1="1742" y1="1035" x2="1742" y2="1080"/>
+<line class="door" x1="728" y1="1115" x2="791" y2="1115"/>
+<line class="door" x1="913" y1="1115" x2="1091" y2="1115"/>
+<line class="door" x1="1207" y1="1115" x2="1259" y2="1115"/>
+<line class="door" x1="1400" y1="1115" x2="1442" y2="1115"/>
+<line class="door" x1="1680" y1="1115" x2="1723" y2="1115"/>
+<line class="door" x1="865" y1="1393" x2="865" y2="1448"/>
+<g id="trappa_inne" class="stairs"><rect x="1125" y="932" width="277" height="95"/><line x1="1147" y1="932" x2="1147" y2="1027"/><line x1="1169" y1="932" x2="1169" y2="1027"/><line x1="1191" y1="932" x2="1191" y2="1027"/><line x1="1213" y1="932" x2="1213" y2="1027"/><line x1="1235" y1="932" x2="1235" y2="1027"/><line x1="1257" y1="932" x2="1257" y2="1027"/><line x1="1279" y1="932" x2="1279" y2="1027"/><line x1="1301" y1="932" x2="1301" y2="1027"/><line x1="1323" y1="932" x2="1323" y2="1027"/><line x1="1345" y1="932" x2="1345" y2="1027"/><line x1="1367" y1="932" x2="1367" y2="1027"/><line x1="1389" y1="932" x2="1389" y2="1027"/></g>
+<line class="door" x1="74" y1="72" x2="74" y2="266"/><line class="port" x1="74" y1="72" x2="74" y2="266"/>
 <text id="garage_label" class="label" x="364" y="177">Garage</text>
 <text id="vardagsrum_label" class="label" x="1158" y="591">Vardagsrum</text>
 <text id="pizzerian_label" class="label outdoor-label" x="1572" y="591">Altan / Pizzeria</text>
 <text id="entre_label" class="label" x="806" y="831">Entré</text>
 <text id="trappa_label" class="label outdoor-label" x="622" y="828">Trappa</text>
 <text id="wc_label" class="label" x="492" y="1018">WC</text>
-<text id="kapprum_hall_label" class="label" x="1146" y="1020">Kapprum/hall</text>
+<text id="kapprum_hall_label" class="label" x="820" y="1040">Kapprum/hall</text>
 <text id="bad_label" class="label" x="1851" y="1020">Bad</text>
 <text id="kok_label" class="label" x="628" y="1310">Kök</text>
 <text id="pianorum_label" class="label" x="998" y="1310">Pianorum</text>
