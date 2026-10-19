@@ -94,29 +94,12 @@
   display: none;
 }
 
-/* a plugged-in car moves to the spot by the charger, centred at (350, 820) in the SVG */
-.slot {
-  transition: transform 1s ease;
+/* a plugged-in car stands backed in by the charger: the slot shows one of its two poses */
+.slot .pose-charging,
+.slot.slot-charging .pose-rest {
+  display: none;
 }
 
-#car_tesla_slot.slot-charging {
-  transform: translate(150px, 375px);
-}
-
-#car_jean_luc_slot.slot-charging {
-  transform: translate(150px, 230px);
-}
-
-.motion.motion-on {
-  stroke: #e0533d;
-  stroke-width: 8;
-  stroke-dasharray: 18 10;
-}
-
-.sensor {
-  cursor: pointer;
-}
-
-.sensor.sensor-on circle:not(.dot) {
-  fill: #e0533d;
+.slot.slot-charging .pose-charging {
+  display: inline;
 }

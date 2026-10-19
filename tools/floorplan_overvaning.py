@@ -153,7 +153,10 @@ for rid, label, x0, y0, x1, y1, kind in ROOMS:
     if rid in TEXT_SLOTS:
         out.append(f'<text id="{rid}_temp" class="value" x="{(x0+x1)/2-OX:.0f}" y="{(y0+y1)/2-OY+42:.0f}"></text>')
 # camera markers outside the walls: id, x, y (drawing coordinates)
-CAMERAS = [("camera_c120", 618, 210)]  # C120 on the outside of the living-room wall on the entrance side, aimed at the ground
+CAMERAS = [
+    ("camera_c120", 618, 210),     # C120 on the outside of the living-room wall on the entrance side, aimed at the ground
+    ("camera_g3_flex", 1480, 410),  # G3 Flex in the pizzeria, aimed out at a building site
+]
 for cid, cx, cy in CAMERAS:
     x, y = cx - OX, cy - OY
     out.append(f'<g id="{cid}" class="camera">'
@@ -195,13 +198,15 @@ out.append(speaker_marker("sonos_vardagsrum", 960 - OX, 705 - OY, soundbar=True)
 out.append(speaker_marker("sonos_kok", 440 - OX, 972 - OY))
 
 
-def car_marker(mid, name, cx, cy, image=None, style=None):
-    """Car seen from above in a parking spot, nose to the right; name, charge and a bolt while charging.
+def car_marker(mid, name, cx, cy, nose="right", image=None, style=None):
+    """Car seen from above: name, charge and a bolt while charging.
 
-    image is a top view with the nose up (the Tesla card's picture); without it the car is drawn.
+    The car is drawn nose up and turned so the nose points right or left. image is a top view with
+    the nose up (the Tesla card's picture); without it the car is drawn.
     """
-    x0, y0, w, h = cx - 55, cy - 135, 110, 270  # drawn nose up, then turned a quarter clockwise
-    tx = cx - 36  # the texts sit over the roof
+    x0, y0, w, h = cx - 55, cy - 135, 110, 270
+    side = 1 if nose == "right" else -1
+    tx = cx - 36 * side  # the texts sit over the roof, towards the rear
     if image:
         iw = h * 357 / 720  # the picture is 357x720 including the mirrors
         body = f'<image href="{image}" x="{cx - iw / 2:.1f}" y="{y0}" width="{iw:.1f}" height="{h}"/>'
@@ -209,7 +214,7 @@ def car_marker(mid, name, cx, cy, image=None, style=None):
         # white Renault 5 E-Tech, 3.92 x 1.77 m against the Tesla's 4.72 m: black roof with the red trim
         w, h = 100, 224
         x0, y0 = cx - w // 2, cy - h // 2
-        tx = cx - 20
+        tx = cx - 20 * side
         body = (f'<rect x="{x0 - 7}" y="{y0 + 72}" width="{w + 14}" height="12" rx="5" class="r5-mirror"/>'
                 f'<rect class="r5-body" x="{x0}" y="{y0}" width="{w}" height="{h}" rx="24"/>'
                 f'<rect class="r5-light" x="{x0 + 8}" y="{y0 + 5}" width="20" height="6" rx="3"/>'
@@ -221,19 +226,33 @@ def car_marker(mid, name, cx, cy, image=None, style=None):
         body = (f'<rect class="body" x="{x0}" y="{y0}" width="{w}" height="{h}" rx="32"/>'
                 f'<path class="glass" d="M{x0 + 12},{y0 + 92} Q{cx},{y0 + 70} {x0 + w - 12},{y0 + 92} L{x0 + w - 20},{y0 + 120} Q{cx},{y0 + 108} {x0 + 20},{y0 + 120} z"/>'
                 f'<path class="glass" d="M{x0 + 18},{y0 + 222} Q{cx},{y0 + 214} {x0 + w - 18},{y0 + 222} L{x0 + w - 14},{y0 + 244} Q{cx},{y0 + 252} {x0 + 14},{y0 + 244} z"/>')
-    return (f'<g id="{mid}_slot" class="slot"><g id="{mid}" class="car">'
-            f'<g transform="rotate(90 {cx} {cy})">{body}'
-            '</g>'
-            f'<text class="car-name" x="{tx}" y="{cy - 24}">{name}</text>'
-            f'<text id="{mid}_value" class="car-value" x="{tx}" y="{cy + 2}"></text>'
-            f'<path id="{mid}_bolt" class="bolt" d="M{tx + 3},{cy + 16} L{tx - 8},{cy + 32} h8 l-3,12 L{tx + 8},{cy + 27} h-8 z"/>'
-            '</g></g>')
+    body = f'<g transform="rotate({90 * side} {cx} {cy})">{body}</g>'
+    ty = cy - 24
+    return (f'<g id="{mid}" class="car">{body}'
+            f'<text class="car-name" x="{tx}" y="{ty}">{name}</text>'
+            f'<text id="{mid}_value" class="car-value" x="{tx}" y="{ty + 26}"></text>'
+            f'<path id="{mid}_bolt" class="bolt" d="M{tx + 3},{ty + 40} L{tx - 8},{ty + 56} h8 l-3,12 L{tx + 8},{ty + 51} h-8 z"/>'
+            '</g>')
 
 
-# the cars on the parking, shown only while they are at home; a plugged-in car is moved by
-# the stylesheet to the spot by the charger, centred at (90, 640)
-out.append(car_marker("car_tesla", "Otto", -60 - OX, 265 - OY, image="/local/tesla-card/model3_top.webp?v=2"))
-out.append(car_marker("car_jean_luc", "Jean-Luc", -60 - OX, 410 - OY, style="r5"))
+def car_slot(mid, name, rest, charging, **kw):
+    """A car in its usual spot (nose to the house), and backed in by the charger while plugged in.
+
+    Backed in means the nose points away from the house, the rear towards the steps.
+
+    The stylesheet shows one of the two poses from the slot's class; the charging pose has the ids
+    with _c appended.
+    """
+    return (f'<g id="{mid}_slot" class="slot">'
+            f'<g class="pose-rest">{car_marker(mid, name, rest[0] - OX, rest[1] - OY, **kw)}</g>'
+            f'<g class="pose-charging">{car_marker(mid + "_c", name, charging[0] - OX, charging[1] - OY, nose="left", **kw)}</g>'
+            '</g>')
+
+
+# the cars on the parking, shown only while they are at home; a plugged-in car stands backed in
+# by the charger, its rear towards the steps
+out.append(car_slot("car_tesla", "Otto", (-60, 265), (100, 640), image="/local/tesla-card/model3_top.webp?v=2"))
+out.append(car_slot("car_jean_luc", "Jean-Luc", (-60, 410), (118, 640), style="r5"))
 # Easee charger on the outside of the WC wall, towards the parking
 EX, EY = 140 - OX, 800 - OY
 out.append(f'<g id="laddbox" class="device">'

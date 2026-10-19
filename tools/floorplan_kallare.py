@@ -35,7 +35,7 @@ DOORS = [
     (287, 867, 287, 908),     # boiler room to the laundry
     (1000, 689, 1000, 726),   # fireplace room to Tova's room
 ]
-LABEL_AT = {"pingisrummet": (615, 190), "tvattstuga": (381, 811)}  # label position for non-rectangular rooms
+LABEL_AT = {"pingisrummet": (615, 190), "tvattstuga": (381, 811), "elrum": (552, 868)}  # label position for non-rectangular rooms
 W, H = 1240, 960
 
 
@@ -90,6 +90,12 @@ def battery_glyph(cx, cy):
             f'<rect class="solid" x="{cx - 9}" y="{cy - 4}" width="15" height="8" rx="1"/>')
 
 
+def sun_glyph(cx, cy):
+    rays = " ".join(f"M{cx + dx * 9:.1f},{cy + dy * 9:.1f} L{cx + dx * 14:.1f},{cy + dy * 14:.1f}"
+                    for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1), (0.7, 0.7), (-0.7, 0.7), (0.7, -0.7), (-0.7, -0.7)))
+    return f'<circle class="dot" cx="{cx}" cy="{cy}" r="6"/><path class="rays" d="{rays}"/>'
+
+
 def drop_glyph(cx, cy):
     return f'<path class="fill" d="M{cx},{cy - 13} C{cx + 4},{cy - 5} {cx + 10},{cy} {cx + 10},{cy + 4} a10,10 0 0 1 -20,0 C{cx - 10},{cy} {cx - 4},{cy - 5} {cx},{cy - 13} z"/>'
 
@@ -126,6 +132,7 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.device rect{fill:none;stroke:#c9d3df;stroke-width:3}',
        '.device circle.dot{fill:#c9d3df;stroke:none}',
        '.device rect.solid{fill:#c9d3df;stroke:none}',
+       '.device path.rays{fill:none;stroke:#c9d3df;stroke-width:2.5;stroke-linecap:round}',
        '.device .glyph{font:700 26px serif;fill:#c9d3df;text-anchor:middle;dominant-baseline:middle}',
        '.device path.fill{fill:#5aa0ff}',
        '.speaker circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
@@ -169,6 +176,8 @@ out.append(device_marker("usw_lite_8_poe_pingis", 859 - OX, 372 - OY, switch_gly
 out.append(device_marker("us_8_60w", 1170 - OX, 584 - OY, switch_glyph(1170 - OX, 584 - OY)))
 # home battery on the electrical room wall towards Brasrum
 out.append(device_marker("hembatteri", 600 - OX, 790 - OY, battery_glyph(600 - OX, 790 - OY)))
+# the solar inverter beside it; the grid import or export is written under the room name (elrum_temp)
+out.append(device_marker("solceller", 505 - OX, 790 - OY, sun_glyph(505 - OX, 790 - OY)))
 # Sonos: Brasrum on the outer wall, laundry room on the wall to the boiler room
 out.append(speaker_marker("sonos_brasrum", 815 - OX, 905 - OY))
 out.append(speaker_marker("sonos_tvattstuga", 322 - OX, 718 - OY))
