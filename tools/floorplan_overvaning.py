@@ -139,22 +139,24 @@ out.append(speaker_marker("sonos_vardagsrum", 960 - OX, 705 - OY, soundbar=True)
 out.append(speaker_marker("sonos_kok", 440 - OX, 972 - OY))
 
 
-def car_marker(mid, name, cx, y0):
-    """Car seen from above in a parking spot, nose up; name, charge and a bolt while charging."""
-    x0, w, h = cx - 55, 110, 270
+def car_marker(mid, name, cx, cy):
+    """Car seen from above in a parking spot, nose to the right; name, charge and a bolt while charging."""
+    x0, y0, w, h = cx - 55, cy - 135, 110, 270  # drawn nose up, then turned a quarter clockwise
     return (f'<g id="{mid}" class="car">'
+            f'<g transform="rotate(90 {cx} {cy})">'
             f'<rect class="body" x="{x0}" y="{y0}" width="{w}" height="{h}" rx="32"/>'
             f'<path class="glass" d="M{x0 + 12},{y0 + 92} Q{cx},{y0 + 70} {x0 + w - 12},{y0 + 92} L{x0 + w - 20},{y0 + 120} Q{cx},{y0 + 108} {x0 + 20},{y0 + 120} z"/>'
             f'<path class="glass" d="M{x0 + 18},{y0 + 222} Q{cx},{y0 + 214} {x0 + w - 18},{y0 + 222} L{x0 + w - 14},{y0 + 244} Q{cx},{y0 + 252} {x0 + 14},{y0 + 244} z"/>'
-            f'<text class="car-name" x="{cx}" y="{y0 + 148}">{name}</text>'
-            f'<text id="{mid}_value" class="car-value" x="{cx}" y="{y0 + 174}"></text>'
-            f'<path id="{mid}_bolt" class="bolt" d="M{cx + 3},{y0 + 184} L{cx - 8},{y0 + 200} h8 l-3,12 L{cx + 8},{y0 + 195} h-8 z"/>'
+            '</g>'
+            f'<text class="car-name" x="{cx - 36}" y="{cy - 24}">{name}</text>'
+            f'<text id="{mid}_value" class="car-value" x="{cx - 36}" y="{cy + 2}"></text>'
+            f'<path id="{mid}_bolt" class="bolt" d="M{cx - 33},{cy + 16} L{cx - 44},{cy + 32} h8 l-3,12 L{cx - 28},{cy + 27} h-8 z"/>'
             '</g>')
 
 
 # the cars on the parking, shown only while they are at home
-out.append(car_marker("car_tesla", "Otto", -120 - OX, 220 - OY))
-out.append(car_marker("car_jean_luc", "Jean-Luc", 40 - OX, 220 - OY))
+out.append(car_marker("car_tesla", "Otto", -60 - OX, 265 - OY))
+out.append(car_marker("car_jean_luc", "Jean-Luc", -60 - OX, 410 - OY))
 # Easee charger on the outside of the WC wall, towards the parking
 EX, EY = 140 - OX, 800 - OY
 out.append(f'<g id="laddbox" class="device">'
