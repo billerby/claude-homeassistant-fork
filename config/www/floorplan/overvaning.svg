@@ -28,8 +28,7 @@
 <rect id="entre" class="room" x="340" y="500" width="212" height="182"/>
 <rect id="trappa" class="outdoor" x="185" y="495" width="155" height="187"/>
 <rect id="wc" class="room" x="75" y="685" width="115" height="185"/>
-<rect id="kapprum" class="room" x="190" y="685" width="320" height="185"/>
-<rect id="hall" class="room" x="510" y="685" width="872" height="190"/>
+<rect id="kapprum_hall" class="room" x="190" y="685" width="1192" height="190"/>
 <rect id="bad" class="room" x="1382" y="685" width="218" height="190"/>
 <rect id="kok" class="room" x="30" y="875" width="475" height="390"/>
 <rect id="pianorum" class="room" x="505" y="875" width="267" height="390"/>
@@ -41,8 +40,7 @@
 <text id="entre_label" class="label" x="446" y="591">Entré</text>
 <text id="trappa_label" class="label outdoor-label" x="262" y="588">Trappa</text>
 <text id="wc_label" class="label" x="132" y="778">WC</text>
-<text id="kapprum_label" class="label" x="350" y="778">Kapprum</text>
-<text id="hall_label" class="label" x="946" y="780">Hall</text>
+<text id="kapprum_hall_label" class="label" x="786" y="780">Kapprum/hall</text>
 <text id="bad_label" class="label" x="1491" y="780">Bad</text>
 <text id="kok_label" class="label" x="268" y="1070">Kök</text>
 <text id="pianorum_label" class="label" x="638" y="1070">Pianorum</text>
