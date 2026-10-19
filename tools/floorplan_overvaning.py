@@ -154,7 +154,7 @@ def car_marker(mid, name, cx, cy):
             '</g></g>')
 
 
-# the cars on the parking, shown only while they are at home; a charging car is moved by
+# the cars on the parking, shown only while they are at home; a plugged-in car is moved by
 # the stylesheet to the spot by the charger, centred at (90, 640)
 out.append(car_marker("car_tesla", "Otto", -60 - OX, 265 - OY))
 out.append(car_marker("car_jean_luc", "Jean-Luc", -60 - OX, 410 - OY))

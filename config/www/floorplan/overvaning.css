@@ -94,7 +94,7 @@
   display: none;
 }
 
-/* a charging car moves to the spot by the charger, centred at (350, 820) in the SVG */
+/* a plugged-in car moves to the spot by the charger, centred at (350, 820) in the SVG */
 .slot {
   transition: transform 1s ease;
 }
