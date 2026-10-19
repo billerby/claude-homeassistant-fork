@@ -14,14 +14,13 @@ ROOMS = [
     ("bastun", "Bastu", [(80, 545), (237, 545), (237, 677), (80, 677)], "room"),
     ("badrum_kallare", "Badrum", [(237, 545), (475, 545), (475, 677), (237, 677)], "room"),
     ("matkallare", "Matkällare", [(475, 545), (630, 545), (630, 677), (475, 677)], "room"),
-    ("korridor", "", [(475, 677), (630, 677), (630, 752), (475, 752)], "room"),
     ("pannrum", "Pannrum", [(80, 677), (287, 677), (287, 945), (80, 945)], "room"),
-    ("tvattstuga", "Tvättstuga", [(287, 677), (475, 677), (475, 945), (287, 945)], "room"),
+    ("tvattstuga", "Tvättstuga", [(287, 677), (630, 677), (630, 752), (475, 752), (475, 945), (287, 945)], "room"),
     ("elrum", "Elrum", [(475, 752), (630, 752), (630, 945), (475, 945)], "room"),
     ("familjerum", "Brasrum", [(630, 545), (1000, 545), (1000, 945), (630, 945)], "room"),
     ("tovas_rum", "Tovas rum", [(1000, 545), (1225, 545), (1225, 945), (1000, 945)], "room"),
 ]
-LABEL_AT = {"pingisrummet": (615, 190)}  # label position for non-rectangular rooms
+LABEL_AT = {"pingisrummet": (615, 190), "tvattstuga": (381, 811)}  # label position for non-rectangular rooms
 W, H = 1240, 960
 
 

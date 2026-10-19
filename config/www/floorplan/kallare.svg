@@ -28,9 +28,8 @@
 <polygon id="bastun" class="room" points="20,545 177,545 177,677 20,677"/>
 <polygon id="badrum_kallare" class="room" points="177,545 415,545 415,677 177,677"/>
 <polygon id="matkallare" class="room" points="415,545 570,545 570,677 415,677"/>
-<polygon id="korridor" class="room" points="415,677 570,677 570,752 415,752"/>
 <polygon id="pannrum" class="room" points="20,677 227,677 227,945 20,945"/>
-<polygon id="tvattstuga" class="room" points="227,677 415,677 415,945 227,945"/>
+<polygon id="tvattstuga" class="room" points="227,677 570,677 570,752 415,752 415,945 227,945"/>
 <polygon id="elrum" class="room" points="415,752 570,752 570,945 415,945"/>
 <polygon id="familjerum" class="room" points="570,545 940,545 940,945 570,945"/>
 <polygon id="tovas_rum" class="room" points="940,545 1165,545 1165,945 940,945"/>
@@ -40,9 +39,8 @@
 <polygon id="bastun_motion" class="motion" points="20,545 177,545 177,677 20,677"/>
 <polygon id="badrum_kallare_motion" class="motion" points="177,545 415,545 415,677 177,677"/>
 <polygon id="matkallare_motion" class="motion" points="415,545 570,545 570,677 415,677"/>
-<polygon id="korridor_motion" class="motion" points="415,677 570,677 570,752 415,752"/>
 <polygon id="pannrum_motion" class="motion" points="20,677 227,677 227,945 20,945"/>
-<polygon id="tvattstuga_motion" class="motion" points="227,677 415,677 415,945 227,945"/>
+<polygon id="tvattstuga_motion" class="motion" points="227,677 570,677 570,752 415,752 415,945 227,945"/>
 <polygon id="elrum_motion" class="motion" points="415,752 570,752 570,945 415,945"/>
 <polygon id="familjerum_motion" class="motion" points="570,545 940,545 940,945 570,945"/>
 <polygon id="tovas_rum_motion" class="motion" points="940,545 1165,545 1165,945 940,945"/>
