@@ -7,7 +7,7 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg?v=20
+          image: /local/floorplan/overvaning.svg?v=21
           stylesheet: /local/floorplan/overvaning.css?v=13
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla
@@ -54,6 +54,18 @@ views:
                   class: "${entity.state === 'on' ? 'camera camera-motion' : 'camera'}"
             - entity: camera.c120_mainstream
               element: camera_c120
+              tap_action:
+                action: more-info
+            # G3 Flex i pizzerian, riktad mot bygget utanför
+            - entity: binary_sensor.g3_flex_motion
+              element: camera_g3_flex
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'on' ? 'camera camera-motion' : 'camera'}"
+            - entity: camera.g3_flex_high
+              element: camera_g3_flex
               tap_action:
                 action: more-info
 
@@ -225,13 +237,16 @@ views:
                 service_data:
                   text: "${entity.state === 'charging' ? 'Laddar' : entity.state === 'disconnected' ? '' : entity.state === 'awaiting_start' ? 'Väntar' : entity.state === 'ready_to_charge' ? 'Redo' : entity.state === 'completed' ? 'Klar' : entity.state === 'error' ? 'Fel' : entity.state}"
 
-            - entity: sensor.ngenic_sensor_vardagsrummet_temperature
+            # Temperatur och luftfuktighet från Ngenic-sensorn
+            - entities:
+                - sensor.ngenic_sensor_vardagsrummet_temperature
+                - sensor.ngenic_sensor_vardagsrummet_humidity
               element: vardagsrum_temp
               state_action:
                 action: call-service
                 service: floorplan.text_set
                 service_data:
-                  text: "${Number(entity.state).toFixed(1)} °C"
+                  text: "${Number(hass.states['sensor.ngenic_sensor_vardagsrummet_temperature'].state).toFixed(1) + ' °C · ' + Math.round(Number(hass.states['sensor.ngenic_sensor_vardagsrummet_humidity'].state)) + ' %'}"
 
             # Utomhustemperaturen från Ngenic, utanför huset till vänster om entrén
             - entity: sensor.ngenic_controller_temperature
@@ -254,8 +269,8 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/kallare.svg?v=16
-          stylesheet: /local/floorplan/kallare.css?v=8
+          image: /local/floorplan/kallare.svg?v=17
+          stylesheet: /local/floorplan/kallare.css?v=9
           rules:
             # Rummet blir gult när någon av dess lampor är tänd. class_set
             # ersätter alla klasser, så "room" måste vara med i båda fallen.
@@ -312,9 +327,17 @@ views:
             - entity: binary_sensor.lumi_lumi_sensor_motion_aq2_occupancy_3
               element: tvattstuga_motion
               state_action: *motion
-            - entity: binary_sensor.lumi_lumi_sensor_motion_aq2_iaszone
+            # Brasrummet har både rörelsesensor och FP2: streckad ram vid rörelse,
+            # tunn hel ram när FP2 bara ser att någon är kvar i rummet (sitter still)
+            - entities:
+                - binary_sensor.lumi_lumi_sensor_motion_aq2_iaszone
+                - binary_sensor.presence_sensor_fp2_cb1d_presence_sensor_1
               element: familjerum_motion
-              state_action: *motion
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${hass.states['binary_sensor.lumi_lumi_sensor_motion_aq2_iaszone'].state === 'on' ? 'motion motion-on' : hass.states['binary_sensor.presence_sensor_fp2_cb1d_presence_sensor_1'].state === 'on' ? 'motion motion-presence' : 'motion'}"
 
             # UniFi-accesspunkten i taket: röd om den inte är ansluten, antal klienter under
             - entity: sensor.u6_lite_state
@@ -456,6 +479,32 @@ views:
                 service_data:
                   text: "${isNaN(Number(entity.state)) ? '– %' : Math.round(Number(entity.state)) + ' %'}"
 
+            # Solcellerna (Huawei-växelriktarens PV-effekt): gul när de producerar
+            - entity: sensor.inverter_input_power
+              element: solceller
+              tap_action:
+                action: more-info
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${Number(entity.state) > 50 ? 'device solar-on' : 'device'}"
+            - entity: sensor.inverter_input_power
+              element: solceller_value
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${isNaN(Number(entity.state)) ? '–' : Number(entity.state) < 1000 ? Math.round(Number(entity.state)) + ' W' : (Number(entity.state) / 1000).toFixed(1) + ' kW'}"
+            # Elnätet från elmätaren: negativt värde är köp, positivt är sälj
+            - entity: sensor.power_meter_active_power
+              element: elrum_temp
+              state_action:
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${isNaN(Number(entity.state)) ? '' : Number(entity.state) < -50 ? 'Köper ' + (-Number(entity.state) / 1000).toFixed(1) + ' kW' : Number(entity.state) > 50 ? 'Säljer ' + (Number(entity.state) / 1000).toFixed(1) + ' kW' : 'Nät 0 kW'}"
+
             # Sonos-högtalarna: blå när de spelar, ett klick öppnar spelaren
             - entity: media_player.sonos
               element: sonos_brasrum
@@ -468,10 +517,13 @@ views:
                 action: more-info
               state_action: *speaker
 
-            - entity: sensor.ngenic_sensor_kallarrum_temperature
+            # Ngenic-sensorn "Källarrum" sitter i brasrummet: temperatur och luftfuktighet
+            - entities:
+                - sensor.ngenic_sensor_kallarrum_temperature
+                - sensor.ngenic_sensor_kallarrum_humidity
               element: familjerum_temp
               state_action:
                 action: call-service
                 service: floorplan.text_set
                 service_data:
-                  text: "${Number(entity.state).toFixed(1)} °C"
+                  text: "${Number(hass.states['sensor.ngenic_sensor_kallarrum_temperature'].state).toFixed(1) + ' °C · ' + Math.round(Number(hass.states['sensor.ngenic_sensor_kallarrum_humidity'].state)) + ' %'}"

@@ -153,7 +153,10 @@ for rid, label, x0, y0, x1, y1, kind in ROOMS:
     if rid in TEXT_SLOTS:
         out.append(f'<text id="{rid}_temp" class="value" x="{(x0+x1)/2-OX:.0f}" y="{(y0+y1)/2-OY+42:.0f}"></text>')
 # camera markers outside the walls: id, x, y (drawing coordinates)
-CAMERAS = [("camera_c120", 618, 210)]  # C120 on the outside of the living-room wall on the entrance side, aimed at the ground
+CAMERAS = [
+    ("camera_c120", 618, 210),     # C120 on the outside of the living-room wall on the entrance side, aimed at the ground
+    ("camera_g3_flex", 1480, 410),  # G3 Flex in the pizzeria, aimed out at a building site
+]
 for cid, cx, cy in CAMERAS:
     x, y = cx - OX, cy - OY
     out.append(f'<g id="{cid}" class="camera">'

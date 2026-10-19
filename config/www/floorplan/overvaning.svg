@@ -88,6 +88,7 @@
 <text id="master_bedroom_label" class="label" x="1829" y="1310">Master bedroom</text>
 <text id="vardagsrum_temp" class="value" x="1158" y="633"></text>
 <g id="camera_c120" class="camera"><circle cx="878" cy="390" r="24"/><rect x="866" y="382" width="17" height="16" rx="2"/><polygon points="883,386 891,381 891,399 883,394"/></g>
+<g id="camera_g3_flex" class="camera"><circle cx="1740" cy="590" r="24"/><rect x="1728" y="582" width="17" height="16" rx="2"/><polygon points="1745,586 1753,581 1753,599 1745,594"/></g>
 <g id="kaffemaskin" class="appliance"><circle cx="828" cy="1290" r="24"/><path d="M817,1283 h17 v9 a8,8 0 0 1 -8,8 h-1 a8,8 0 0 1 -8,-8 z"/><path class="handle" d="M834,1286 a5,5 0 0 1 0,9"/></g>
 <text id="kaffemaskin_power" class="value small-value" x="828" y="1332"></text>
 <g id="ap_u6_lr" class="ap"><circle cx="1158" cy="510" r="24"/><path d="M1145,507 a18,18 0 0 1 26,0 M1150,512 a11,11 0 0 1 16,0"/><circle class="dot" cx="1158" cy="518" r="3"/></g><text id="ap_u6_lr_clients" class="value small-value" x="1158" y="550"></text>

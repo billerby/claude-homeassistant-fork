@@ -57,3 +57,13 @@
 .speaker.speaker-playing circle:not(.dot):not(.cone) {
   fill: #2f5d8f;
 }
+
+.motion.motion-presence {
+  stroke: #e0533d;
+  stroke-width: 4;
+  stroke-opacity: 0.7;
+}
+
+.device.solar-on circle:not(.dot) {
+  fill: #7a6128;
+}
