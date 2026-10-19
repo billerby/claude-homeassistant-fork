@@ -84,3 +84,12 @@
 .device.charger-charging circle {
   fill: #2f9e8a;
 }
+
+.car {
+  cursor: pointer;
+}
+
+.car.car-away,
+.car .bolt.bolt-off {
+  display: none;
+}

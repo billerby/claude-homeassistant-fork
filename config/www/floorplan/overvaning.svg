@@ -20,6 +20,11 @@
 .device rect{fill:none;stroke:#c9d3df;stroke-width:3}
 .device circle.dot{fill:#c9d3df;stroke:none}
 .device path.bolt{fill:#c9d3df}
+.car .body{fill:#2a3a57;stroke:#c9d3df;stroke-width:4}
+.car .glass{fill:#121a2a}
+.car-name{font:600 19px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.car-value{font:500 19px sans-serif;fill:#9aa7b8;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.car .bolt{fill:#2f9e8a}
 .speaker circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
 .speaker rect,.speaker circle.cone{fill:none;stroke:#c9d3df;stroke-width:2.5}
 .speaker circle.dot{fill:#c9d3df;stroke:none}
@@ -39,7 +44,7 @@
 <rect id="henriks_rum" class="room" x="1372" y="1115" width="298" height="390"/>
 <rect id="master_bedroom" class="room" x="1670" y="1115" width="318" height="390"/>
 <polygon id="parkering" class="outdoor" points="25,358 860,358 860,718 505,718 505,909 25,909"/>
-<text id="parkering_label" class="label outdoor-label" x="360" y="580">Parkering</text>
+<text id="parkering_label" class="label outdoor-label" x="265" y="820">Parkering</text>
 <text id="garage_label" class="label" x="364" y="177">Garage</text>
 <text id="vardagsrum_label" class="label" x="1158" y="591">Vardagsrum</text>
 <text id="pizzerian_label" class="label outdoor-label" x="1572" y="591">Altan / Pizzeria</text>
@@ -63,6 +68,8 @@
 <text id="utetemp_value" class="value" x="570" y="484"></text>
 <g id="sonos_vardagsrum" class="speaker"><circle cx="1220" cy="885" r="24"/><rect x="1206" y="880" width="28" height="10" rx="4"/><circle class="dot" cx="1213" cy="885" r="1.8"/><circle class="dot" cx="1220" cy="885" r="1.8"/><circle class="dot" cx="1227" cy="885" r="1.8"/></g>
 <g id="sonos_kok" class="speaker"><circle cx="700" cy="1152" r="24"/><rect x="692" y="1140" width="16" height="24" rx="3"/><circle class="cone" cx="700" cy="1155" r="5"/><circle class="dot" cx="700" cy="1146" r="1.8"/></g>
+<g id="car_tesla" class="car"><rect class="body" x="85" y="400" width="110" height="270" rx="32"/><path class="glass" d="M97,492 Q140,470 183,492 L175,520 Q140,508 105,520 z"/><path class="glass" d="M103,622 Q140,614 177,622 L181,644 Q140,652 99,644 z"/><text class="car-name" x="140" y="548">Otto</text><text id="car_tesla_value" class="car-value" x="140" y="574"></text><path id="car_tesla_bolt" class="bolt" d="M143,584 L132,600 h8 l-3,12 L148,595 h-8 z"/></g>
+<g id="car_jean_luc" class="car"><rect class="body" x="245" y="400" width="110" height="270" rx="32"/><path class="glass" d="M257,492 Q300,470 343,492 L335,520 Q300,508 265,520 z"/><path class="glass" d="M263,622 Q300,614 337,622 L341,644 Q300,652 259,644 z"/><text class="car-name" x="300" y="548">Jean-Luc</text><text id="car_jean_luc_value" class="car-value" x="300" y="574"></text><path id="car_jean_luc_bolt" class="bolt" d="M303,584 L292,600 h8 l-3,12 L308,595 h-8 z"/></g>
 <g id="laddbox" class="device"><circle cx="400" cy="980" r="24"/><path class="bolt" d="M403,966 L392,982 h8 l-3,12 L408,977 h-8 z"/></g>
 <text id="laddbox_value" class="value small-value" x="400" y="940"></text>
 </svg>

@@ -7,8 +7,8 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg?v=12
-          stylesheet: /local/floorplan/overvaning.css?v=10
+          image: /local/floorplan/overvaning.svg?v=13
+          stylesheet: /local/floorplan/overvaning.css?v=11
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla
             # klasser, så "room" måste vara med i båda fallen.
@@ -137,6 +137,46 @@ views:
               tap_action:
                 action: more-info
               state_action: *speaker
+
+            # Bilarna på parkeringen: syns bara när de är hemma, laddnivå och en blixt när de laddar
+            - entity: device_tracker.otto_von_bismarck_location_tracker
+              element: car_tesla
+              state_action: &car
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'home' ? 'car' : 'car car-away'}"
+            - entity: sensor.otto_von_bismarck_battery
+              element: car_tesla
+              tap_action:
+                action: more-info
+            - entity: sensor.otto_von_bismarck_battery
+              element: car_tesla_value
+              state_action: &car_battery
+                action: call-service
+                service: floorplan.text_set
+                service_data:
+                  text: "${isNaN(Number(entity.state)) ? '' : Number(entity.state).toFixed(0) + ' %'}"
+            - entity: binary_sensor.otto_von_bismarck_charging
+              element: car_tesla_bolt
+              state_action: &car_bolt
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'on' ? 'bolt' : 'bolt bolt-off'}"
+            - entity: device_tracker.jean_luc_location
+              element: car_jean_luc
+              state_action: *car
+            - entity: sensor.jean_luc_battery
+              element: car_jean_luc
+              tap_action:
+                action: more-info
+            - entity: sensor.jean_luc_battery
+              element: car_jean_luc_value
+              state_action: *car_battery
+            - entity: binary_sensor.jean_luc_charging
+              element: car_jean_luc_bolt
+              state_action: *car_bolt
 
             # Easee-laddboxen utanför WC: grön när den laddar, blå med bil inkopplad, röd vid fel
             - entity: sensor.easee_home_91929_status
