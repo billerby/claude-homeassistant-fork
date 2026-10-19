@@ -84,6 +84,10 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.device path.bolt{fill:#c9d3df}',
        '.car .body{fill:#2a3a57;stroke:#c9d3df;stroke-width:4}',
        '.car .glass{fill:#121a2a}',
+       '.r5-body,.r5-mirror{fill:#eceef1;stroke:#8a96a6;stroke-width:1.5}',
+       '.r5-glass{fill:#1b2330}',
+       '.r5-roof{fill:#15171c;stroke:#c0392b;stroke-width:3}',
+       '.r5-light{fill:#c9d3df;stroke:#5a6678;stroke-width:1}',
        '.car-name{font:600 19px sans-serif;fill:#e8edf4;paint-order:stroke;stroke:#121a2a;stroke-width:4px;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '.car-value{font:600 19px sans-serif;fill:#e8edf4;paint-order:stroke;stroke:#121a2a;stroke-width:4px;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '.car .bolt{fill:#2f9e8a}',
@@ -139,15 +143,28 @@ out.append(speaker_marker("sonos_vardagsrum", 960 - OX, 705 - OY, soundbar=True)
 out.append(speaker_marker("sonos_kok", 440 - OX, 972 - OY))
 
 
-def car_marker(mid, name, cx, cy, image=None):
+def car_marker(mid, name, cx, cy, image=None, style=None):
     """Car seen from above in a parking spot, nose to the right; name, charge and a bolt while charging.
 
     image is a top view with the nose up (the Tesla card's picture); without it the car is drawn.
     """
     x0, y0, w, h = cx - 55, cy - 135, 110, 270  # drawn nose up, then turned a quarter clockwise
+    tx = cx - 36  # the texts sit over the roof
     if image:
         iw = h * 357 / 720  # the picture is 357x720 including the mirrors
         body = f'<image href="{image}" x="{cx - iw / 2:.1f}" y="{y0}" width="{iw:.1f}" height="{h}"/>'
+    elif style == "r5":
+        # white Renault 5 E-Tech, 3.92 x 1.77 m against the Tesla's 4.72 m: black roof with the red trim
+        w, h = 100, 224
+        x0, y0 = cx - w // 2, cy - h // 2
+        tx = cx - 20
+        body = (f'<rect x="{x0 - 7}" y="{y0 + 72}" width="{w + 14}" height="12" rx="5" class="r5-mirror"/>'
+                f'<rect class="r5-body" x="{x0}" y="{y0}" width="{w}" height="{h}" rx="24"/>'
+                f'<rect class="r5-light" x="{x0 + 8}" y="{y0 + 5}" width="20" height="6" rx="3"/>'
+                f'<rect class="r5-light" x="{x0 + w - 28}" y="{y0 + 5}" width="20" height="6" rx="3"/>'
+                f'<path class="r5-glass" d="M{x0 + 8},{y0 + 62} Q{cx},{y0 + 52} {x0 + w - 8},{y0 + 62} L{x0 + w - 12},{y0 + 86} L{x0 + 12},{y0 + 86} z"/>'
+                f'<rect class="r5-roof" x="{x0 + 11}" y="{y0 + 86}" width="{w - 22}" height="92" rx="6"/>'
+                f'<path class="r5-glass" d="M{x0 + 12},{y0 + 178} L{x0 + w - 12},{y0 + 178} L{x0 + w - 14},{y0 + 196} Q{cx},{y0 + 201} {x0 + 14},{y0 + 196} z"/>')
     else:
         body = (f'<rect class="body" x="{x0}" y="{y0}" width="{w}" height="{h}" rx="32"/>'
                 f'<path class="glass" d="M{x0 + 12},{y0 + 92} Q{cx},{y0 + 70} {x0 + w - 12},{y0 + 92} L{x0 + w - 20},{y0 + 120} Q{cx},{y0 + 108} {x0 + 20},{y0 + 120} z"/>'
@@ -155,16 +172,16 @@ def car_marker(mid, name, cx, cy, image=None):
     return (f'<g id="{mid}_slot" class="slot"><g id="{mid}" class="car">'
             f'<g transform="rotate(90 {cx} {cy})">{body}'
             '</g>'
-            f'<text class="car-name" x="{cx - 36}" y="{cy - 24}">{name}</text>'
-            f'<text id="{mid}_value" class="car-value" x="{cx - 36}" y="{cy + 2}"></text>'
-            f'<path id="{mid}_bolt" class="bolt" d="M{cx - 33},{cy + 16} L{cx - 44},{cy + 32} h8 l-3,12 L{cx - 28},{cy + 27} h-8 z"/>'
+            f'<text class="car-name" x="{tx}" y="{cy - 24}">{name}</text>'
+            f'<text id="{mid}_value" class="car-value" x="{tx}" y="{cy + 2}"></text>'
+            f'<path id="{mid}_bolt" class="bolt" d="M{tx + 3},{cy + 16} L{tx - 8},{cy + 32} h8 l-3,12 L{tx + 8},{cy + 27} h-8 z"/>'
             '</g></g>')
 
 
 # the cars on the parking, shown only while they are at home; a plugged-in car is moved by
 # the stylesheet to the spot by the charger, centred at (90, 640)
 out.append(car_marker("car_tesla", "Otto", -60 - OX, 265 - OY, image="/local/tesla-card/model3_top.webp?v=2"))
-out.append(car_marker("car_jean_luc", "Jean-Luc", -60 - OX, 410 - OY))
+out.append(car_marker("car_jean_luc", "Jean-Luc", -60 - OX, 410 - OY, style="r5"))
 # Easee charger on the outside of the WC wall, towards the parking
 EX, EY = 140 - OX, 800 - OY
 out.append(f'<g id="laddbox" class="device">'
