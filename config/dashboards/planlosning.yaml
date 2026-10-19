@@ -7,7 +7,7 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg?v=15
+          image: /local/floorplan/overvaning.svg?v=16
           stylesheet: /local/floorplan/overvaning.css?v=12
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla

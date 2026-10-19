@@ -84,8 +84,8 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.device path.bolt{fill:#c9d3df}',
        '.car .body{fill:#2a3a57;stroke:#c9d3df;stroke-width:4}',
        '.car .glass{fill:#121a2a}',
-       '.car-name{font:600 19px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
-       '.car-value{font:500 19px sans-serif;fill:#9aa7b8;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
+       '.car-name{font:600 19px sans-serif;fill:#e8edf4;paint-order:stroke;stroke:#121a2a;stroke-width:4px;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
+       '.car-value{font:600 19px sans-serif;fill:#e8edf4;paint-order:stroke;stroke:#121a2a;stroke-width:4px;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '.car .bolt{fill:#2f9e8a}',
        '.speaker circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
        '.speaker rect,.speaker circle.cone{fill:none;stroke:#c9d3df;stroke-width:2.5}',
@@ -139,14 +139,21 @@ out.append(speaker_marker("sonos_vardagsrum", 960 - OX, 705 - OY, soundbar=True)
 out.append(speaker_marker("sonos_kok", 440 - OX, 972 - OY))
 
 
-def car_marker(mid, name, cx, cy):
-    """Car seen from above in a parking spot, nose to the right; name, charge and a bolt while charging."""
+def car_marker(mid, name, cx, cy, image=None):
+    """Car seen from above in a parking spot, nose to the right; name, charge and a bolt while charging.
+
+    image is a top view with the nose up (the Tesla card's picture); without it the car is drawn.
+    """
     x0, y0, w, h = cx - 55, cy - 135, 110, 270  # drawn nose up, then turned a quarter clockwise
+    if image:
+        iw = h * 357 / 720  # the picture is 357x720 including the mirrors
+        body = f'<image href="{image}" x="{cx - iw / 2:.1f}" y="{y0}" width="{iw:.1f}" height="{h}"/>'
+    else:
+        body = (f'<rect class="body" x="{x0}" y="{y0}" width="{w}" height="{h}" rx="32"/>'
+                f'<path class="glass" d="M{x0 + 12},{y0 + 92} Q{cx},{y0 + 70} {x0 + w - 12},{y0 + 92} L{x0 + w - 20},{y0 + 120} Q{cx},{y0 + 108} {x0 + 20},{y0 + 120} z"/>'
+                f'<path class="glass" d="M{x0 + 18},{y0 + 222} Q{cx},{y0 + 214} {x0 + w - 18},{y0 + 222} L{x0 + w - 14},{y0 + 244} Q{cx},{y0 + 252} {x0 + 14},{y0 + 244} z"/>')
     return (f'<g id="{mid}_slot" class="slot"><g id="{mid}" class="car">'
-            f'<g transform="rotate(90 {cx} {cy})">'
-            f'<rect class="body" x="{x0}" y="{y0}" width="{w}" height="{h}" rx="32"/>'
-            f'<path class="glass" d="M{x0 + 12},{y0 + 92} Q{cx},{y0 + 70} {x0 + w - 12},{y0 + 92} L{x0 + w - 20},{y0 + 120} Q{cx},{y0 + 108} {x0 + 20},{y0 + 120} z"/>'
-            f'<path class="glass" d="M{x0 + 18},{y0 + 222} Q{cx},{y0 + 214} {x0 + w - 18},{y0 + 222} L{x0 + w - 14},{y0 + 244} Q{cx},{y0 + 252} {x0 + 14},{y0 + 244} z"/>'
+            f'<g transform="rotate(90 {cx} {cy})">{body}'
             '</g>'
             f'<text class="car-name" x="{cx - 36}" y="{cy - 24}">{name}</text>'
             f'<text id="{mid}_value" class="car-value" x="{cx - 36}" y="{cy + 2}"></text>'
@@ -156,7 +163,7 @@ def car_marker(mid, name, cx, cy):
 
 # the cars on the parking, shown only while they are at home; a plugged-in car is moved by
 # the stylesheet to the spot by the charger, centred at (90, 640)
-out.append(car_marker("car_tesla", "Otto", -60 - OX, 265 - OY))
+out.append(car_marker("car_tesla", "Otto", -60 - OX, 265 - OY, image="/local/tesla-card/model3_top.webp?v=2"))
 out.append(car_marker("car_jean_luc", "Jean-Luc", -60 - OX, 410 - OY))
 # Easee charger on the outside of the WC wall, towards the parking
 EX, EY = 140 - OX, 800 - OY
