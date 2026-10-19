@@ -254,7 +254,7 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/kallare.svg?v=13
+          image: /local/floorplan/kallare.svg?v=14
           stylesheet: /local/floorplan/kallare.css?v=8
           rules:
             # Rummet blir gult när någon av dess lampor är tänd. class_set

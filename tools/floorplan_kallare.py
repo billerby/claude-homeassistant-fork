@@ -20,6 +20,21 @@ ROOMS = [
     ("familjerum", "Brasrum", [(630, 545), (1000, 545), (1000, 945), (630, 945)], "room"),
     ("tovas_rum", "Tovas rum", [(1000, 545), (1225, 545), (1225, 945), (1000, 945)], "room"),
 ]
+# doors as openings in the walls: (x0, y0, x1, y1) along the wall, marked by Erik on a screenshot
+DOORS = [
+    (530, 341, 530, 410),     # pantry
+    (530, 435, 530, 471),     # WC
+    (1095, 468, 1095, 510),   # ping-pong room out to the stairs
+    (847, 545, 899, 545),     # ping-pong room to the fireplace room
+    (1052, 545, 1084, 545),   # ping-pong room to Tova's room
+    (237, 634, 237, 663),     # sauna to the bathroom
+    (335, 677, 387, 677),     # bathroom to the laundry
+    (551, 677, 589, 677),     # food cellar to the laundry corridor
+    (630, 698, 630, 742),     # laundry corridor to the fireplace room
+    (551, 752, 594, 752),     # laundry corridor to the electrical room
+    (287, 867, 287, 908),     # boiler room to the laundry
+    (1000, 689, 1000, 726),   # fireplace room to Tova's room
+]
 LABEL_AT = {"pingisrummet": (615, 190), "tvattstuga": (381, 811)}  # label position for non-rectangular rooms
 W, H = 1240, 960
 
@@ -88,6 +103,7 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '<style>',
        '.room{fill:#1d2b44;stroke:#50627e;stroke-width:6}',
        '.outdoor{fill:#182a2a;stroke:#4f6f62;stroke-width:3;stroke-dasharray:12 8}',
+       '.door{stroke:#1d2b44;stroke-width:12;pointer-events:none}',
        '.label{font:600 24px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
        '.outdoor-label{font:italic 22px sans-serif;fill:#7fa392}',
        '.small{font-size:17px}',
@@ -110,6 +126,8 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
 for rid, label, pts, kind in ROOMS:
     d = " ".join(f"{x - OX},{y - OY}" for x, y in pts)
     out.append(f'<polygon id="{rid}" class="{kind}" points="{d}"/>')
+for x0, y0, x1, y1 in DOORS:
+    out.append(f'<line class="door" x1="{x0 - OX}" y1="{y0 - OY}" x2="{x1 - OX}" y2="{y1 - OY}"/>')
 for rid, label, pts, kind in ROOMS:
     if kind == "room":
         d = " ".join(f"{x - OX},{y - OY}" for x, y in pts)
