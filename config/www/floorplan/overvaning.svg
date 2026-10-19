@@ -22,8 +22,12 @@
 .device path.bolt{fill:#c9d3df}
 .car .body{fill:#2a3a57;stroke:#c9d3df;stroke-width:4}
 .car .glass{fill:#121a2a}
-.car-name{font:600 19px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
-.car-value{font:500 19px sans-serif;fill:#9aa7b8;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.r5-body,.r5-mirror{fill:#eceef1;stroke:#8a96a6;stroke-width:1.5}
+.r5-glass{fill:#1b2330}
+.r5-roof{fill:#15171c;stroke:#c0392b;stroke-width:3}
+.r5-light{fill:#c9d3df;stroke:#5a6678;stroke-width:1}
+.car-name{font:600 19px sans-serif;fill:#e8edf4;paint-order:stroke;stroke:#121a2a;stroke-width:4px;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.car-value{font:600 19px sans-serif;fill:#e8edf4;paint-order:stroke;stroke:#121a2a;stroke-width:4px;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 .car .bolt{fill:#2f9e8a}
 .speaker circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
 .speaker rect,.speaker circle.cone{fill:none;stroke:#c9d3df;stroke-width:2.5}
@@ -68,8 +72,8 @@
 <text id="utetemp_value" class="value" x="570" y="484"></text>
 <g id="sonos_vardagsrum" class="speaker"><circle cx="1220" cy="885" r="24"/><rect x="1206" y="880" width="28" height="10" rx="4"/><circle class="dot" cx="1213" cy="885" r="1.8"/><circle class="dot" cx="1220" cy="885" r="1.8"/><circle class="dot" cx="1227" cy="885" r="1.8"/></g>
 <g id="sonos_kok" class="speaker"><circle cx="700" cy="1152" r="24"/><rect x="692" y="1140" width="16" height="24" rx="3"/><circle class="cone" cx="700" cy="1155" r="5"/><circle class="dot" cx="700" cy="1146" r="1.8"/></g>
-<g id="car_tesla_slot" class="slot"><g id="car_tesla" class="car"><g transform="rotate(90 200 445)"><rect class="body" x="145" y="310" width="110" height="270" rx="32"/><path class="glass" d="M157,402 Q200,380 243,402 L235,430 Q200,418 165,430 z"/><path class="glass" d="M163,532 Q200,524 237,532 L241,554 Q200,562 159,554 z"/></g><text class="car-name" x="164" y="421">Otto</text><text id="car_tesla_value" class="car-value" x="164" y="447"></text><path id="car_tesla_bolt" class="bolt" d="M167,461 L156,477 h8 l-3,12 L172,472 h-8 z"/></g></g>
-<g id="car_jean_luc_slot" class="slot"><g id="car_jean_luc" class="car"><g transform="rotate(90 200 590)"><rect class="body" x="145" y="455" width="110" height="270" rx="32"/><path class="glass" d="M157,547 Q200,525 243,547 L235,575 Q200,563 165,575 z"/><path class="glass" d="M163,677 Q200,669 237,677 L241,699 Q200,707 159,699 z"/></g><text class="car-name" x="164" y="566">Jean-Luc</text><text id="car_jean_luc_value" class="car-value" x="164" y="592"></text><path id="car_jean_luc_bolt" class="bolt" d="M167,606 L156,622 h8 l-3,12 L172,617 h-8 z"/></g></g>
+<g id="car_tesla_slot" class="slot"><g id="car_tesla" class="car"><g transform="rotate(90 200 445)"><image href="/local/tesla-card/model3_top.webp?v=2" x="133.1" y="310" width="133.9" height="270"/></g><text class="car-name" x="164" y="421">Otto</text><text id="car_tesla_value" class="car-value" x="164" y="447"></text><path id="car_tesla_bolt" class="bolt" d="M167,461 L156,477 h8 l-3,12 L172,472 h-8 z"/></g></g>
+<g id="car_jean_luc_slot" class="slot"><g id="car_jean_luc" class="car"><g transform="rotate(90 200 590)"><rect x="143" y="550" width="114" height="12" rx="5" class="r5-mirror"/><rect class="r5-body" x="150" y="478" width="100" height="224" rx="24"/><rect class="r5-light" x="158" y="483" width="20" height="6" rx="3"/><rect class="r5-light" x="222" y="483" width="20" height="6" rx="3"/><path class="r5-glass" d="M158,540 Q200,530 242,540 L238,564 L162,564 z"/><rect class="r5-roof" x="161" y="564" width="78" height="92" rx="6"/><path class="r5-glass" d="M162,656 L238,656 L236,674 Q200,679 164,674 z"/></g><text class="car-name" x="180" y="566">Jean-Luc</text><text id="car_jean_luc_value" class="car-value" x="180" y="592"></text><path id="car_jean_luc_bolt" class="bolt" d="M183,606 L172,622 h8 l-3,12 L188,617 h-8 z"/></g></g>
 <g id="laddbox" class="device"><circle cx="400" cy="980" r="24"/><path class="bolt" d="M403,966 L392,982 h8 l-3,12 L408,977 h-8 z"/></g>
 <text id="laddbox_value" class="value small-value" x="400" y="940"></text>
 </svg>

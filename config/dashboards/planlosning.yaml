@@ -7,7 +7,7 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg?v=15
+          image: /local/floorplan/overvaning.svg?v=17
           stylesheet: /local/floorplan/overvaning.css?v=12
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla
@@ -164,8 +164,8 @@ views:
                 service: floorplan.class_set
                 service_data:
                   class: "${entity.state === 'on' ? 'bolt' : 'bolt bolt-off'}"
-            # en bil som laddar flyttas (i stilmallen) till platsen vid laddboxen
-            - entity: binary_sensor.otto_von_bismarck_charging
+            # en inkopplad bil flyttas (i stilmallen) till platsen vid laddboxen
+            - entity: binary_sensor.otto_von_bismarck_plugged_in
               element: car_tesla_slot
               state_action: &car_slot
                 action: call-service
@@ -185,7 +185,7 @@ views:
             - entity: binary_sensor.jean_luc_charging
               element: car_jean_luc_bolt
               state_action: *car_bolt
-            - entity: binary_sensor.jean_luc_charging
+            - entity: binary_sensor.jean_luc_plug
               element: car_jean_luc_slot
               state_action: *car_slot
 
