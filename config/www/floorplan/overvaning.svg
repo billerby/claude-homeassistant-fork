@@ -2,6 +2,8 @@
 <style>
 .room{fill:#1d2b44;stroke:#50627e;stroke-width:8}
 .outdoor{fill:#182a2a;stroke:#4f6f62;stroke-width:4;stroke-dasharray:14 10}
+.door{stroke:#1d2b44;stroke-width:16;pointer-events:none}
+.port{stroke:#c9d3df;stroke-width:4;stroke-dasharray:12 8;pointer-events:none}
 .label{font:600 30px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 .building{fill:#1a2333;stroke:#50627e;stroke-width:8}
 .outdoor-label{font:italic 26px sans-serif;fill:#7fa392}
@@ -53,6 +55,20 @@
 <rect id="master_bedroom" class="room" x="1670" y="1115" width="318" height="390"/>
 <polygon id="parkering" class="outdoor" points="25,358 860,358 860,718 505,718 505,909 25,909"/>
 <text id="parkering_label" class="label outdoor-label" x="680" y="660">Parkering</text>
+<line class="door" x1="516" y1="339" x2="639" y2="339"/>
+<line class="door" x1="700" y1="785" x2="700" y2="856"/>
+<line class="door" x1="783" y1="924" x2="850" y2="924"/>
+<line class="door" x1="959" y1="924" x2="1107" y2="924"/>
+<line class="door" x1="1438" y1="924" x2="1490" y2="924"/>
+<line class="door" x1="550" y1="1042" x2="550" y2="1083"/>
+<line class="door" x1="1742" y1="1035" x2="1742" y2="1080"/>
+<line class="door" x1="728" y1="1115" x2="791" y2="1115"/>
+<line class="door" x1="913" y1="1115" x2="1091" y2="1115"/>
+<line class="door" x1="1207" y1="1115" x2="1259" y2="1115"/>
+<line class="door" x1="1400" y1="1115" x2="1442" y2="1115"/>
+<line class="door" x1="1680" y1="1115" x2="1723" y2="1115"/>
+<line class="door" x1="865" y1="1393" x2="865" y2="1448"/>
+<line class="door" x1="74" y1="72" x2="74" y2="266"/><line class="port" x1="74" y1="72" x2="74" y2="266"/>
 <text id="garage_label" class="label" x="364" y="177">Garage</text>
 <text id="vardagsrum_label" class="label" x="1158" y="591">Vardagsrum</text>
 <text id="pizzerian_label" class="label outdoor-label" x="1572" y="591">Altan / Pizzeria</text>
