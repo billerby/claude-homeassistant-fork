@@ -72,3 +72,37 @@
 .speaker.speaker-playing circle:not(.dot):not(.cone) {
   fill: #2f5d8f;
 }
+
+.device circle {
+  transition: fill 0.4s ease;
+}
+
+.device.charger-connected circle {
+  fill: #2f5d8f;
+}
+
+.device.charger-charging circle {
+  fill: #2f9e8a;
+}
+
+.car {
+  cursor: pointer;
+}
+
+.car.car-away,
+.car .bolt.bolt-off {
+  display: none;
+}
+
+/* a charging car moves to the spot by the charger, centred at (350, 820) in the SVG */
+.slot {
+  transition: transform 1s ease;
+}
+
+#car_tesla_slot.slot-charging {
+  transform: translate(150px, 375px);
+}
+
+#car_jean_luc_slot.slot-charging {
+  transform: translate(150px, 230px);
+}

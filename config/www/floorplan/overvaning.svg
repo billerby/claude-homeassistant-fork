@@ -1,8 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1660 1290" width="1660" height="1290">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2008 1525" width="2008" height="1525">
 <style>
 .room{fill:#1d2b44;stroke:#50627e;stroke-width:8}
 .outdoor{fill:#182a2a;stroke:#4f6f62;stroke-width:4;stroke-dasharray:14 10}
 .label{font:600 30px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.building{fill:#1a2333;stroke:#50627e;stroke-width:8}
 .outdoor-label{font:italic 26px sans-serif;fill:#7fa392}
 .camera circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
 .camera rect,.camera polygon{fill:#c9d3df}
@@ -18,45 +19,57 @@
 .device circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
 .device rect{fill:none;stroke:#c9d3df;stroke-width:3}
 .device circle.dot{fill:#c9d3df;stroke:none}
+.device path.bolt{fill:#c9d3df}
+.car .body{fill:#2a3a57;stroke:#c9d3df;stroke-width:4}
+.car .glass{fill:#121a2a}
+.car-name{font:600 19px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.car-value{font:500 19px sans-serif;fill:#9aa7b8;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.car .bolt{fill:#2f9e8a}
 .speaker circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
 .speaker rect,.speaker circle.cone{fill:none;stroke:#c9d3df;stroke-width:2.5}
 .speaker circle.dot{fill:#c9d3df;stroke:none}
 .value{font:500 26px sans-serif;fill:#9aa7b8;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 </style>
-<rect id="vardagsrum" class="room" x="552" y="20" width="493" height="662"/>
-<rect id="pizzerian" class="outdoor" x="1045" y="20" width="335" height="662"/>
-<rect id="entre" class="room" x="340" y="500" width="212" height="182"/>
-<rect id="trappa" class="outdoor" x="185" y="495" width="155" height="187"/>
-<rect id="wc" class="room" x="75" y="685" width="115" height="185"/>
-<rect id="kapprum" class="room" x="190" y="685" width="320" height="185"/>
-<rect id="hall" class="room" x="510" y="685" width="872" height="190"/>
-<rect id="bad" class="room" x="1382" y="685" width="218" height="190"/>
-<rect id="kok" class="room" x="30" y="875" width="475" height="390"/>
-<rect id="pianorum" class="room" x="505" y="875" width="267" height="390"/>
-<rect id="fritiofs_rum" class="room" x="772" y="875" width="240" height="390"/>
-<rect id="henriks_rum" class="room" x="1012" y="875" width="298" height="390"/>
-<rect id="master_bedroom" class="room" x="1310" y="875" width="318" height="390"/>
-<text id="vardagsrum_label" class="label" x="798" y="351">Vardagsrum</text>
-<text id="pizzerian_label" class="label outdoor-label" x="1212" y="351">Altan / Pizzeria</text>
-<text id="entre_label" class="label" x="446" y="591">Entré</text>
-<text id="trappa_label" class="label outdoor-label" x="262" y="588">Trappa</text>
-<text id="wc_label" class="label" x="132" y="778">WC</text>
-<text id="kapprum_label" class="label" x="350" y="778">Kapprum</text>
-<text id="hall_label" class="label" x="946" y="780">Hall</text>
-<text id="bad_label" class="label" x="1491" y="780">Bad</text>
-<text id="kok_label" class="label" x="268" y="1070">Kök</text>
-<text id="pianorum_label" class="label" x="638" y="1070">Pianorum</text>
-<text id="fritiofs_rum_label" class="label" x="892" y="1070">Fritiofs rum</text>
-<text id="henriks_rum_label" class="label" x="1161" y="1070">Henriks rum</text>
-<text id="master_bedroom_label" class="label" x="1469" y="1070">Master bedroom</text>
-<text id="vardagsrum_temp" class="value" x="798" y="393"></text>
-<g id="camera_c120" class="camera"><circle cx="518" cy="150" r="24"/><rect x="506" y="142" width="17" height="16" rx="2"/><polygon points="523,146 531,141 531,159 523,154"/></g>
-<g id="kaffemaskin" class="appliance"><circle cx="468" cy="1050" r="24"/><path d="M457,1043 h17 v9 a8,8 0 0 1 -8,8 h-1 a8,8 0 0 1 -8,-8 z"/><path class="handle" d="M474,1046 a5,5 0 0 1 0,9"/></g>
-<text id="kaffemaskin_power" class="value small-value" x="468" y="1092"></text>
-<g id="ap_u6_lr" class="ap"><circle cx="798" cy="270" r="24"/><path d="M785,267 a18,18 0 0 1 26,0 M790,272 a11,11 0 0 1 16,0"/><circle class="dot" cx="798" cy="278" r="3"/></g><text id="ap_u6_lr_clients" class="value small-value" x="798" y="310"></text>
-<g id="usw_lite_8_poe" class="device"><circle cx="660" cy="620" r="24"/><rect x="647" y="614" width="26" height="14" rx="2"/><circle class="dot" cx="652" cy="622" r="1.8"/><circle class="dot" cx="657" cy="622" r="1.8"/><circle class="dot" cx="662" cy="622" r="1.8"/><circle class="dot" cx="667" cy="622" r="1.8"/></g><text id="usw_lite_8_poe_clients" class="value small-value" x="660" y="660"></text>
-<g id="utetemp" class="thermometer"><circle cx="210" cy="200" r="24"/><rect x="207" y="186" width="6" height="18" rx="3"/><circle class="bulb" cx="210" cy="208" r="6"/></g>
-<text id="utetemp_value" class="value" x="210" y="244"></text>
-<g id="sonos_vardagsrum" class="speaker"><circle cx="860" cy="645" r="24"/><rect x="846" y="640" width="28" height="10" rx="4"/><circle class="dot" cx="853" cy="645" r="1.8"/><circle class="dot" cx="860" cy="645" r="1.8"/><circle class="dot" cx="867" cy="645" r="1.8"/></g>
-<g id="sonos_kok" class="speaker"><circle cx="340" cy="912" r="24"/><rect x="332" y="900" width="16" height="24" rx="3"/><circle class="cone" cx="340" cy="915" r="5"/><circle class="dot" cx="340" cy="906" r="1.8"/></g>
+<rect id="garage" class="building" x="74" y="15" width="580" height="324"/>
+<rect id="vardagsrum" class="room" x="912" y="260" width="493" height="662"/>
+<rect id="pizzerian" class="outdoor" x="1405" y="260" width="335" height="662"/>
+<rect id="entre" class="room" x="700" y="740" width="212" height="182"/>
+<rect id="trappa" class="outdoor" x="545" y="735" width="155" height="187"/>
+<rect id="wc" class="room" x="435" y="925" width="115" height="185"/>
+<rect id="kapprum_hall" class="room" x="550" y="925" width="1192" height="190"/>
+<rect id="bad" class="room" x="1742" y="925" width="218" height="190"/>
+<rect id="kok" class="room" x="390" y="1115" width="475" height="390"/>
+<rect id="pianorum" class="room" x="865" y="1115" width="267" height="390"/>
+<rect id="fritiofs_rum" class="room" x="1132" y="1115" width="240" height="390"/>
+<rect id="henriks_rum" class="room" x="1372" y="1115" width="298" height="390"/>
+<rect id="master_bedroom" class="room" x="1670" y="1115" width="318" height="390"/>
+<polygon id="parkering" class="outdoor" points="25,358 860,358 860,718 505,718 505,909 25,909"/>
+<text id="parkering_label" class="label outdoor-label" x="680" y="660">Parkering</text>
+<text id="garage_label" class="label" x="364" y="177">Garage</text>
+<text id="vardagsrum_label" class="label" x="1158" y="591">Vardagsrum</text>
+<text id="pizzerian_label" class="label outdoor-label" x="1572" y="591">Altan / Pizzeria</text>
+<text id="entre_label" class="label" x="806" y="831">Entré</text>
+<text id="trappa_label" class="label outdoor-label" x="622" y="828">Trappa</text>
+<text id="wc_label" class="label" x="492" y="1018">WC</text>
+<text id="kapprum_hall_label" class="label" x="1146" y="1020">Kapprum/hall</text>
+<text id="bad_label" class="label" x="1851" y="1020">Bad</text>
+<text id="kok_label" class="label" x="628" y="1310">Kök</text>
+<text id="pianorum_label" class="label" x="998" y="1310">Pianorum</text>
+<text id="fritiofs_rum_label" class="label" x="1252" y="1310">Fritiofs rum</text>
+<text id="henriks_rum_label" class="label" x="1521" y="1310">Henriks rum</text>
+<text id="master_bedroom_label" class="label" x="1829" y="1310">Master bedroom</text>
+<text id="vardagsrum_temp" class="value" x="1158" y="633"></text>
+<g id="camera_c120" class="camera"><circle cx="878" cy="390" r="24"/><rect x="866" y="382" width="17" height="16" rx="2"/><polygon points="883,386 891,381 891,399 883,394"/></g>
+<g id="kaffemaskin" class="appliance"><circle cx="828" cy="1290" r="24"/><path d="M817,1283 h17 v9 a8,8 0 0 1 -8,8 h-1 a8,8 0 0 1 -8,-8 z"/><path class="handle" d="M834,1286 a5,5 0 0 1 0,9"/></g>
+<text id="kaffemaskin_power" class="value small-value" x="828" y="1332"></text>
+<g id="ap_u6_lr" class="ap"><circle cx="1158" cy="510" r="24"/><path d="M1145,507 a18,18 0 0 1 26,0 M1150,512 a11,11 0 0 1 16,0"/><circle class="dot" cx="1158" cy="518" r="3"/></g><text id="ap_u6_lr_clients" class="value small-value" x="1158" y="550"></text>
+<g id="usw_lite_8_poe" class="device"><circle cx="1020" cy="860" r="24"/><rect x="1007" y="854" width="26" height="14" rx="2"/><circle class="dot" cx="1012" cy="862" r="1.8"/><circle class="dot" cx="1017" cy="862" r="1.8"/><circle class="dot" cx="1022" cy="862" r="1.8"/><circle class="dot" cx="1027" cy="862" r="1.8"/></g><text id="usw_lite_8_poe_clients" class="value small-value" x="1020" y="900"></text>
+<g id="utetemp" class="thermometer"><circle cx="570" cy="440" r="24"/><rect x="567" y="426" width="6" height="18" rx="3"/><circle class="bulb" cx="570" cy="448" r="6"/></g>
+<text id="utetemp_value" class="value" x="570" y="484"></text>
+<g id="sonos_vardagsrum" class="speaker"><circle cx="1220" cy="885" r="24"/><rect x="1206" y="880" width="28" height="10" rx="4"/><circle class="dot" cx="1213" cy="885" r="1.8"/><circle class="dot" cx="1220" cy="885" r="1.8"/><circle class="dot" cx="1227" cy="885" r="1.8"/></g>
+<g id="sonos_kok" class="speaker"><circle cx="700" cy="1152" r="24"/><rect x="692" y="1140" width="16" height="24" rx="3"/><circle class="cone" cx="700" cy="1155" r="5"/><circle class="dot" cx="700" cy="1146" r="1.8"/></g>
+<g id="car_tesla_slot" class="slot"><g id="car_tesla" class="car"><g transform="rotate(90 200 445)"><rect class="body" x="145" y="310" width="110" height="270" rx="32"/><path class="glass" d="M157,402 Q200,380 243,402 L235,430 Q200,418 165,430 z"/><path class="glass" d="M163,532 Q200,524 237,532 L241,554 Q200,562 159,554 z"/></g><text class="car-name" x="164" y="421">Otto</text><text id="car_tesla_value" class="car-value" x="164" y="447"></text><path id="car_tesla_bolt" class="bolt" d="M167,461 L156,477 h8 l-3,12 L172,472 h-8 z"/></g></g>
+<g id="car_jean_luc_slot" class="slot"><g id="car_jean_luc" class="car"><g transform="rotate(90 200 590)"><rect class="body" x="145" y="455" width="110" height="270" rx="32"/><path class="glass" d="M157,547 Q200,525 243,547 L235,575 Q200,563 165,575 z"/><path class="glass" d="M163,677 Q200,669 237,677 L241,699 Q200,707 159,699 z"/></g><text class="car-name" x="164" y="566">Jean-Luc</text><text id="car_jean_luc_value" class="car-value" x="164" y="592"></text><path id="car_jean_luc_bolt" class="bolt" d="M167,606 L156,622 h8 l-3,12 L172,617 h-8 z"/></g></g>
+<g id="laddbox" class="device"><circle cx="400" cy="980" r="24"/><path class="bolt" d="M403,966 L392,982 h8 l-3,12 L408,977 h-8 z"/></g>
+<text id="laddbox_value" class="value small-value" x="400" y="940"></text>
 </svg>

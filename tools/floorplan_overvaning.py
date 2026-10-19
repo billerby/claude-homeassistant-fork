@@ -4,16 +4,17 @@ Room coordinates were measured on a photo of the construction drawing.
 usage: python tools/floorplan_overvaning.py config/www/floorplan/overvaning.svg
 """
 import sys
-OX, OY = 100, 60  # offset so the plan starts near 0,0
+OX, OY = -260, -180  # offset so the plan (garage included) starts near 0,0
 # id, label, x0, y0, x1, y1, kind
 ROOMS = [
+    # detached garage up to the left, placed from the basement drawing
+    ("garage", "Garage", -186, -165, 394, 159, "building"),
     ("vardagsrum", "Vardagsrum", 652, 80, 1145, 742, "room"),
     ("pizzerian", "Altan / Pizzeria", 1145, 80, 1480, 742, "outdoor"),
     ("entre", "Entré", 440, 560, 652, 742, "room"),
     ("trappa", "Trappa", 285, 555, 440, 742, "outdoor"),
     ("wc", "WC", 175, 745, 290, 930, "room"),
-    ("kapprum", "Kapprum", 290, 745, 610, 930, "room"),
-    ("hall", "Hall", 610, 745, 1482, 935, "room"),
+    ("kapprum_hall", "Kapprum/hall", 290, 745, 1482, 935, "room"),
     ("bad", "Bad", 1482, 745, 1700, 935, "room"),
     ("kok", "Kök", 130, 935, 605, 1325, "room"),
     ("pianorum", "Pianorum", 605, 935, 872, 1325, "room"),
@@ -21,8 +22,12 @@ ROOMS = [
     ("henriks_rum", "Henriks rum", 1112, 935, 1410, 1325, "room"),
     ("master_bedroom", "Master bedroom", 1410, 935, 1728, 1325, "room"),
 ]
+# non-rectangular areas: id, label, outline as (x, y) points, label position, kind
+AREAS = [
+    ("parkering", "Parkering", [(-235, 178), (600, 178), (600, 538), (245, 538), (245, 729), (-235, 729)], (420, 480), "outdoor"),
+]
 TEXT_SLOTS = {"vardagsrum"}
-W, H = 1660, 1290
+W, H = 2008, 1525
 def wifi_marker(mid, cx, cy):
     """Ceiling-mounted access point: wifi glyph in a circle."""
     return (f'<g id="{mid}" class="ap">'
@@ -60,6 +65,7 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.room{fill:#1d2b44;stroke:#50627e;stroke-width:8}',
        '.outdoor{fill:#182a2a;stroke:#4f6f62;stroke-width:4;stroke-dasharray:14 10}',
        '.label{font:600 30px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
+       '.building{fill:#1a2333;stroke:#50627e;stroke-width:8}',
        '.outdoor-label{font:italic 26px sans-serif;fill:#7fa392}',
        '.camera circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
        '.camera rect,.camera polygon{fill:#c9d3df}',
@@ -75,6 +81,12 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
        '.device circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
        '.device rect{fill:none;stroke:#c9d3df;stroke-width:3}',
        '.device circle.dot{fill:#c9d3df;stroke:none}',
+       '.device path.bolt{fill:#c9d3df}',
+       '.car .body{fill:#2a3a57;stroke:#c9d3df;stroke-width:4}',
+       '.car .glass{fill:#121a2a}',
+       '.car-name{font:600 19px sans-serif;fill:#e8edf4;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
+       '.car-value{font:500 19px sans-serif;fill:#9aa7b8;text-anchor:middle;dominant-baseline:middle;pointer-events:none}',
+       '.car .bolt{fill:#2f9e8a}',
        '.speaker circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}',
        '.speaker rect,.speaker circle.cone{fill:none;stroke:#c9d3df;stroke-width:2.5}',
        '.speaker circle.dot{fill:#c9d3df;stroke:none}',
@@ -83,6 +95,10 @@ out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W
 for rid, label, x0, y0, x1, y1, kind in ROOMS:
     x, y, w, h = x0 - OX, y0 - OY, x1 - x0, y1 - y0
     out.append(f'<rect id="{rid}" class="{kind}" x="{x}" y="{y}" width="{w}" height="{h}"/>')
+for aid, label, pts, (lx, ly), kind in AREAS:
+    d = " ".join(f"{x - OX},{y - OY}" for x, y in pts)
+    out.append(f'<polygon id="{aid}" class="{kind}" points="{d}"/>')
+    out.append(f'<text id="{aid}_label" class="label outdoor-label" x="{lx - OX}" y="{ly - OY}">{label}</text>')
 for rid, label, x0, y0, x1, y1, kind in ROOMS:
     cls = "label outdoor-label" if kind == "outdoor" else "label"
     out.append(f'<text id="{rid}_label" class="{cls}" x="{(x0+x1)/2-OX:.0f}" y="{(y0+y1)/2-OY:.0f}">{label}</text>')
@@ -121,5 +137,33 @@ out.append(f'<text id="utetemp_value" class="value" x="{TX}" y="{TY + 44}"></tex
 # Sonos: soundbar under the TV against the hall, kitchen speaker on the wall to the coat room
 out.append(speaker_marker("sonos_vardagsrum", 960 - OX, 705 - OY, soundbar=True))
 out.append(speaker_marker("sonos_kok", 440 - OX, 972 - OY))
+
+
+def car_marker(mid, name, cx, cy):
+    """Car seen from above in a parking spot, nose to the right; name, charge and a bolt while charging."""
+    x0, y0, w, h = cx - 55, cy - 135, 110, 270  # drawn nose up, then turned a quarter clockwise
+    return (f'<g id="{mid}_slot" class="slot"><g id="{mid}" class="car">'
+            f'<g transform="rotate(90 {cx} {cy})">'
+            f'<rect class="body" x="{x0}" y="{y0}" width="{w}" height="{h}" rx="32"/>'
+            f'<path class="glass" d="M{x0 + 12},{y0 + 92} Q{cx},{y0 + 70} {x0 + w - 12},{y0 + 92} L{x0 + w - 20},{y0 + 120} Q{cx},{y0 + 108} {x0 + 20},{y0 + 120} z"/>'
+            f'<path class="glass" d="M{x0 + 18},{y0 + 222} Q{cx},{y0 + 214} {x0 + w - 18},{y0 + 222} L{x0 + w - 14},{y0 + 244} Q{cx},{y0 + 252} {x0 + 14},{y0 + 244} z"/>'
+            '</g>'
+            f'<text class="car-name" x="{cx - 36}" y="{cy - 24}">{name}</text>'
+            f'<text id="{mid}_value" class="car-value" x="{cx - 36}" y="{cy + 2}"></text>'
+            f'<path id="{mid}_bolt" class="bolt" d="M{cx - 33},{cy + 16} L{cx - 44},{cy + 32} h8 l-3,12 L{cx - 28},{cy + 27} h-8 z"/>'
+            '</g></g>')
+
+
+# the cars on the parking, shown only while they are at home; a charging car is moved by
+# the stylesheet to the spot by the charger, centred at (90, 640)
+out.append(car_marker("car_tesla", "Otto", -60 - OX, 265 - OY))
+out.append(car_marker("car_jean_luc", "Jean-Luc", -60 - OX, 410 - OY))
+# Easee charger on the outside of the WC wall, towards the parking
+EX, EY = 140 - OX, 800 - OY
+out.append(f'<g id="laddbox" class="device">'
+           f'<circle cx="{EX}" cy="{EY}" r="24"/>'
+           f'<path class="bolt" d="M{EX + 3},{EY - 14} L{EX - 8},{EY + 2} h8 l-3,12 L{EX + 8},{EY - 3} h-8 z"/>'
+           '</g>')
+out.append(f'<text id="laddbox_value" class="value small-value" x="{EX}" y="{EY - 40}"></text>')
 out.append('</svg>')
 open(sys.argv[1], "w").write("\n".join(out) + "\n")
