@@ -106,3 +106,17 @@
 #car_jean_luc_slot.slot-charging {
   transform: translate(150px, 230px);
 }
+
+.motion.motion-on {
+  stroke: #e0533d;
+  stroke-width: 8;
+  stroke-dasharray: 18 10;
+}
+
+.sensor {
+  cursor: pointer;
+}
+
+.sensor.sensor-on circle:not(.dot) {
+  fill: #e0533d;
+}

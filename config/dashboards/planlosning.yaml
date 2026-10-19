@@ -7,8 +7,8 @@ views:
       - type: custom:floorplan-card
         full_height: true
         config:
-          image: /local/floorplan/overvaning.svg?v=17
-          stylesheet: /local/floorplan/overvaning.css?v=12
+          image: /local/floorplan/overvaning.svg?v=18
+          stylesheet: /local/floorplan/overvaning.css?v=13
           rules:
             # Rummet markeras när något spelas där. class_set ersätter alla
             # klasser, så "room" måste vara med i båda fallen.
@@ -188,6 +188,24 @@ views:
             - entity: binary_sensor.jean_luc_plug
               element: car_jean_luc_slot
               state_action: *car_slot
+
+            # Närvarosensorn (FP2) i garaget: röd sensor och röd streckad ram runt garaget vid rörelse
+            - entity: binary_sensor.presence_sensor_fp2_b37b_presence_sensor_1
+              element: garage_sensor
+              tap_action:
+                action: more-info
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'on' ? 'sensor sensor-on' : 'sensor'}"
+            - entity: binary_sensor.presence_sensor_fp2_b37b_presence_sensor_1
+              element: garage_motion
+              state_action:
+                action: call-service
+                service: floorplan.class_set
+                service_data:
+                  class: "${entity.state === 'on' ? 'motion motion-on' : 'motion'}"
 
             # Easee-laddboxen utanför WC: grön när den laddar, blå med bil inkopplad, röd vid fel
             - entity: sensor.easee_home_91929_status

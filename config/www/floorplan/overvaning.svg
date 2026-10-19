@@ -15,6 +15,10 @@
 .ap circle.dot{fill:#c9d3df;stroke:none}
 .ap path{fill:none;stroke:#c9d3df;stroke-width:3;stroke-linecap:round}
 .thermometer circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
+.motion{fill:none;stroke:none;pointer-events:none}
+.sensor circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
+.sensor circle.dot{fill:#c9d3df;stroke:none}
+.sensor path{fill:none;stroke:#c9d3df;stroke-width:3;stroke-linecap:round}
 .thermometer rect,.thermometer circle.bulb{fill:#c9d3df;stroke:none}
 .device circle{fill:#121a2a;stroke:#c9d3df;stroke-width:4}
 .device rect{fill:none;stroke:#c9d3df;stroke-width:3}
@@ -67,6 +71,8 @@
 <g id="kaffemaskin" class="appliance"><circle cx="828" cy="1290" r="24"/><path d="M817,1283 h17 v9 a8,8 0 0 1 -8,8 h-1 a8,8 0 0 1 -8,-8 z"/><path class="handle" d="M834,1286 a5,5 0 0 1 0,9"/></g>
 <text id="kaffemaskin_power" class="value small-value" x="828" y="1332"></text>
 <g id="ap_u6_lr" class="ap"><circle cx="1158" cy="510" r="24"/><path d="M1145,507 a18,18 0 0 1 26,0 M1150,512 a11,11 0 0 1 16,0"/><circle class="dot" cx="1158" cy="518" r="3"/></g><text id="ap_u6_lr_clients" class="value small-value" x="1158" y="550"></text>
+<rect id="garage_motion" class="motion" x="74" y="15" width="580" height="324"/>
+<g id="garage_sensor" class="sensor"><circle cx="628" cy="177" r="22"/><circle class="dot" cx="635" cy="177" r="3.5"/><path d="M627,169 a10,10 0 0 0 0,16 M621,164 a16,16 0 0 0 0,26"/></g>
 <g id="usw_lite_8_poe" class="device"><circle cx="1020" cy="860" r="24"/><rect x="1007" y="854" width="26" height="14" rx="2"/><circle class="dot" cx="1012" cy="862" r="1.8"/><circle class="dot" cx="1017" cy="862" r="1.8"/><circle class="dot" cx="1022" cy="862" r="1.8"/><circle class="dot" cx="1027" cy="862" r="1.8"/></g><text id="usw_lite_8_poe_clients" class="value small-value" x="1020" y="900"></text>
 <g id="utetemp" class="thermometer"><circle cx="570" cy="440" r="24"/><rect x="567" y="426" width="6" height="18" rx="3"/><circle class="bulb" cx="570" cy="448" r="6"/></g>
 <text id="utetemp_value" class="value" x="570" y="484"></text>
